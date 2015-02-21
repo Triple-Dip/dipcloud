@@ -81,8 +81,8 @@ public class Nimterface {
     // Apply the molecule action to each atom.
     private boolean processAtoms(Molecule molecule) {
         boolean anythingChanged = false;
-        switch (molecule.getAction()) {
 
+        switch (molecule.getAction()) {
             case Molecule.ACTION_ADD:
                 for (Atom atom : molecule) {
                     if (nimbase.add(atom)) {
@@ -125,7 +125,6 @@ public class Nimterface {
         Set<NimterfaceListener<T>> listeners = map.get(key);
 
         switch (action) {
-
             case Molecule.ACTION_ADD:
                 for (NimterfaceListener<T> listener : listeners) {
                     listener.onAdded(thing);
@@ -153,7 +152,6 @@ public class Nimterface {
             default:
                 return;
         }
-
     }
 
 }
