@@ -6,19 +6,14 @@ package org.tripledip.dipcloud;
 public final class Atom {
 
     private final String id;
-    private final String channel;
     private final long timeStamp;
-    private final int action;
-
     private final String stringData;
     private final int intData;
     private final double doubleData;
 
-    public Atom(String id, String channel, long timeStamp, int action, String stringData, int intData, double doubleData) {
+    public Atom(String id, long timeStamp, String stringData, int intData, double doubleData) {
         this.id = id;
-        this.channel = channel;
         this.timeStamp = timeStamp;
-        this.action = action;
         this.stringData = stringData;
         this.intData = intData;
         this.doubleData = doubleData;
@@ -28,16 +23,8 @@ public final class Atom {
         return id;
     }
 
-    public String getChannel() {
-        return channel;
-    }
-
     public long getTimeStamp() {
         return timeStamp;
-    }
-
-    public int getAction() {
-        return action;
     }
 
     public String getStringData() {
@@ -50,5 +37,17 @@ public final class Atom {
 
     public double getDoubleData() {
         return doubleData;
+    }
+
+    public Atom copy(String stringData, long timeStamp) {
+        return new Atom(this.id, timeStamp, stringData, this.intData, this.doubleData);
+    }
+
+    public Atom copy(int intData, long timeStamp) {
+        return new Atom(this.id, timeStamp, this.stringData, intData, this.doubleData);
+    }
+
+    public Atom copy(double doubleData, long timeStamp) {
+        return new Atom(this.id, timeStamp, this.stringData, this.intData, doubleData);
     }
 }

@@ -10,19 +10,46 @@ import java.util.Iterator;
  */
 public class Molecule implements Iterable<Atom>{
 
+    public static final String DEFAULT_CHANNEL = "default";
+    public static final int ACTION_GET = 1;
+    public static final int ACTION_ADD = 2;
+    public static final int ACTION_UPDATE = 3;
+    public static final int ACTION_REMOVE = 4;
+
     private final Collection<Atom> atoms;
+    private String channel;
+    private int action;
 
-    public Molecule() {
+    public Molecule(String channel, int action) {
+        this.channel = channel;
+        this.action = action;
         this.atoms = new ArrayList<Atom>();
     }
 
-    public Molecule(Atom... atoms) {
-        this.atoms = Arrays.asList(atoms);
+    public Molecule(String channel, int action, Atom... atoms) {
+        this(channel, action);
+        this.atoms.addAll(Arrays.asList(atoms));
     }
 
-    public Molecule(Collection<Atom> atoms) {
-        this.atoms = new ArrayList<Atom>();
+    public Molecule(String channel, int action, Collection<Atom> atoms) {
+        this(channel, action);
         this.atoms.addAll(atoms);
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public int getAction() {
+        return action;
+    }
+
+    public void setAction(int action) {
+        this.action = action;
     }
 
     public int size(){
@@ -33,30 +60,12 @@ public class Molecule implements Iterable<Atom>{
         return atoms.add(atom);
     }
 
-    public Molecule findByChannel(String channel){
-        Molecule subset = new Molecule();
-
-        for(Atom atom : atoms){
-
-            if(atom.getChannel().equals(channel)){
-                subset.add(atom);
-            }
-
-        }
-
-        return subset;
-    }
-
     public Atom findById(String id){
-
         for(Atom atom : atoms){
-
             if(atom.getId().equals(id)){
                 return atom;
             }
-
         }
-
         return null;
     }
 

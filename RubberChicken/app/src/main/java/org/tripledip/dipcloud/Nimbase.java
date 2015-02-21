@@ -1,44 +1,53 @@
 package org.tripledip.dipcloud;
 
-import android.net.wifi.p2p.WifiP2pManager;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Ben on 2/18/2015.
  */
-public class Nimbase {
+public class Nimbase implements Crudable<Atom> {
 
     private Map<String, Atom> atomsById;
 
-    private Map<String, Set<AtomListener>> idListeners;
-
-    private Map<String, Set<MoleculeListener>> channelListeners;
-
     public Nimbase() {
         atomsById = new HashMap<>();
-        idListeners = new HashMap<>();
-        channelListeners = new HashMap<>();
     }
 
-    public void registerIdListener(String id, AtomListener atomListener) {
-        if (!idListeners.containsKey(id)){
-            idListeners.put(id, new HashSet<AtomListener>());
+    public Atom get(String id) {
+        return atomsById.get(id);
+    }
+
+    public boolean add(Atom atom) {
+        if (atomsById.containsKey(atom.getId())) {
+            return update(atom);
         }
-        idListeners.get(id).add(atomListener);
+        atomsById.put(atom.getId(), atom);
+        return true;
     }
 
-    public void registerChannelListener(String channel, MoleculeListener channelListener) {
-        if (!channelListeners.containsKey(channel)){
-            channelListeners.put(channel, new HashSet<MoleculeListener>());
+    public boolean update(Atom incoming) {
+        if (atomsById.containsKey(incoming.getId())) {
+            final Atom existing = atomsById.get(incoming.getId());
+            if (incoming.getTimeStamp() > existing.getTimeStamp()) {
+                atomsById.put(incoming.getId(), incoming);
+                return true;
+            }
+            return false;
         }
-        channelListeners.get(channel).add(channelListener);
+        return false;
     }
 
+    public boolean remove(Atom atom) {
+        if (atomsById.containsKey(atom.getId())) {
+            atomsById.remove(atom.getId());
+            return true;
+        }
+        return false;
+    }
 
+    public int size() {
+        return atomsById.size();
+    }
 
 }
