@@ -1,38 +1,37 @@
 package org.tripledip.dipcloud;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Created by Wolfe on 2/18/2015.
  */
 public class Molecule implements Iterable<Atom>{
 
-    public static final String DEFAULT_CHANNEL = "default";
-    public static final int ACTION_GET = 1;
-    public static final int ACTION_ADD = 2;
-    public static final int ACTION_UPDATE = 3;
-    public static final int ACTION_REMOVE = 4;
+    public static final int ACTION_ADD = 1;
+    public static final int ACTION_UPDATE = 2;
+    public static final int ACTION_REMOVE = 3;
+    public static final int ACTION_SEND = 4;
 
-    private final Collection<Atom> atoms;
+    private final Set<Atom> atoms;
     private String channel;
     private int action;
 
-    public Molecule(String channel, int action) {
+    public Molecule(String channel) {
         this.channel = channel;
-        this.action = action;
-        this.atoms = new ArrayList<Atom>();
+        this.atoms = new HashSet<>();
     }
 
-    public Molecule(String channel, int action, Atom... atoms) {
-        this(channel, action);
+    public Molecule(String channel, Atom... atoms) {
+        this(channel);
         this.atoms.addAll(Arrays.asList(atoms));
     }
 
-    public Molecule(String channel, int action, Collection<Atom> atoms) {
-        this(channel, action);
+    public Molecule(String channel, Collection<Atom> atoms) {
+        this(channel);
         this.atoms.addAll(atoms);
     }
 
