@@ -1,9 +1,9 @@
-package org.tripledip.dipcloud;
+package org.tripledip.dipcloud.contract;
 
 /**
  * Created by Ben on 2/18/2015.
  */
-public interface NimterfaceListener<T> {
+public interface ScrudListener<T> {
 
     public void onAdded(T thing);
     public void onUpdated(T thing);

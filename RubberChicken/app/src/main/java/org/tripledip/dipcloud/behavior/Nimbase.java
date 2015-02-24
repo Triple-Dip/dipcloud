@@ -1,4 +1,7 @@
-package org.tripledip.dipcloud;
+package org.tripledip.dipcloud.behavior;
+
+import org.tripledip.dipcloud.contract.Crudable;
+import org.tripledip.dipcloud.model.Atom;
 
 import java.util.HashMap;
 import java.util.Map;
