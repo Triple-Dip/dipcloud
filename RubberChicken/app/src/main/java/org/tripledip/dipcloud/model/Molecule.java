@@ -11,14 +11,23 @@ import java.util.Set;
  */
 public class Molecule implements Iterable<Atom>{
 
-    public static final int ACTION_ADD = 1;
-    public static final int ACTION_UPDATE = 2;
-    public static final int ACTION_REMOVE = 3;
-    public static final int ACTION_SEND = 4;
+    public enum Action {
+        ADD(1), UPDATE(2), REMOVE(3), SEND(4);
+
+        private int code;
+
+        Action(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return code;
+        }
+    }
 
     private final Set<Atom> atoms;
     private String channel;
-    private int action;
+    private Action action;
 
     public Molecule(String channel) {
         this.channel = channel;
@@ -43,11 +52,15 @@ public class Molecule implements Iterable<Atom>{
         this.channel = channel;
     }
 
-    public int getAction() {
+    public Set<Atom> getAtoms() {
+        return atoms;
+    }
+
+    public Action getAction() {
         return action;
     }
 
-    public void setAction(int action) {
+    public void setAction(Action action) {
         this.action = action;
     }
 
@@ -68,8 +81,9 @@ public class Molecule implements Iterable<Atom>{
         return null;
     }
 
-    public void fillCollection(Collection<Atom> collection){
+    public Collection<Atom> fillCollection(Collection<Atom> collection){
         collection.addAll(atoms);
+        return collection;
     }
 
     @Override
