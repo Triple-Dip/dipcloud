@@ -30,7 +30,7 @@ public class OutBoxTest {
         }
 
         @Override
-        public String readNext() {
+        public String readNext() throws InterruptedException {
             return null;
         }
 
@@ -69,6 +69,7 @@ public class OutBoxTest {
         // add all the test messages to the outBox
         for (String s : testItems) {
             outBox.add(s);
+            Thread.sleep(SLEEP_MILLIS);
         }
 
         // sleep and poll until all test messages arrive at our connector

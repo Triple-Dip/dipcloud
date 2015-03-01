@@ -5,7 +5,8 @@ package org.tripledip.dipcloud.local.contract;
  */
 public interface Connector<T> {
 
-    public T readNext();
+    public T readNext() throws InterruptedException;
+
     public void write(T outData);
 
 }
