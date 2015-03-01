@@ -1,9 +1,8 @@
-package org.tripledip.dipcloud.behavior;
+package org.tripledip.dipcloud.local.behavior;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tripledip.dipcloud.behavior.ScrudNotifier;
-import org.tripledip.dipcloud.contract.ScrudListener;
+import org.tripledip.dipcloud.local.contract.ScrudListener;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

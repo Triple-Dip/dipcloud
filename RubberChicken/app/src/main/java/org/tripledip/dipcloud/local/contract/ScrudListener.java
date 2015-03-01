@@ -1,4 +1,4 @@
-package org.tripledip.dipcloud.contract;
+package org.tripledip.dipcloud.local.contract;
 
 /**
  * Created by Ben on 2/18/2015.

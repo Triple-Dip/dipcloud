@@ -1,6 +1,6 @@
-package org.tripledip.dipcloud.behavior;
+package org.tripledip.dipcloud.local.behavior;
 
-import org.tripledip.dipcloud.contract.ScrudListener;
+import org.tripledip.dipcloud.local.contract.ScrudListener;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -1,20 +1,20 @@
-package org.tripledip.dipcloud.behavior;
+package org.tripledip.dipcloud.local.behavior;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tripledip.dipcloud.contract.Crudable;
-import org.tripledip.dipcloud.contract.ScrudListener;
-import org.tripledip.dipcloud.model.Atom;
-import org.tripledip.dipcloud.model.Molecule;
+import org.tripledip.dipcloud.local.contract.Crudable;
+import org.tripledip.dipcloud.local.contract.ScrudListener;
+import org.tripledip.dipcloud.local.model.Atom;
+import org.tripledip.dipcloud.local.model.Molecule;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 
-public class DipCloudTest {
+public class SuperDipTest {
 
     private Crudable<Atom> numbus;
-    private DipCloud dupCluud;
+    private SuperDip dupCluud;
     private TestListener<Atom> idListener;
     private TestListener<Molecule> channelListener;
     private TestListener<Atom> wrongIdListener = new TestListener<>();
@@ -25,7 +25,7 @@ public class DipCloudTest {
     public void setUp() throws Exception {
         numbus = new Nimbase();
         numbus.add(makeAtom("A", 42));
-        dupCluud = new DipCloud(numbus);
+        dupCluud = new SuperDip(numbus);
         idListener = new TestListener<>();
         channelListener = new TestListener<>();
     }

@@ -1,37 +1,27 @@
-package org.tripledip.dipcloud.behavior;
+package org.tripledip.dipcloud.local.behavior;
 
-import org.tripledip.dipcloud.contract.Crudable;
-import org.tripledip.dipcloud.model.Atom;
-import org.tripledip.dipcloud.model.Molecule;
-import org.tripledip.dipcloud.protocol.ClientSession;
-import org.tripledip.dipcloud.protocol.ServerSession;
+import org.tripledip.dipcloud.local.contract.Crudable;
+import org.tripledip.dipcloud.local.model.Atom;
+import org.tripledip.dipcloud.local.model.Molecule;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
  * Created by Ben on 2/23/15.
  */
-public class DipCloud {
-
+public class SuperDip {
     private final Crudable<Atom> nimbase;
     private final Atomizer atomizer;
     private final ScrudNotifier<Atom> idListeners;
     private final ScrudNotifier<Molecule> channelListeners;
-    private final ClientSession clientSession;
-    private final Set<ServerSession> serverSessions;
 
-    public DipCloud(Crudable<Atom> nimbase, ClientSession clientSession) {
+    public SuperDip(Crudable<Atom> nimbase) {
         this.nimbase = nimbase;
         this.atomizer = new Atomizer(nimbase);
         this.idListeners = new ScrudNotifier<>();
         this.channelListeners = new ScrudNotifier<>();
-        this.clientSession = clientSession;
-        this.serverSessions = new HashSet<>();
-
-        // TODO: what kind of client session init?
     }
 
     public void add(Molecule molecule) {
@@ -86,18 +76,5 @@ public class DipCloud {
 
     public ScrudNotifier<Molecule> getChannelListeners() {
         return channelListeners;
-    }
-
-    public ClientSession getClientSession() {
-        return clientSession;
-    }
-
-    public boolean addServerSession(ServerSession serverSession) {
-        // TODO: what kind of server session init?
-        return serverSessions.add(serverSession);
-    }
-
-    public Iterator<ServerSession> serverSessionIterator() {
-        return serverSessions.iterator();
     }
 }

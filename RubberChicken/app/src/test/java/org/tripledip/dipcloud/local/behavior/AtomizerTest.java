@@ -1,10 +1,10 @@
-package org.tripledip.dipcloud.behavior;
+package org.tripledip.dipcloud.local.behavior;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tripledip.dipcloud.contract.Crudable;
-import org.tripledip.dipcloud.model.Atom;
-import org.tripledip.dipcloud.model.Molecule;
+import org.tripledip.dipcloud.local.contract.Crudable;
+import org.tripledip.dipcloud.local.model.Atom;
+import org.tripledip.dipcloud.local.model.Molecule;
 
 import java.util.Set;
 

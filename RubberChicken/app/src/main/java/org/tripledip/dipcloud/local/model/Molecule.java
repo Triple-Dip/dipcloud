@@ -1,4 +1,4 @@
-package org.tripledip.dipcloud.model;
+package org.tripledip.dipcloud.local.model;
 
 import java.util.Arrays;
 import java.util.Collection;

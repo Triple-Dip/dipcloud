@@ -1,4 +1,4 @@
-package org.tripledip.dipcloud.model;
+package org.tripledip.dipcloud.local.model;
 
 /**
  * Created by Wolfe on 2/18/2015.

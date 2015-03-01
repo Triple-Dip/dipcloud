@@ -1,9 +1,8 @@
-package org.tripledip.dipcloud.behavior;
+package org.tripledip.dipcloud.local.behavior;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tripledip.dipcloud.behavior.Nimbase;
-import org.tripledip.dipcloud.model.Atom;
+import org.tripledip.dipcloud.local.model.Atom;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -78,7 +77,7 @@ public class NimbaseTest {
     public void testRemoveExisting() throws Exception {
         Atom atom = numbus.get("A");
         assertTrue(numbus.remove(atom));
-        assertEquals(1, numbus.size());
+        assertEquals(0, numbus.size());
     }
 
     @Test
