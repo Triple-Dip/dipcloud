@@ -1,6 +1,6 @@
 package org.tripledip.dipcloud.network.behavior;
 
-import org.tripledip.dipcloud.local.contract.Connector;
+import org.tripledip.dipcloud.network.contract.Connector;
 import org.tripledip.dipcloud.network.contract.InBoxListener;
 
 /**

@@ -2,7 +2,7 @@ package org.tripledip.dipcloud.network.behavior;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.tripledip.dipcloud.local.contract.Connector;
+import org.tripledip.dipcloud.network.contract.Connector;
 import org.tripledip.dipcloud.network.contract.InBoxListener;
 
 import java.util.ArrayList;

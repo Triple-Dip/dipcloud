@@ -1,6 +1,6 @@
 package org.tripledip.dipcloud.network.behavior;
 
-import org.tripledip.dipcloud.local.contract.Connector;
+import org.tripledip.dipcloud.network.contract.Connector;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -62,9 +62,8 @@ public class OutBox<T> {
     private void sendForever() {
         while (true) {
             this.sendAll();
-
-            lock.lock();
             try {
+                lock.lockInterruptibly();
                 notEmpty.await();
             } catch (InterruptedException e) {
                 return;
