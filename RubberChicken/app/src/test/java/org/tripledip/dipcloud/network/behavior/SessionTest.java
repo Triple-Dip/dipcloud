@@ -32,8 +32,8 @@ public class SessionTest {
 
         InMemoryConnectorPair<String> connectorPair = new InMemoryConnectorPair<>();
 
-        sessionA = new Session(connectorPair.getASendToB(), listenerA);
-        sessionB = new Session(connectorPair.getBSendToA(), listenerB);
+        sessionA = new Session<>(connectorPair.getASendToB(), listenerA);
+        sessionB = new Session<>(connectorPair.getBSendToA(), listenerB);
     }
 
     @Test

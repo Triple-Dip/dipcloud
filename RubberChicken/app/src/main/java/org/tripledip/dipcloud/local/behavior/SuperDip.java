@@ -4,8 +4,6 @@ import org.tripledip.dipcloud.local.contract.Crudable;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -28,39 +26,58 @@ public class SuperDip {
         molecule.setAction(Molecule.Action.ADD);
         Set<Atom> changed = atomizer.add(molecule);
         if (!changed.isEmpty()) {
-            for (Atom atom : changed) {
-                idListeners.notifyAdded(atom.getId(), atom);
-            }
-            channelListeners.notifyAdded(molecule.getChannel(), molecule);
+            molecule.addOrReplaceAll(changed);
+            notifyAtomsAdded(molecule, changed);
         }
+    }
+
+    protected void notifyAtomsAdded(Molecule molecule, Set<Atom> changed) {
+        for (Atom atom : changed) {
+            idListeners.notifyAdded(atom.getId(), atom);
+        }
+        channelListeners.notifyAdded(molecule.getChannel(), molecule);
     }
 
     public void update(Molecule molecule) {
         molecule.setAction(Molecule.Action.UPDATE);
         Set<Atom> changed = atomizer.update(molecule);
         if (!changed.isEmpty()) {
-            for (Atom atom : changed) {
-                idListeners.notifyUpdated(atom.getId(), atom);
-            }
-            channelListeners.notifyUpdated(molecule.getChannel(), molecule);
+            molecule.addOrReplaceAll(changed);
+            notifyAtomsUpdated(molecule, changed);
         }
+    }
+
+    protected void notifyAtomsUpdated(Molecule molecule, Set<Atom> changed) {
+        for (Atom atom : changed) {
+            idListeners.notifyUpdated(atom.getId(), atom);
+        }
+        channelListeners.notifyUpdated(molecule.getChannel(), molecule);
     }
 
     public void remove(Molecule molecule) {
         molecule.setAction(Molecule.Action.REMOVE);
         Set<Atom> changed = atomizer.remove(molecule);
         if (!changed.isEmpty()) {
-            for (Atom atom : changed) {
-                idListeners.notifyRemoved(atom.getId(), atom);
-            }
-            channelListeners.notifyRemoved(molecule.getChannel(), molecule);
+            molecule.addOrReplaceAll(changed);
+            notifyAtomsRemoved(molecule, changed);
         }
     }
 
+    protected void notifyAtomsRemoved(Molecule molecule, Set<Atom> changed) {
+        for (Atom atom : changed) {
+            idListeners.notifyRemoved(atom.getId(), atom);
+        }
+        channelListeners.notifyRemoved(molecule.getChannel(), molecule);
+    }
+
+
     public void send(Molecule molecule) {
         molecule.setAction(Molecule.Action.SEND);
-        Collection<Atom> sent = molecule.fillCollection(new HashSet<Atom>());
-        for (Atom atom : sent) {
+        notifyAtomsSent(molecule);
+    }
+
+    protected void notifyAtomsSent(Molecule molecule) {
+        for (Atom atom : molecule) {
             idListeners.notifySent(atom.getId(), atom);
         }
         channelListeners.notifySent(molecule.getChannel(), molecule);

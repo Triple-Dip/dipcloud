@@ -48,7 +48,7 @@ public class OutBoxTest {
 
     @Test
     public void testSendAll() throws Exception {
-        // add all the test messages to the outBox
+        // addOrReplace all the test messages to the outBox
         for (String s : testItems) {
             outBox.add(s);
         }
@@ -66,7 +66,7 @@ public class OutBoxTest {
         Thread outBoxThread = new Thread(outBox.getRunnable());
         outBoxThread.start();
 
-        // add all the test messages to the outBox
+        // addOrReplace all the test messages to the outBox
         for (String s : testItems) {
             outBox.add(s);
             Thread.sleep(SLEEP_MILLIS);
