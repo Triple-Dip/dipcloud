@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class Atomizer {
 
-    private Crudable<Atom> nimbase;
+    private final Crudable<Atom> nimbase;
 
     public Atomizer(Crudable nimbase) {
         this.nimbase = nimbase;

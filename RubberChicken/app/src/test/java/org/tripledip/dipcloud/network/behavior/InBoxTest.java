@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 public class InBoxTest {
 
-    private static final long MAX_WAIT_NANOS = (long) 1e9;
+    private static final long MAX_WAIT_NANOS = (long) 2e9;
     private static final long SLEEP_MILLIS = 10;
 
     private TestConnector connector;

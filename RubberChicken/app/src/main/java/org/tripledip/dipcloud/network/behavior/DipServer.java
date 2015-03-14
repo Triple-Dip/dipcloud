@@ -33,7 +33,7 @@ public class DipServer extends SuperDip implements InBoxListener<Molecule> {
         }
     }
 
-    public void stopClients() {
+    public void stopClientSessions() {
         for (Session<Molecule> session : sessions) {
             session.stopOutBox();
             session.stopInBox();

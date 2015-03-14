@@ -23,7 +23,7 @@ public class Molecule implements Iterable<Atom>{
     }
 
     private final Map<String, Atom> atoms;
-    private String channel;
+    private final String channel;
     private Action action;
 
     public Molecule(String channel) {
@@ -43,14 +43,6 @@ public class Molecule implements Iterable<Atom>{
 
     public String getChannel() {
         return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
-
-    public Map<String, Atom> getAtoms() {
-        return atoms;
     }
 
     public Action getAction() {
