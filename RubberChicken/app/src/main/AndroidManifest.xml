@@ -9,7 +9,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="org.tripledip.game.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:exported="true">
         </activity>
     </application>
 
