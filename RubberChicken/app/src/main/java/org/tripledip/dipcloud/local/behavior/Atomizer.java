@@ -9,6 +9,10 @@ import java.util.Set;
 
 /**
  * Created by Ben on 2/21/15.
+ *
+ *  This takes in molecules and splits them into their individual atoms and calls the designated
+ *  Nimbase action on them (ADD, UPDATE, REMOVE).
+ *
  */
 public class Atomizer {
 
