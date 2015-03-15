@@ -51,10 +51,10 @@ public class Session<T> {
     }
 
     public boolean inBoxIsStopped() {
-        return null == inBoxThread || Thread.State.TERMINATED == inBoxThread.getState();
+        return null == inBoxThread || !inBoxThread.isAlive();
     }
 
     public boolean outBoxIsStopped() {
-        return null == outBoxThread || Thread.State.TERMINATED == outBoxThread.getState();
+        return null == outBoxThread || !outBoxThread.isAlive();
     }
 }

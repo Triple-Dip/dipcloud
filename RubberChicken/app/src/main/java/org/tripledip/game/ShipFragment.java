@@ -1,8 +1,8 @@
 package org.tripledip.game;
 
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +45,7 @@ public class ShipFragment extends Fragment implements View.OnClickListener{
         Atom shieldAtom = new Atom(GameConstants.SHIP_SHIELD_VALUE, Calendar.getInstance().getTimeInMillis(),null,0,99.9);
         Atom statusAtom = new Atom(GameConstants.SHIP_STATUS_VALUE, Calendar.getInstance().getTimeInMillis(),"Good",0,0);
 
-        superDip.add(new Molecule(GameConstants.CHANNEL_SHIP_STATE,hpAtom,shieldAtom,statusAtom));
+        superDip.proposeAdd(new Molecule(GameConstants.CHANNEL_SHIP_STATE, hpAtom, shieldAtom, statusAtom));
 
         getView().findViewById(R.id.damageButton).setOnClickListener(this);
         super.onResume();
@@ -102,7 +102,7 @@ public class ShipFragment extends Fragment implements View.OnClickListener{
         Atom shieldAtom = new Atom(GameConstants.SHIP_SHIELD_VALUE, Calendar.getInstance().getTimeInMillis(),null,0,72.2);
         Atom statusAtom = new Atom(GameConstants.SHIP_STATUS_VALUE, Calendar.getInstance().getTimeInMillis(),"Bad",0,0);
 
-        superDip.update(new Molecule(GameConstants.CHANNEL_SHIP_STATE,hpAtom,shieldAtom,statusAtom));
+        superDip.proposeUpdate(new Molecule(GameConstants.CHANNEL_SHIP_STATE, hpAtom, shieldAtom, statusAtom));
     }
 
 }

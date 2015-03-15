@@ -56,11 +56,9 @@ public class SessionTest {
         }
 
         long endTime = System.nanoTime() + MAX_WAIT_NANOS;
-        while (testItems.size() > listener.arrived.size() && System.nanoTime() < endTime) {
+        while (testItems.size() > listener.getArrived().size() && System.nanoTime() < endTime) {
             Thread.sleep(SLEEP_MILLIS);
         }
-        assertEquals(testItems.size(), listener.arrived.size());
-        assertArrayEquals(testItems.toArray(), listener.arrived.toArray());
 
         // allow threads to finish
         sender.stopOutBox();
@@ -68,14 +66,21 @@ public class SessionTest {
         Thread.sleep(SLEEP_MILLIS);
         assertTrue(sender.outBoxIsStopped());
         assertTrue(receiver.inBoxIsStopped());
+
+        assertEquals(testItems.size(), listener.getArrived().size());
+        assertArrayEquals(testItems.toArray(), listener.getArrived().toArray());
     }
 
     private static class SessionListener<T> implements InBoxListener<T> {
-        public List<T> arrived = new ArrayList<>();
+        private List<T> arrived = new ArrayList<>();
 
         @Override
-        public void onInboxItemArrived(T item) {
+        public synchronized void onInboxItemArrived(T item) {
             arrived.add(item);
+        }
+
+        public synchronized List<T> getArrived() {
+            return arrived;
         }
     }
 }

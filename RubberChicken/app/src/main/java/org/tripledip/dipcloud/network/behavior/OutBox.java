@@ -64,11 +64,15 @@ public class OutBox<T> {
             this.sendAll();
             try {
                 lock.lockInterruptibly();
-                notEmpty.await();
+                try {
+                    notEmpty.await();
+                } catch (InterruptedException e) {
+                    return;
+                } finally {
+                    lock.unlock();
+                }
             } catch (InterruptedException e) {
                 return;
-            } finally {
-                lock.unlock();
             }
         }
     }

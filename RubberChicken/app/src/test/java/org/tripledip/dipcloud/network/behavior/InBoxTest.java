@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class InBoxTest {
@@ -45,15 +46,15 @@ public class InBoxTest {
     }
 
     private static class TestListener implements InBoxListener<String> {
-        public List<String> received;
-
-        public TestListener() {
-            received = new ArrayList<>();
-        }
+        private List<String> received = new ArrayList<>();
 
         @Override
-        public void onInboxItemArrived(String item) {
+        public synchronized void onInboxItemArrived(String item) {
             received.add(item);
+        }
+
+        public synchronized List<String> getReceived() {
+            return received;
         }
     }
 
@@ -71,19 +72,19 @@ public class InBoxTest {
             inBox.process(s);
         }
 
-        assertEquals(testItems.size(), listener.received.size());
-        assertArrayEquals(testItems.toArray(), listener.received.toArray());
+        assertEquals(testItems.size(), listener.getReceived().size());
+        assertArrayEquals(testItems.toArray(), listener.getReceived().toArray());
     }
 
     @Test
     public void testProcessNext() throws Exception {
         // synchronously drain the connector, sending test items to our listener
-        while (listener.received.size() < testItems.size()) {
+        while (listener.getReceived().size() < testItems.size()) {
             inBox.processNext();
         }
 
-        assertEquals(testItems.size(), listener.received.size());
-        assertArrayEquals(testItems.toArray(), listener.received.toArray());
+        assertEquals(testItems.size(), listener.getReceived().size());
+        assertArrayEquals(testItems.toArray(), listener.getReceived().toArray());
     }
 
     @Test
@@ -94,15 +95,16 @@ public class InBoxTest {
 
         // sleep and poll until all test items arrive at our listener
         long endTime = System.nanoTime() + MAX_WAIT_NANOS;
-        while (testItems.size() > listener.received.size() && System.nanoTime() < endTime) {
+        while (testItems.size() > listener.getReceived().size() && System.nanoTime() < endTime) {
             Thread.sleep(SLEEP_MILLIS);
         }
-        assertEquals(testItems.size(), listener.received.size());
-        assertArrayEquals(testItems.toArray(), listener.received.toArray());
 
         // interrupt will allow the inBox runnable to return
         inBoxThread.interrupt();
         Thread.sleep(SLEEP_MILLIS);
-        assertEquals(Thread.State.TERMINATED, inBoxThread.getState());
+        assertFalse(inBoxThread.isAlive());
+
+        assertEquals(testItems.size(), listener.getReceived().size());
+        assertArrayEquals(testItems.toArray(), listener.getReceived().toArray());
     }
 }
