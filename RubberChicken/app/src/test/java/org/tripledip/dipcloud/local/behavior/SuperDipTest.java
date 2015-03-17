@@ -3,18 +3,20 @@ package org.tripledip.dipcloud.local.behavior;
 import org.junit.Before;
 import org.junit.Test;
 import org.tripledip.dipcloud.local.contract.Crudable;
+import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.local.contract.ScrudListener;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class SuperDipTest {
 
     private Crudable<Atom> numbus;
-    private SuperDip dupCluud;
+    private DipAccess dupCluud;
     private TestListener<Atom> idListener;
     private TestListener<Molecule> channelListener;
     private TestListener<Atom> wrongIdListener = new TestListener<>();
@@ -43,7 +45,7 @@ public class SuperDipTest {
 
         Atom atomB = makeAtom("B", 43);
         Molecule molecule = new Molecule("channel", numbus.get("A"), atomB);
-        dupCluud.add(molecule);
+        dupCluud.proposeAdd(molecule);
 
         assertEquals(molecule.getAction(), Molecule.Action.ADD);
         assertNull(wrongIdListener.lastAdded);
@@ -62,7 +64,7 @@ public class SuperDipTest {
         Atom atomA = numbus.get("A").copy("pizza", 100);
         Atom atomB = makeAtom("B", 43);
         Molecule molecule = new Molecule("channel", atomA, atomB);
-        dupCluud.update(molecule);
+        dupCluud.proposeUpdate(molecule);
 
         assertEquals(molecule.getAction(), Molecule.Action.UPDATE);
         assertNull(wrongIdListener.lastUpdated);
@@ -81,7 +83,7 @@ public class SuperDipTest {
         Atom atomA = numbus.get("A");
         Atom atomB = makeAtom("B", 43);
         Molecule molecule = new Molecule("channel", atomA, atomB);
-        dupCluud.remove(molecule);
+        dupCluud.proposeRemove(molecule);
 
         assertEquals(molecule.getAction(), Molecule.Action.REMOVE);
         assertNull(wrongIdListener.lastRemoved);
@@ -100,7 +102,7 @@ public class SuperDipTest {
         Atom atomA = numbus.get("A");
         Atom atomB = makeAtom("B", 43);
         Molecule molecule = new Molecule("channel", atomA, atomB);
-        dupCluud.send(molecule);
+        dupCluud.proposeSend(molecule);
 
         assertEquals(molecule.getAction(), Molecule.Action.SEND);
         assertNull(wrongIdListener.lastSent);

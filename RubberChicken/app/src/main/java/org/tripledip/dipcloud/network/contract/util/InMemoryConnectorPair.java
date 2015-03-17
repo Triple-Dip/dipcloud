@@ -70,8 +70,8 @@ public class InMemoryConnectorPair<T> {
                 return message;
             }
 
+            lock.lockInterruptibly();
             try {
-                lock.lockInterruptibly();
                 while (null == message) {
                     notEmpty.await();
                     message = written.poll();

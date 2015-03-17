@@ -8,12 +8,14 @@ import org.tripledip.dipcloud.network.contract.Connector;
 import org.tripledip.dipcloud.network.contract.InBoxListener;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
  * Created by Ben on 3/8/15.
+ *
  */
-public class DipServer extends SuperDip implements InBoxListener<Molecule> {
+public class DipServer extends SuperDip implements InBoxListener<Molecule>, Iterable<Session<Molecule>> {
 
     private final Set<Session<Molecule>> sessions;
 
@@ -23,7 +25,7 @@ public class DipServer extends SuperDip implements InBoxListener<Molecule> {
     }
 
     public void addClientSession(Connector<Molecule> connector) {
-        sessions.add(new Session<Molecule>(connector, this));
+        sessions.add(new Session<>(connector, this));
     }
 
     public void startClientSessions() {
@@ -86,5 +88,10 @@ public class DipServer extends SuperDip implements InBoxListener<Molecule> {
                 send(item);
                 break;
         }
+    }
+
+    @Override
+    public Iterator<Session<Molecule>> iterator() {
+        return sessions.iterator();
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -23,20 +24,20 @@ public class OutBoxTest {
     private List<String> testItems = Arrays.asList("one", "two", "three", "four", "five", "six");
 
     private static class TestConnector implements Connector<String> {
-        public List<String> sent;
-
-        public TestConnector() {
-            sent = new ArrayList<>();
-        }
+        private List<String> sent = new ArrayList<>();
 
         @Override
-        public String readNext() throws InterruptedException {
+        public synchronized String readNext() throws InterruptedException {
             return null;
         }
 
         @Override
-        public void write(String outData) {
+        public synchronized void write(String outData) {
             sent.add(outData);
+        }
+
+        public synchronized List<String> getSent() {
+            return sent;
         }
     }
 
@@ -52,12 +53,12 @@ public class OutBoxTest {
         for (String s : testItems) {
             outBox.add(s);
         }
-        assertTrue(connector.sent.isEmpty());
+        assertTrue(connector.getSent().isEmpty());
 
         // synchronously move all test messages to our connector
         outBox.sendAll();
-        assertEquals(testItems.size(), connector.sent.size());
-        assertArrayEquals(testItems.toArray(), connector.sent.toArray());
+        assertEquals(testItems.size(), connector.getSent().size());
+        assertArrayEquals(testItems.toArray(), connector.getSent().toArray());
     }
 
     @Test
@@ -74,15 +75,16 @@ public class OutBoxTest {
 
         // sleep and poll until all test messages arrive at our connector
         long endTime = System.nanoTime() + MAX_WAIT_NANOS;
-        while (testItems.size() > connector.sent.size() && System.nanoTime() < endTime) {
+        while (testItems.size() > connector.getSent().size() && System.nanoTime() < endTime) {
             Thread.sleep(SLEEP_MILLIS);
         }
-        assertEquals(testItems.size(), connector.sent.size());
-        assertArrayEquals(testItems.toArray(), connector.sent.toArray());
 
         // interrupt will allow the outBox runnable to return
         outBoxThread.interrupt();
         Thread.sleep(SLEEP_MILLIS);
-        assertEquals(Thread.State.TERMINATED, outBoxThread.getState());
+        assertFalse(outBoxThread.isAlive());
+
+        assertEquals(testItems.size(), connector.getSent().size());
+        assertArrayEquals(testItems.toArray(), connector.getSent().toArray());
     }
 }

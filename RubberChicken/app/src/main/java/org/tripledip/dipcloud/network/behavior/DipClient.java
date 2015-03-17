@@ -9,6 +9,7 @@ import org.tripledip.dipcloud.network.contract.InBoxListener;
 
 /**
  * Created by Ben on 3/8/15.
+ *
  */
 public class DipClient extends SuperDip implements InBoxListener<Molecule> {
 
@@ -29,21 +30,29 @@ public class DipClient extends SuperDip implements InBoxListener<Molecule> {
         session.stopInBox();
     }
 
+    public Session<Molecule> getSession() {
+        return session;
+    }
+
+    @Override
     public void proposeAdd(Molecule molecule) {
         molecule.setAction(Molecule.Action.ADD);
         session.sendMessage(molecule);
     }
 
+    @Override
     public void proposeUpdate(Molecule molecule) {
         molecule.setAction(Molecule.Action.UPDATE);
         session.sendMessage(molecule);
     }
 
+    @Override
     public void proposeRemove(Molecule molecule) {
         molecule.setAction(Molecule.Action.REMOVE);
         session.sendMessage(molecule);
     }
 
+    @Override
     public void proposeSend(Molecule molecule) {
         molecule.setAction(Molecule.Action.SEND);
         session.sendMessage(molecule);

@@ -1,6 +1,7 @@
 package org.tripledip.dipcloud.local.behavior;
 
 import org.tripledip.dipcloud.local.contract.Crudable;
+import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
 
@@ -9,7 +10,7 @@ import java.util.Set;
 /**
  * Created by Ben on 2/23/15.
  */
-public class SuperDip {
+public class SuperDip implements DipAccess {
     private final Crudable<Atom> nimbase;
     private final Atomizer atomizer;
     private final ScrudNotifier<Atom> idListeners;
@@ -22,7 +23,7 @@ public class SuperDip {
         this.channelListeners = new ScrudNotifier<>();
     }
 
-    public void add(Molecule molecule) {
+    protected void add(Molecule molecule) {
         molecule.setAction(Molecule.Action.ADD);
         Set<Atom> changed = atomizer.add(molecule);
         if (!changed.isEmpty()) {
@@ -38,7 +39,7 @@ public class SuperDip {
         channelListeners.notifyAdded(molecule.getChannel(), molecule);
     }
 
-    public void update(Molecule molecule) {
+    protected void update(Molecule molecule) {
         molecule.setAction(Molecule.Action.UPDATE);
         Set<Atom> changed = atomizer.update(molecule);
         if (!changed.isEmpty()) {
@@ -54,7 +55,7 @@ public class SuperDip {
         channelListeners.notifyUpdated(molecule.getChannel(), molecule);
     }
 
-    public void remove(Molecule molecule) {
+    protected void remove(Molecule molecule) {
         molecule.setAction(Molecule.Action.REMOVE);
         Set<Atom> changed = atomizer.remove(molecule);
         if (!changed.isEmpty()) {
@@ -70,8 +71,7 @@ public class SuperDip {
         channelListeners.notifyRemoved(molecule.getChannel(), molecule);
     }
 
-
-    public void send(Molecule molecule) {
+    protected void send(Molecule molecule) {
         molecule.setAction(Molecule.Action.SEND);
         notifyAtomsSent(molecule);
     }
@@ -83,15 +83,38 @@ public class SuperDip {
         channelListeners.notifySent(molecule.getChannel(), molecule);
     }
 
+    @Override
     public Crudable<Atom> getNimbase() {
         return nimbase;
     }
 
+    @Override
     public ScrudNotifier<Atom> getIdListeners() {
         return idListeners;
     }
 
+    @Override
     public ScrudNotifier<Molecule> getChannelListeners() {
         return channelListeners;
+    }
+
+    @Override
+    public void proposeAdd(Molecule molecule) {
+        add(molecule);
+    }
+
+    @Override
+    public void proposeUpdate(Molecule molecule) {
+        update(molecule);
+    }
+
+    @Override
+    public void proposeRemove(Molecule molecule) {
+        remove(molecule);
+    }
+
+    @Override
+    public void proposeSend(Molecule molecule) {
+        send(molecule);
     }
 }
