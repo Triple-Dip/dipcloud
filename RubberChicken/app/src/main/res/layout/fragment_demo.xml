@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="org.tripledip.demo.DemoFragment">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Color Demo Fragment"
+        android:id="@+id/colorFragName"
+        android:layout_gravity="center_horizontal"
+        android:padding="50dp"
+        android:password="false" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/colorContainer">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/leftColor"
+            android:layout_weight=".50"
+            android:layout_margin="40dp"
+            android:padding="25dp"></FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/rightColor"
+            android:layout_weight=".50"
+            android:layout_margin="40dp"
+            android:padding="25dp" />
+    </LinearLayout>
+</LinearLayout>
