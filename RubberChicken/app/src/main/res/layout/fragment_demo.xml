@@ -3,7 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="org.tripledip.demo.DemoFragment">
+    tools:context="org.tripledip.demo.DemoFragment"
+    android:padding="25dp">
 
 
     <TextView
@@ -13,9 +14,9 @@
         android:text="Color Demo Fragment"
         android:id="@+id/colorFragName"
         android:layout_gravity="center_horizontal"
-        android:padding="50dp"
         android:password="false"
-        android:clickable="true" />
+        android:clickable="true"
+        android:padding="50dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -28,7 +29,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/leftColor"
             android:layout_weight=".50"
-            android:layout_margin="40dp"
+            android:layout_margin="10dp"
             android:padding="25dp">
 
             <TextView
@@ -43,7 +44,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/rightColor"
             android:layout_weight=".50"
-            android:layout_margin="40dp"
+            android:layout_margin="10dp"
             android:padding="25dp" >
 
             <TextView
