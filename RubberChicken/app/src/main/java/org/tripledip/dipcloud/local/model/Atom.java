@@ -21,6 +21,30 @@ public final class Atom {
         this.doubleData = doubleData;
     }
 
+    public Atom(String id, long timeStamp, String stringData) {
+        this.id = id;
+        this.timeStamp = timeStamp;
+        this.stringData = stringData;
+        this.intData = 0;
+        this.doubleData = 0.0;
+    }
+
+    public Atom(String id, long timeStamp, int intData) {
+        this.id = id;
+        this.timeStamp = timeStamp;
+        this.stringData = null;
+        this.intData = intData;
+        this.doubleData = 0.0;
+    }
+
+    public Atom(String id, long timeStamp, double doubleData) {
+        this.id = id;
+        this.timeStamp = timeStamp;
+        this.stringData = null;
+        this.intData = 0;
+        this.doubleData = doubleData;
+    }
+
     public String getId() {
         return id;
     }
