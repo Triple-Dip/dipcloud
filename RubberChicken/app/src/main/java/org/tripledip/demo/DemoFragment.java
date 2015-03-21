@@ -156,10 +156,23 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
 
         long timeStamp = AtomMapper.generateTimeStamp();
 
-        Molecule molecule = new Molecule(COLOUR_CHANNEL,
-                new Atom(LEFT_COLOUR, timeStamp, colorId),
-                new Atom(RIGHT_COLOUR, timeStamp, colorId));
+        boolean unitOfWork = ((DemoActivity) getActivity()).isConsistentUpdates();
+        if (unitOfWork) {
 
-        dipAccess.proposeUpdate(molecule);
+            Molecule molecule = new Molecule(COLOUR_CHANNEL,
+                    new Atom(LEFT_COLOUR, timeStamp, colorId),
+                    new Atom(RIGHT_COLOUR, timeStamp, colorId));
+            dipAccess.proposeUpdate(molecule);
+
+        } else {
+
+            Molecule leftMolecule = new Molecule(COLOUR_CHANNEL,
+                    new Atom(LEFT_COLOUR, timeStamp, colorId));
+            dipAccess.proposeUpdate(leftMolecule);
+
+            Molecule rightMolecule = new Molecule(COLOUR_CHANNEL,
+                    new Atom(RIGHT_COLOUR, timeStamp, colorId));
+            dipAccess.proposeUpdate(rightMolecule);
+        }
     }
 }

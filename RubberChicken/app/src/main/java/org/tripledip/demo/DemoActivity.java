@@ -35,6 +35,8 @@ public class DemoActivity extends Activity {
 
     private DipServer server;
 
+    private boolean isConsistentUpdates = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,5 +126,13 @@ public class DemoActivity extends Activity {
         }
 
         fragmentTransaction.commit();
+    }
+
+    public boolean isConsistentUpdates() {
+        return isConsistentUpdates;
+    }
+
+    public void setConsistentUpdates(boolean isConsistentUpdates) {
+        this.isConsistentUpdates = isConsistentUpdates;
     }
 }
