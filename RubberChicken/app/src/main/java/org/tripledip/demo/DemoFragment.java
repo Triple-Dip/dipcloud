@@ -2,10 +2,12 @@ package org.tripledip.demo;
 
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.tripledip.diana.data.AtomMapper;
 import org.tripledip.dipcloud.local.contract.DipAccess;
@@ -27,6 +29,7 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
     private int colorId;
     private DipAccess dipAccess;
 
+    private TextView nameText;
     private View leftContainer;
     private View rightContainer;
 
@@ -34,13 +37,15 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
         // Required empty public constructor
     }
 
-    public static DemoFragment newInstance(String name, int colorId, DipAccess dipAccess){
+    public static DemoFragment newInstance(String name, int colorId, DipAccess dipAccess) {
 
         DemoFragment demoFragment = new DemoFragment();
 
         demoFragment.setName(name);
         demoFragment.setColorId(colorId);
         demoFragment.setDipAccess(dipAccess);
+
+        dipAccess.getChannelListeners().registerListener(COLOUR_CHANNEL, demoFragment);
 
         return demoFragment;
     }
@@ -50,16 +55,29 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_demo, container, false);
-        leftContainer = rootView.findViewById(R.id.left_container);
-        rightContainer = rootView.findViewById(R.id.right_container);
+        nameText = (TextView) rootView.findViewById(R.id.colorFragName);
+        leftContainer = rootView.findViewById(R.id.leftColor);
+        rightContainer = rootView.findViewById(R.id.rightColor);
+
+        nameText.setText(name);
+        nameText.setOnClickListener(this);
+
+        setNameContainerColor(colorId);
+        setLeftContainerColor(Color.DKGRAY);
+        setRightContainerColor(Color.DKGRAY);
+
         return rootView;
     }
 
-    public void setLeftContainerColor(int colorId){
+    public void setNameContainerColor(int colorId) {
+        nameText.setBackgroundColor(colorId);
+    }
+
+    public void setLeftContainerColor(int colorId) {
         leftContainer.setBackgroundColor(colorId);
     }
 
-    public void setRightContainerColor(int colorId){
+    public void setRightContainerColor(int colorId) {
         rightContainer.setBackgroundColor(colorId);
     }
 
@@ -88,7 +106,6 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
     }
 
 
-
     @Override
     public void onAdded(Molecule thing) {
         setUiColorsFromMolecule(thing);
@@ -109,22 +126,33 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
 
     }
 
-    private void setUiColorsFromMolecule(Molecule molecule){
-        Atom leftAtom = molecule.findById(LEFT_COLOUR);
-        Atom rightAtom = molecule.findById(RIGHT_COLOUR);
+    private void setUiColorsFromMolecule(final Molecule molecule) {
 
-        if(null != leftAtom){
-            setLeftContainerColor(leftAtom.getIntData());
-        }
+        final Runnable updateUi = new Runnable() {
+            @Override
+            public void run() {
+                Atom leftAtom = molecule.findById(LEFT_COLOUR);
+                Atom rightAtom = molecule.findById(RIGHT_COLOUR);
 
-        if(null != rightAtom){
-            setRightContainerColor(rightAtom.getIntData());
-        }
+                if (null != leftAtom) {
+                    setLeftContainerColor(leftAtom.getIntData());
+                }
+
+                if (null != rightAtom) {
+                    setRightContainerColor(rightAtom.getIntData());
+                }
+
+            }
+        };
+
+        getActivity().runOnUiThread(updateUi);
 
     }
 
     @Override
     public void onClick(View v) {
+        setRightContainerColor(Color.DKGRAY);
+        setLeftContainerColor(Color.DKGRAY);
 
         long timeStamp = AtomMapper.generateTimeStamp();
 
@@ -133,6 +161,5 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
                 new Atom(RIGHT_COLOUR, timeStamp, colorId));
 
         dipAccess.proposeUpdate(molecule);
-
     }
 }

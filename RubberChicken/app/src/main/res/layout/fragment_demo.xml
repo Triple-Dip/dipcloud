@@ -14,28 +14,43 @@
         android:id="@+id/colorFragName"
         android:layout_gravity="center_horizontal"
         android:padding="50dp"
-        android:password="false" />
+        android:password="false"
+        android:clickable="true" />
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/colorContainer">
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/leftColor"
             android:layout_weight=".50"
             android:layout_margin="40dp"
-            android:padding="25dp"></FrameLayout>
+            android:padding="25dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="left"
+                android:id="@+id/leftText" />
+        </FrameLayout>
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/rightColor"
             android:layout_weight=".50"
             android:layout_margin="40dp"
-            android:padding="25dp" />
+            android:padding="25dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="right"
+                android:id="@+id/rightText" />
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>
