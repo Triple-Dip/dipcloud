@@ -3,6 +3,7 @@ package org.tripledip.dipcloud.network.contract.util;
 import org.tripledip.dipcloud.network.contract.Connector;
 
 import java.util.Queue;
+import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -13,8 +14,12 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class InMemoryConnectorPair<T> {
 
+    private Random rand = new Random();
+
     private final InMemoryConnector<T> aSendToBConnector;
     private final InMemoryConnector<T> bSendToAConnector;
+
+    private int jankMillis = 0;
 
     public InMemoryConnectorPair() {
         MessageQueue<T> aSendToBQueue = new MessageQueue<>();
@@ -22,6 +27,23 @@ public class InMemoryConnectorPair<T> {
 
         aSendToBConnector = new InMemoryConnector<>(bSendToAQueue, aSendToBQueue);
         bSendToAConnector = new InMemoryConnector<>(aSendToBQueue, bSendToAQueue);
+    }
+
+    public int getJankMillis() {
+        return jankMillis;
+    }
+
+    public void setJankMillis(int jankMillis) {
+        this.jankMillis = jankMillis;
+    }
+
+    private void awaitRandomJank() throws InterruptedException {
+        if (jankMillis <=  0) {
+            return;
+        }
+
+        int randomJank = rand.nextInt(jankMillis);
+        Thread.sleep(randomJank);
     }
 
     public Connector<T> getASendToB() {
@@ -32,7 +54,7 @@ public class InMemoryConnectorPair<T> {
         return bSendToAConnector;
     }
 
-    private static class InMemoryConnector<T> implements Connector<T> {
+    private class InMemoryConnector<T> implements Connector<T> {
 
         private final MessageQueue<T> readQueue;
         private final MessageQueue<T> writeQueue;
@@ -44,7 +66,9 @@ public class InMemoryConnectorPair<T> {
 
         @Override
         public T readNext() throws InterruptedException {
-            return readQueue.readNext();
+            T message = readQueue.readNext();
+
+            return message;
         }
 
         @Override
@@ -53,7 +77,7 @@ public class InMemoryConnectorPair<T> {
         }
     }
 
-    private static class MessageQueue<T> {
+    private class MessageQueue<T> {
         private final Queue<T> written;
         private final Lock lock;
         private final Condition notEmpty;
@@ -65,8 +89,10 @@ public class InMemoryConnectorPair<T> {
         }
 
         public T readNext() throws InterruptedException {
+
             T message = written.poll();
             if (null != message) {
+                awaitRandomJank();
                 return message;
             }
 
@@ -79,6 +105,8 @@ public class InMemoryConnectorPair<T> {
             } finally {
                 lock.unlock();
             }
+
+            awaitRandomJank();
             return message;
         }
 

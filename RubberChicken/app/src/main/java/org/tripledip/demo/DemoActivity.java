@@ -55,6 +55,7 @@ public class DemoActivity extends Activity {
         super.onResume();
 
         // activate the dip cloud
+        setJankMillis(2000);
         startDips();
     }
 
@@ -90,6 +91,12 @@ public class DemoActivity extends Activity {
         server.stopClientSessions();
         for (DipClient client : clients) {
             client.stop();
+        }
+    }
+
+    private void setJankMillis(int jankMilis) {
+        for (InMemoryConnectorPair<Molecule> connectorPair: connectorPairs) {
+            connectorPair.setJankMillis(jankMilis);
         }
     }
 
