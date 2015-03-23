@@ -1,9 +1,12 @@
 package org.tripledip.diana.game;
 
+import org.tripledip.diana.data.AtomMapper;
+import org.tripledip.dipcloud.local.model.Molecule;
+
 /**
  * Created by Wolfe on 3/17/2015.
  */
-public class Ship {
+public class Ship extends GameObject{
 
     public static final String SHIP = "ship";
     public static final String SHIP_HP = "shipHp";
@@ -19,6 +22,7 @@ public class Ship {
     String status;
 
     public Ship(int hp, int ammo, int energy, double shield, String status) {
+
         this.hp = hp;
         this.ammo = ammo;
         this.energy = energy;
@@ -64,6 +68,11 @@ public class Ship {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public Molecule atomSmash() {
+        return AtomMapper.generateShipMolecule(this);
     }
 
 }

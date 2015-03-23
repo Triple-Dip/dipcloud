@@ -3,6 +3,7 @@ package org.tripledip.demo;
 
 import android.app.Fragment;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,15 +71,15 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
     }
 
     public void setNameContainerColor(int colorId) {
-        nameText.setBackgroundColor(colorId);
+        nameText.getBackground().setColorFilter(colorId, PorterDuff.Mode.SRC_ATOP);
     }
 
     public void setLeftContainerColor(int colorId) {
-        leftContainer.setBackgroundColor(colorId);
+        leftContainer.getBackground().setColorFilter(colorId, PorterDuff.Mode.SRC_ATOP);
     }
 
     public void setRightContainerColor(int colorId) {
-        rightContainer.setBackgroundColor(colorId);
+        rightContainer.getBackground().setColorFilter(colorId,PorterDuff.Mode.SRC_ATOP);
     }
 
     public String getName() {
