@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.ToggleButton;
 
 import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.local.model.Atom;
@@ -17,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DemoActivity extends Activity {
+public class DemoActivity extends Activity implements View.OnClickListener{
 
     private final String serverName = "Server";
 
@@ -37,6 +40,12 @@ public class DemoActivity extends Activity {
 
     private boolean isConsistentUpdates = false;
 
+    private RadioButton highButton;
+    private RadioButton medButton;
+    private RadioButton lowButton;
+    private ToggleButton syncButton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +58,17 @@ public class DemoActivity extends Activity {
         // create a ui
         if (savedInstanceState == null) {
             attachFragments();
+            syncButton = (ToggleButton) findViewById(R.id.syncButton);
+            highButton = (RadioButton) findViewById(R.id.highLatButton);
+            medButton = (RadioButton) findViewById(R.id.medLatButton);
+            lowButton = (RadioButton) findViewById(R.id.lowLatButton);
+
+            syncButton.setOnClickListener(this);
+            highButton.setOnClickListener(this);
+            medButton.setOnClickListener(this);
+            lowButton.setOnClickListener(this);
+
+
         }
     }
 
@@ -57,7 +77,7 @@ public class DemoActivity extends Activity {
         super.onResume();
 
         // activate the dip cloud
-        setJankMillis(2000);
+        lowButton.performClick();
         startDips();
     }
 
@@ -134,5 +154,32 @@ public class DemoActivity extends Activity {
 
     public void setConsistentUpdates(boolean isConsistentUpdates) {
         this.isConsistentUpdates = isConsistentUpdates;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.syncButton){
+            setConsistentUpdates(syncButton.isChecked());
+        } else {
+            handleLatencyOnClick(v.getId());
+        }
+    }
+
+    private void handleLatencyOnClick(int buttonId){
+        if(buttonId == R.id.highLatButton){
+            medButton.setChecked(false);
+            lowButton.setChecked(false);
+            setJankMillis(2500);
+        } else if (buttonId == R.id.medLatButton) {
+            highButton.setChecked(false);
+            lowButton.setChecked(false);
+            setJankMillis(1000);
+        } else {
+            highButton.setChecked(false);
+            medButton.setChecked(false);
+            setJankMillis(100);
+        }
+
+
     }
 }
