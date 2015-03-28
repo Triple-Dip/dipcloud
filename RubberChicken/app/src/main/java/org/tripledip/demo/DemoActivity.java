@@ -14,6 +14,7 @@ import org.tripledip.dipcloud.local.model.Molecule;
 import org.tripledip.dipcloud.network.behavior.DipClient;
 import org.tripledip.dipcloud.network.behavior.DipServer;
 import org.tripledip.dipcloud.network.contract.util.InMemoryConnectorPair;
+import org.tripledip.dipcloud.network.protocol.AddressBookProtos;
 import org.tripledip.rubberchicken.R;
 
 import java.util.ArrayList;
@@ -26,8 +27,11 @@ public class DemoActivity extends Activity implements View.OnClickListener{
 
     private final int serverColor = Color.RED;
 
+    private final String dumb =
+            AddressBookProtos.Person.PhoneNumber.newBuilder().setNumber("1234567").build().toString();
+
     private final List<String> clientNames = Arrays.asList(
-            "Client A", "Client B", "Client C", "Client D", "Client E");
+            "Client A", "Client B", "Client C", "Client D", dumb);
 
     private final List<Integer> clientColors = Arrays.asList(
             Color.BLUE, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.YELLOW);
