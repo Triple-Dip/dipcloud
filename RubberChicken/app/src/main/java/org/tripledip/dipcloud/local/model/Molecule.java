@@ -41,6 +41,12 @@ public class Molecule implements Iterable<Atom>{
         addOrReplaceAll(atoms);
     }
 
+    public Molecule(String channel, Action action, Collection<Atom> atoms) {
+        this(channel);
+        this.action = action;
+        addOrReplaceAll(atoms);
+    }
+
     public String getChannel() {
         return channel;
     }

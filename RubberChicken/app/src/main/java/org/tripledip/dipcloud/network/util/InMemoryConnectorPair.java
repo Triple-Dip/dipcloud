@@ -1,4 +1,4 @@
-package org.tripledip.dipcloud.network.contract.util;
+package org.tripledip.dipcloud.network.util;
 
 import org.tripledip.dipcloud.network.contract.Connector;
 
@@ -16,8 +16,8 @@ public class InMemoryConnectorPair<T> {
 
     private Random rand = new Random();
 
-    private final InMemoryConnector<T> aSendToBConnector;
-    private final InMemoryConnector<T> bSendToAConnector;
+    protected Connector<T> aSendToBConnector;
+    protected Connector<T> bSendToAConnector;
 
     private int jankMillis = 0;
 
@@ -37,21 +37,21 @@ public class InMemoryConnectorPair<T> {
         this.jankMillis = jankMillis;
     }
 
-    private void awaitRandomJank() throws InterruptedException {
-        if (jankMillis <=  0) {
-            return;
-        }
-
-        int randomJank = rand.nextInt(jankMillis);
-        Thread.sleep(randomJank);
-    }
-
     public Connector<T> getASendToB() {
         return aSendToBConnector;
     }
 
     public Connector<T> getBSendToA() {
         return bSendToAConnector;
+    }
+
+    protected void awaitRandomJank() throws InterruptedException {
+        if (jankMillis <=  0) {
+            return;
+        }
+
+        int randomJank = rand.nextInt(jankMillis);
+        Thread.sleep(randomJank);
     }
 
     private class InMemoryConnector<T> implements Connector<T> {
@@ -77,7 +77,7 @@ public class InMemoryConnectorPair<T> {
         }
     }
 
-    private class MessageQueue<T> {
+    protected class MessageQueue<T> {
         private final Queue<T> written;
         private final Lock lock;
         private final Condition notEmpty;

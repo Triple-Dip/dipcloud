@@ -13,24 +13,21 @@ import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
 import org.tripledip.dipcloud.network.behavior.DipClient;
 import org.tripledip.dipcloud.network.behavior.DipServer;
-import org.tripledip.dipcloud.network.contract.util.InMemoryConnectorPair;
-import org.tripledip.dipcloud.network.protocol.MoleculeProtos;
+import org.tripledip.dipcloud.network.util.InMemoryConnectorPair;
 import org.tripledip.rubberchicken.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DemoActivity extends Activity implements View.OnClickListener{
+public class DemoActivity extends Activity implements View.OnClickListener {
 
     private final String serverName = "Server";
 
     private final int serverColor = Color.RED;
 
-    private final String dumb = MoleculeProtos.Atom.newBuilder().setId("1234567").build().toString();
-
     private final List<String> clientNames = Arrays.asList(
-            "Client A", "Client B", "Client C", "Client D", dumb);
+            "Client A", "Client B", "Client C", "Client D", "Client E");
 
     private final List<Integer> clientColors = Arrays.asList(
             Color.BLUE, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.YELLOW);
@@ -120,7 +117,7 @@ public class DemoActivity extends Activity implements View.OnClickListener{
     }
 
     private void setJankMillis(int jankMilis) {
-        for (InMemoryConnectorPair<Molecule> connectorPair: connectorPairs) {
+        for (InMemoryConnectorPair<Molecule> connectorPair : connectorPairs) {
             connectorPair.setJankMillis(jankMilis);
         }
     }
@@ -139,7 +136,7 @@ public class DemoActivity extends Activity implements View.OnClickListener{
         DemoFragment serverFragment = DemoFragment.newInstance(serverName, serverColor, server);
         fragmentTransaction.add(R.id.gridColours, serverFragment);
 
-        for (int i=0; i<clients.size(); i++) {
+        for (int i = 0; i < clients.size(); i++) {
             String clientName = clientNames.get(i);
             int clientColor = clientColors.get(i);
             DipClient client = clients.get(i);
@@ -161,15 +158,15 @@ public class DemoActivity extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.syncButton){
+        if (v.getId() == R.id.syncButton) {
             setConsistentUpdates(syncButton.isChecked());
         } else {
             handleLatencyOnClick(v.getId());
         }
     }
 
-    private void handleLatencyOnClick(int buttonId){
-        if(buttonId == R.id.highLatButton){
+    private void handleLatencyOnClick(int buttonId) {
+        if (buttonId == R.id.highLatButton) {
             medButton.setChecked(false);
             lowButton.setChecked(false);
             setJankMillis(2500);
@@ -182,7 +179,5 @@ public class DemoActivity extends Activity implements View.OnClickListener{
             medButton.setChecked(false);
             setJankMillis(100);
         }
-
-
     }
 }

@@ -7,7 +7,7 @@ import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.local.contract.ScrudListener;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
-import org.tripledip.dipcloud.network.contract.util.InMemoryConnectorPair;
+import org.tripledip.dipcloud.network.util.InMemoryConnectorPair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +24,9 @@ public class DipTripleTest {
     private static final long MAX_WAIT_NANOS = (long) 1e9;
     private static final long SLEEP_MILLIS = 10;
 
-    private DipServer server;
-    private DipClient clientA;
-    private DipClient clientB;
+    protected DipServer server;
+    protected DipClient clientA;
+    protected DipClient clientB;
 
     // Set up a server and two clients with in-memory connectors.
     @Before

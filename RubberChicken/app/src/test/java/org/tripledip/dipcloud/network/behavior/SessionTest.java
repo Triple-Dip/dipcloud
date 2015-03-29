@@ -3,7 +3,7 @@ package org.tripledip.dipcloud.network.behavior;
 import org.junit.Before;
 import org.junit.Test;
 import org.tripledip.dipcloud.network.contract.InBoxListener;
-import org.tripledip.dipcloud.network.contract.util.InMemoryConnectorPair;
+import org.tripledip.dipcloud.network.util.InMemoryConnectorPair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
