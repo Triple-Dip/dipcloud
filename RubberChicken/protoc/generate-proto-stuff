@@ -1,1 +1,1 @@
-protoc --java_out=../app/src/main/java/ addressbook.proto
+protoc --java_out=../app/src/main/java/ molecule.proto

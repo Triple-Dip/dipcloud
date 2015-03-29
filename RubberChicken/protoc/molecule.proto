@@ -1,0 +1,26 @@
+package org.tripledip.dipcloud.network.protocol;
+
+option java_package = "org.tripledip.dipcloud.network.protocol";
+option java_outer_classname = "MoleculeProtos";
+
+message Atom {
+    optional string id = 1;
+    optional int64 timestamp = 2;
+    optional string stringData = 3;
+    optional int32 intData = 4;
+    optional double doubleData = 5;
+}
+
+message Molecule {
+    enum MoleculeAction {
+        ADD = 1;
+        UPDATE = 2;
+        REMOVE = 3;
+        SEND = 4;
+    }
+
+    optional string channel = 1;
+    optional MoleculeAction action = 2;
+
+    repeated Atom atoms = 3;
+}
