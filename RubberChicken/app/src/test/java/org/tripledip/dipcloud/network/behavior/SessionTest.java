@@ -72,7 +72,7 @@ public class SessionTest {
     }
 
     private static class SessionListener<T> implements InBoxListener<T> {
-        private List<T> arrived = new ArrayList<>();
+        private final List<T> arrived = new ArrayList<>();
 
         @Override
         public synchronized void onInboxItemArrived(T item) {

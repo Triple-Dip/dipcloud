@@ -13,7 +13,6 @@ import java.util.List;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class InBoxTest {
 
@@ -24,39 +23,6 @@ public class InBoxTest {
     private TestListener listener;
     private InBox<String> inBox;
     private List<String> testItems = Arrays.asList("one", "two", "three", "four", "five", "six");
-
-    private static class TestConnector implements Connector<String> {
-        public Iterator<String> toRead;
-
-        public TestConnector(Iterator<String> toRead) {
-            this.toRead = toRead;
-        }
-
-        @Override
-        public String readNext() throws InterruptedException {
-            if (toRead.hasNext()) {
-                return toRead.next();
-            }
-            Thread.sleep(MAX_WAIT_NANOS);
-            return null;
-        }
-
-        @Override
-        public void write(String outData) { }
-    }
-
-    private static class TestListener implements InBoxListener<String> {
-        private List<String> received = new ArrayList<>();
-
-        @Override
-        public synchronized void onInboxItemArrived(String item) {
-            received.add(item);
-        }
-
-        public synchronized List<String> getReceived() {
-            return received;
-        }
-    }
 
     @Before
     public void setUp() throws Exception {
@@ -106,5 +72,39 @@ public class InBoxTest {
 
         assertEquals(testItems.size(), listener.getReceived().size());
         assertArrayEquals(testItems.toArray(), listener.getReceived().toArray());
+    }
+
+    private static class TestConnector implements Connector<String> {
+        public Iterator<String> toRead;
+
+        public TestConnector(Iterator<String> toRead) {
+            this.toRead = toRead;
+        }
+
+        @Override
+        public String readNext() throws InterruptedException {
+            if (toRead.hasNext()) {
+                return toRead.next();
+            }
+            Thread.sleep(MAX_WAIT_NANOS);
+            return null;
+        }
+
+        @Override
+        public void write(String outData) {
+        }
+    }
+
+    private static class TestListener implements InBoxListener<String> {
+        private List<String> received = new ArrayList<>();
+
+        @Override
+        public synchronized void onInboxItemArrived(String item) {
+            received.add(item);
+        }
+
+        public synchronized List<String> getReceived() {
+            return received;
+        }
     }
 }
