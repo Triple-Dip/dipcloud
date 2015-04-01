@@ -96,7 +96,7 @@ public class InBoxTest {
     }
 
     private static class TestListener implements InBoxListener<String> {
-        private List<String> received = new ArrayList<>();
+        private final List<String> received = new ArrayList<>();
 
         @Override
         public synchronized void onInboxItemArrived(String item) {

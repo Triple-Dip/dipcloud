@@ -39,6 +39,7 @@ public class LocalSocketPairTest {
     private int sendData(SocketChannel from, SocketChannel to, byte[] message) {
         ByteBuffer buffer = ByteBuffer.wrap(message);
 
+        // buffer clear == flip because limit == capacity
         buffer.clear();
         while (buffer.hasRemaining()) {
             try {

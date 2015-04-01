@@ -24,7 +24,7 @@ public class OutBoxTest {
     private List<String> testItems = Arrays.asList("one", "two", "three", "four", "five", "six");
 
     private static class TestConnector implements Connector<String> {
-        private List<String> sent = new ArrayList<>();
+        private final List<String> sent = new ArrayList<>();
 
         @Override
         public synchronized String readNext() throws InterruptedException {
