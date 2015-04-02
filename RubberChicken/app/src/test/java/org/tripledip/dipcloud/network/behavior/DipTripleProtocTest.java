@@ -16,10 +16,10 @@ public class DipTripleProtocTest extends DipTripleTest {
 
         InMemoryConnectorPair<Molecule> aToServer = new InMemoryProtocConnectorPair();
         clientA = new DipClient(new Nimbase(), aToServer.getASendToB());
-        server.addClientSession(aToServer.getBSendToA());
+        server.addSession(aToServer.getBSendToA());
 
         InMemoryConnectorPair<Molecule> bToServer = new InMemoryProtocConnectorPair();
         clientB = new DipClient(new Nimbase(), bToServer.getASendToB());
-        server.addClientSession(bToServer.getBSendToA());
+        server.addSession(bToServer.getBSendToA());
     }
 }

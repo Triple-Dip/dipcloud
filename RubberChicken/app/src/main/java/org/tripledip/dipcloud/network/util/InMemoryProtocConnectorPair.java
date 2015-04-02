@@ -4,7 +4,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import org.tripledip.dipcloud.local.model.Molecule;
 import org.tripledip.dipcloud.network.contract.Connector;
-import org.tripledip.dipcloud.network.protocol.MoleculeProtoMapper;
+import org.tripledip.dipcloud.network.protocol.MoleculeProtocMapper;
 import org.tripledip.dipcloud.network.protocol.MoleculeProtos;
 
 /**
@@ -42,12 +42,12 @@ public class InMemoryProtocConnectorPair extends InMemoryConnectorPair<Molecule>
                 return null;
             }
 
-            return MoleculeProtoMapper.fromProto(proto);
+            return MoleculeProtocMapper.fromProto(proto);
         }
 
         @Override
         public void write(Molecule outData) {
-            writeQueue.write(MoleculeProtoMapper.toProto(outData).toByteArray());
+            writeQueue.write(MoleculeProtocMapper.toProto(outData).toByteArray());
         }
     }
 }

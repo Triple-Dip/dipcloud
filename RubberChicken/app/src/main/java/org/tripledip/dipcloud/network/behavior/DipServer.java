@@ -24,18 +24,18 @@ public class DipServer extends SuperDip implements InBoxListener<Molecule>, Iter
         sessions = new HashSet<>();
     }
 
-    public void addClientSession(Connector<Molecule> connector) {
+    public void addSession(Connector<Molecule> connector) {
         sessions.add(new Session<>(connector, this));
     }
 
-    public void startClientSessions() {
+    public void startSessions() {
         for (Session<Molecule> session : sessions) {
             session.startOutBox();
             session.startInBox();
         }
     }
 
-    public void stopClientSessions() {
+    public void stopSessions() {
         for (Session<Molecule> session : sessions) {
             session.stopOutBox();
             session.stopInBox();

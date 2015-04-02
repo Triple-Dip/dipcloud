@@ -95,7 +95,7 @@ public class DemoActivity extends Activity implements View.OnClickListener {
         for (String name : clientNames) {
             InMemoryConnectorPair<Molecule> clientToServer = new InMemoryConnectorPair<>();
             DipClient client = new DipClient(new Nimbase(), clientToServer.getASendToB());
-            server.addClientSession(clientToServer.getBSendToA());
+            server.addSession(clientToServer.getBSendToA());
 
             clients.add(client);
             connectorPairs.add(clientToServer);
@@ -103,14 +103,14 @@ public class DemoActivity extends Activity implements View.OnClickListener {
     }
 
     private void startDips() {
-        server.startClientSessions();
+        server.startSessions();
         for (DipClient client : clients) {
             client.start();
         }
     }
 
     private void stopDips() {
-        server.stopClientSessions();
+        server.stopSessions();
         for (DipClient client : clients) {
             client.stop();
         }

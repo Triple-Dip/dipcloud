@@ -35,11 +35,11 @@ public class DipTripleTest {
 
         InMemoryConnectorPair<Molecule> aToServer = new InMemoryConnectorPair<>();
         clientA = new DipClient(new Nimbase(), aToServer.getASendToB());
-        server.addClientSession(aToServer.getBSendToA());
+        server.addSession(aToServer.getBSendToA());
 
         InMemoryConnectorPair<Molecule> bToServer = new InMemoryConnectorPair<>();
         clientB = new DipClient(new Nimbase(), bToServer.getASendToB());
-        server.addClientSession(bToServer.getBSendToA());
+        server.addSession(bToServer.getBSendToA());
     }
 
     private void addTestAtomsToAll() {
@@ -65,7 +65,7 @@ public class DipTripleTest {
 
     // Interrupt all sessions and make sure the threads died.
     private void stopAllSessions() throws Exception {
-        server.stopClientSessions();
+        server.stopSessions();
         clientA.stop();
         clientB.stop();
 
@@ -89,7 +89,7 @@ public class DipTripleTest {
         Atom atomB = new Atom("B", 2, "B", 2, 2.0);
         Molecule toAdd = new Molecule("test add", atomA, atomB);
 
-        server.startClientSessions();
+        server.startSessions();
         clientA.start();
         clientB.start();
 
@@ -123,7 +123,7 @@ public class DipTripleTest {
         Atom atomBUpdated = atomB.copy("Updated", atomB.getTimeStamp());
         Molecule toUpdate = new Molecule("test update", atomAUpdated, atomBUpdated);
 
-        server.startClientSessions();
+        server.startSessions();
         clientA.start();
         clientB.start();
 
@@ -155,7 +155,7 @@ public class DipTripleTest {
 
         Molecule toRemove = new Molecule("test remove", atomA);
 
-        server.startClientSessions();
+        server.startSessions();
         clientA.start();
         clientB.start();
 
@@ -192,7 +192,7 @@ public class DipTripleTest {
 
         Molecule toSend = new Molecule("test send", atomS);
 
-        server.startClientSessions();
+        server.startSessions();
         clientA.start();
         clientB.start();
 
@@ -259,7 +259,7 @@ public class DipTripleTest {
         // clientB should get the last word
         Runnable clientBUpdater = new Updater(testAtom.copy("clientB", 0), updateCount + 1, clientB);
 
-        server.startClientSessions();
+        server.startSessions();
         clientA.start();
         clientB.start();
 

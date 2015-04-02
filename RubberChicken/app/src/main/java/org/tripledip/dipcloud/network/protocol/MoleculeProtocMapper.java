@@ -9,7 +9,7 @@ import java.util.Collection;
 /**
  * Created by Ben on 3/29/15.
  */
-public class MoleculeProtoMapper {
+public class MoleculeProtocMapper {
 
     private static Molecule.Action[] MOLECULE_ACTIONS = Molecule.Action.values();
 

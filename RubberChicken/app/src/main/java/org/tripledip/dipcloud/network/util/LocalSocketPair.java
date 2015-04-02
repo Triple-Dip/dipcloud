@@ -15,6 +15,17 @@ public class LocalSocketPair {
     private SocketChannel clientSide;
     private SocketChannel serverSide;
 
+    public static void closeChannel(AbstractInterruptibleChannel channel) {
+        if (null == channel) {
+            return;
+        }
+
+        try {
+            channel.close();
+        } catch (IOException e) {
+        }
+    }
+
     public SocketChannel getClientSide() {
         return clientSide;
     }
@@ -103,16 +114,5 @@ public class LocalSocketPair {
         }
 
         return server;
-    }
-
-    private void closeChannel(AbstractInterruptibleChannel channel) {
-        if (null == channel) {
-            return;
-        }
-
-        try {
-            channel.close();
-        } catch (IOException e) {
-        }
     }
 }
