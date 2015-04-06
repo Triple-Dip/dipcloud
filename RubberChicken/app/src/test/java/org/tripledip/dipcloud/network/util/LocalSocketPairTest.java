@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
@@ -29,6 +31,9 @@ public class LocalSocketPairTest {
 
         assertTrue(localSocketPair.getClientSide().isConnected());
         assertTrue(localSocketPair.getServerSide().isConnected());
+
+        assertTrue(localSocketPair.getClientSide().socket().isConnected());
+        assertTrue(localSocketPair.getServerSide().socket().isConnected());
     }
 
     @After
@@ -36,7 +41,7 @@ public class LocalSocketPairTest {
         localSocketPair.close();
     }
 
-    private int sendData(SocketChannel from, SocketChannel to, byte[] message) {
+    private int sendChannelData(SocketChannel from, SocketChannel to, byte[] message) {
         ByteBuffer buffer = ByteBuffer.wrap(message);
 
         // buffer clear == flip because limit == capacity
@@ -62,19 +67,67 @@ public class LocalSocketPairTest {
         return buffer.position();
     }
 
+    private int sendStreamData(OutputStream from, InputStream to, byte[] message) {
+
+        try {
+            from.write(message);
+        } catch (IOException e) {
+            return -1;
+        }
+
+        int bytesRead = 0;
+        byte[] inMessage = new byte[message.length];
+        try {
+            bytesRead = to.read(inMessage);
+        } catch (IOException e) {
+            return bytesRead;
+        }
+
+        return bytesRead;
+    }
+
     @Test
-    public void testClientToServer() throws Exception {
+    public void testChannelClientToServer() throws Exception {
         String message = "Client says current millis are " + System.currentTimeMillis();
         byte[] messageBytes = message.getBytes();
-        int bytesSent = sendData(localSocketPair.getClientSide(), localSocketPair.getServerSide(), messageBytes);
+        int bytesSent = sendChannelData(
+                localSocketPair.getClientSide(),
+                localSocketPair.getServerSide(),
+                messageBytes);
         assertEquals(messageBytes.length, bytesSent);
     }
 
     @Test
-    public void testServerToClient() throws Exception {
+    public void testChannelServerToClient() throws Exception {
         String message = "Current millis according to server: " + System.currentTimeMillis();
         byte[] messageBytes = message.getBytes();
-        int bytesSent = sendData(localSocketPair.getServerSide(), localSocketPair.getClientSide(), messageBytes);
+        int bytesSent = sendChannelData(
+                localSocketPair.getServerSide(),
+                localSocketPair.getClientSide(),
+                messageBytes);
         assertEquals(messageBytes.length, bytesSent);
     }
+
+    @Test
+    public void testStreamClientToServer() throws Exception {
+        String message = "Client says current millis are " + System.currentTimeMillis();
+        byte[] messageBytes = message.getBytes();
+        int bytesSent = sendStreamData(
+                localSocketPair.getClientSide().socket().getOutputStream(),
+                localSocketPair.getServerSide().socket().getInputStream(),
+                messageBytes);
+        assertEquals(messageBytes.length, bytesSent);
+    }
+
+    @Test
+    public void testSocketServerToClient() throws Exception {
+        String message = "Current millis according to server: " + System.currentTimeMillis();
+        byte[] messageBytes = message.getBytes();
+        int bytesSent = sendStreamData(
+                localSocketPair.getServerSide().socket().getOutputStream(),
+                localSocketPair.getClientSide().socket().getInputStream(),
+                messageBytes);
+        assertEquals(messageBytes.length, bytesSent);
+    }
+
 }

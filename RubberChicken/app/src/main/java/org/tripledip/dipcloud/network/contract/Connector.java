@@ -5,8 +5,10 @@ package org.tripledip.dipcloud.network.contract;
  */
 public interface Connector<T> {
 
+    // TODO: throw any exception
     public T readNext() throws InterruptedException;
 
+    // TODO: throw any exception
     public void write(T outData);
 
 }

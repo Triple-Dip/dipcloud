@@ -35,15 +35,19 @@ public class OutBox<T> {
 
     public boolean sendNext() {
         T next = toSend.poll();
+
         if (null == next) {
             return false;
         }
+
+        // TODO: propagate any exception
         connector.write(next);
         return true;
     }
 
     public int sendAll() {
         int sent = 0;
+        // TODO: propagate any exception
         while (sendNext()) {
             sent++;
         }
@@ -61,6 +65,7 @@ public class OutBox<T> {
 
     private void sendForever() {
         while (true) {
+            // TODO: quit on any exception
             this.sendAll();
             try {
                 lock.lockInterruptibly();

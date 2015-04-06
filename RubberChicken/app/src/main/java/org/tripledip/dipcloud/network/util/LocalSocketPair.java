@@ -9,6 +9,8 @@ import java.nio.channels.spi.AbstractInterruptibleChannel;
 
 /**
  * Created by Ben on 4/1/15.
+ *
+ * TODO: reimplement with regular IO, short-lived acceptor thread
  */
 public class LocalSocketPair {
 
@@ -109,6 +111,7 @@ public class LocalSocketPair {
             client.connect(new InetSocketAddress(InetAddress.getLocalHost(), port));
             server = acceptor.accept();
             client.finishConnect();
+            client.configureBlocking(true);
         } catch (IOException e) {
             return null;
         }

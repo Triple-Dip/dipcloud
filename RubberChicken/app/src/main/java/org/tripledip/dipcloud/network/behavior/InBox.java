@@ -39,6 +39,7 @@ public class InBox<T> {
 
     private void receiveForever() {
         while (true) {
+            // TODO: quit on any exception
             try {
                 processNext();
             } catch (InterruptedException e) {

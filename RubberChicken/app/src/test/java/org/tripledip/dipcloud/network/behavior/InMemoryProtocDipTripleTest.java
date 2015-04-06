@@ -7,7 +7,7 @@ import org.tripledip.dipcloud.network.util.InMemoryConnectorPair;
 import org.tripledip.dipcloud.network.util.InMemoryProtocConnectorPair;
 
 
-public class DipTripleProtocTest extends DipTripleTest {
+public class InMemoryProtocDipTripleTest extends DipTripleTest {
 
     // Set up a server and two clients with in-memory protocol buffer connectors.
     @Before

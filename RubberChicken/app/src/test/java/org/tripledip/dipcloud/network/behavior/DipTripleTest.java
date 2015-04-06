@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 public class DipTripleTest {
 
-    private static final long MAX_WAIT_NANOS = (long) 1e9;
+    private static final long MAX_WAIT_NANOS = (long) 10e9;
     private static final long SLEEP_MILLIS = 10;
 
     protected DipServer server;
