@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.TimingLogger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +21,6 @@ import org.tripledip.rubberchicken.R;
  * A simple {@link Fragment} subclass.
  */
 public class DemoFragment extends Fragment implements ScrudListener<Molecule>, View.OnClickListener {
-
-    private TimingLogger timingLogger;
 
     public static final String LEFT_COLOUR = "leftColor";
     public static final String RIGHT_COLOUR = "rightColor";
@@ -69,8 +66,6 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
         setNameContainerColor(colorId);
         setLeftContainerColor(Color.DKGRAY);
         setRightContainerColor(Color.DKGRAY);
-
-        timingLogger = new TimingLogger(DemoFragment.class.getSimpleName(), name);
 
         return rootView;
     }
@@ -147,14 +142,8 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
                 if (null != rightAtom) {
                     setRightContainerColor(rightAtom.getIntData());
                 }
-
-                timingLogger.addSplit("Ran color update on UI");
-                timingLogger.dumpToLog();
-
             }
         };
-
-        timingLogger.addSplit("Post color update to UI");
 
         getActivity().runOnUiThread(updateUi);
 
@@ -167,8 +156,6 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
 
         long timeStamp = AtomMapper.generateTimeStamp();
 
-        timingLogger.reset();
-
         boolean unitOfWork = ((DemoActivity) getActivity()).isConsistentUpdates();
         if (unitOfWork) {
 
@@ -177,7 +164,6 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
                     new Atom(RIGHT_COLOUR, timeStamp, colorId));
             dipAccess.proposeUpdate(molecule);
 
-            timingLogger.addSplit("Click with Sync on");
 
         } else {
 
@@ -189,7 +175,6 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
                     new Atom(RIGHT_COLOUR, timeStamp, colorId));
             dipAccess.proposeUpdate(rightMolecule);
 
-            timingLogger.addSplit("Click with Sync off");
         }
     }
 }
