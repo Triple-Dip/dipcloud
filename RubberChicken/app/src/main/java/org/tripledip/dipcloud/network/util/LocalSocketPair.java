@@ -3,58 +3,66 @@ package org.tripledip.dipcloud.network.util;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
-import java.nio.channels.spi.AbstractInterruptibleChannel;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * Created by Ben on 4/1/15.
- *
+ * <p/>
  * TODO: reimplement with regular IO, short-lived acceptor thread
  */
 public class LocalSocketPair {
 
-    private SocketChannel clientSide;
-    private SocketChannel serverSide;
+    private static final int ACCEPT_MILLIS = 100;
 
-    public static void closeChannel(AbstractInterruptibleChannel channel) {
-        if (null == channel) {
+    private Socket clientSide;
+    private Socket serverSide;
+
+    private static void closeSocket(Socket socket) {
+        if (null == socket) {
             return;
         }
 
         try {
-            channel.close();
+            socket.close();
         } catch (IOException e) {
         }
     }
 
-    public SocketChannel getClientSide() {
+    public Socket getClientSide() {
         return clientSide;
     }
 
-    public SocketChannel getServerSide() {
+    public Socket getServerSide() {
         return serverSide;
     }
 
     public boolean open(int port) {
 
-        clientSide = openSocket();
-
-        ServerSocketChannel acceptor = openAcceptor(port);
-        if (null == acceptor) {
-            closeChannel(clientSide);
+        ServerSocket acceptor;
+        try {
+            acceptor = new ServerSocket(port);
+        } catch (IOException e) {
             return false;
         }
 
-        serverSide = acceptSocket(acceptor, clientSide);
-        closeChannel(acceptor);
+        Thread acceptorThread = startAcceptorThread(acceptor);
+        clientSide = makeLocalConnection(port);
 
-        if (null == serverSide) {
-            closeChannel(clientSide);
+        try {
+            acceptorThread.join(ACCEPT_MILLIS);
+        } catch (InterruptedException e) {
+        }
+
+        try {
+            acceptor.close();
+        } catch (IOException e) {
+            close();
             return false;
         }
 
-        if (!clientSide.isConnected() || !serverSide.isConnected()) {
+        if (null == clientSide || null == serverSide
+                || clientSide.isClosed() || serverSide.isClosed()) {
             close();
             return false;
         }
@@ -63,59 +71,36 @@ public class LocalSocketPair {
     }
 
     public void close() {
-        closeChannel(clientSide);
-        closeChannel(serverSide);
+        closeSocket(clientSide);
+        clientSide = null;
+        closeSocket(serverSide);
+        serverSide = null;
     }
 
-    private SocketChannel openSocket() {
-        SocketChannel socket;
+    private Socket makeLocalConnection(int port) {
+        Socket socket = new Socket();
         try {
-            socket = SocketChannel.open();
+            socket.connect(new InetSocketAddress(InetAddress.getLoopbackAddress(), port));
+            return socket;
         } catch (IOException e) {
             return null;
         }
-
-        try {
-            socket.configureBlocking(false);
-        } catch (IOException e) {
-            closeChannel(socket);
-            return null;
-        }
-
-        return socket;
     }
 
-    private ServerSocketChannel openAcceptor(int port) {
-        ServerSocketChannel acceptor;
-        try {
-            acceptor = ServerSocketChannel.open();
-        } catch (IOException e) {
-            return null;
-        }
+    private Thread startAcceptorThread(final ServerSocket acceptor) {
+        final Runnable waitForConnect = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    serverSide = acceptor.accept();
+                } catch (IOException e) {
+                    return;
+                }
+            }
+        };
 
-        try {
-            acceptor.configureBlocking(true);
-            acceptor.socket().bind(new InetSocketAddress(port));
-        } catch (IOException e) {
-            closeChannel(acceptor);
-            return null;
-        }
-
-        return acceptor;
-    }
-
-    private SocketChannel acceptSocket(ServerSocketChannel acceptor, SocketChannel client) {
-        SocketChannel server;
-        try {
-            final int port = acceptor.socket().getLocalPort();
-            client.connect(new InetSocketAddress(InetAddress.getLocalHost(), port));
-            server = acceptor.accept();
-            client.finishConnect();
-            client.configureBlocking(true);
-        } catch (IOException e) {
-            return null;
-        }
-
-        return server;
+        final Thread acceptorThread = new Thread(waitForConnect);
+        acceptorThread.start();
+        return acceptorThread;
     }
 }

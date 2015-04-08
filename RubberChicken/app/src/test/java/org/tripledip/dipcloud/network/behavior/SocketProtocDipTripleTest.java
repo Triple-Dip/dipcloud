@@ -35,16 +35,16 @@ public class SocketProtocDipTripleTest extends DipTripleTest {
 
         aToServer = new LocalSocketPair();
         aToServer.open(PORT_A);
-        assertTrue(aToServer.getClientSide().isOpen());
-        assertTrue(aToServer.getServerSide().isOpen());
+        assertFalse(aToServer.getClientSide().isClosed());
+        assertFalse(aToServer.getServerSide().isClosed());
 
         clientA = new DipClient(new Nimbase(), new SocketProtocConnector(aToServer.getClientSide()));
         server.addSession(new SocketProtocConnector(aToServer.getServerSide()));
 
         bToServer = new LocalSocketPair();
         bToServer.open(PORT_B);
-        assertTrue(bToServer.getClientSide().isOpen());
-        assertTrue(bToServer.getServerSide().isOpen());
+        assertFalse(bToServer.getClientSide().isClosed());
+        assertFalse(bToServer.getServerSide().isClosed());
 
         clientB = new DipClient(new Nimbase(), new SocketProtocConnector(bToServer.getClientSide()));
         server.addSession(new SocketProtocConnector(bToServer.getServerSide()));
@@ -53,124 +53,27 @@ public class SocketProtocDipTripleTest extends DipTripleTest {
     @After
     public void tearDown() throws Exception {
         aToServer.close();
-        assertFalse(aToServer.getClientSide().isOpen());
-        assertFalse(aToServer.getServerSide().isOpen());
+        assertTrue(aToServer.getClientSide().isClosed());
+        assertTrue(aToServer.getServerSide().isClosed());
 
         bToServer.close();
-        assertFalse(bToServer.getClientSide().isOpen());
-        assertFalse(bToServer.getServerSide().isOpen());
-    }
-
-    @Test
-    public void testSimpleSendReceive() throws Exception {
-        Molecule moleculeOut = new Molecule("test", Molecule.Action.SEND, new ArrayList<Atom>());
-
-        SocketChannel clientSide = aToServer.getClientSide();
-        assertTrue(clientSide.isConnected());
-        assertTrue(clientSide.isOpen());
-
-        Socket clientSocket = clientSide.socket();
-        assertTrue(clientSocket.isConnected());
-        assertFalse(clientSocket.isClosed());
-
-        SocketProtocConnector clientConnector = new SocketProtocConnector(clientSide);
-        clientConnector.write(moleculeOut);
-
-        SocketChannel serverSide = aToServer.getServerSide();
-        assertTrue(serverSide.isConnected());
-        assertTrue(serverSide.isOpen());
-
-        Socket serverSocket = serverSide.socket();
-        assertTrue(serverSocket.isConnected());
-        assertFalse(serverSocket.isClosed());
-
-        SocketProtocConnector serverConnector = new SocketProtocConnector(serverSide);
-        Molecule moleculeIn = serverConnector.readNext();
-
-        assertEquals(moleculeOut.getChannel(), moleculeIn.getChannel());
-        assertEquals(moleculeOut.getAction(), moleculeIn.getAction());
-    }
-
-    @Test
-    public void testAsyncSendReceive() throws Exception {
-        final Molecule moleculeOut = new Molecule("test", Molecule.Action.SEND, new ArrayList<Atom>());
-
-        SocketChannel clientSide = aToServer.getClientSide();
-        assertTrue(clientSide.isConnected());
-        assertTrue(clientSide.isOpen());
-
-        Socket clientSocket = clientSide.socket();
-        assertTrue(clientSocket.isConnected());
-        assertFalse(clientSocket.isClosed());
-
-        final SocketProtocConnector clientConnector = new SocketProtocConnector(clientSide);
-
-        SocketChannel serverSide = aToServer.getServerSide();
-        assertTrue(serverSide.isConnected());
-        assertTrue(serverSide.isOpen());
-
-        Socket serverSocket = serverSide.socket();
-        assertTrue(serverSocket.isConnected());
-        assertFalse(serverSocket.isClosed());
-
-        final SocketProtocConnector serverConnector = new SocketProtocConnector(serverSide);
-
-        final List<Molecule> moleculesIn = new ArrayList<>();
-        Thread reader = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        Molecule moleculeIn = serverConnector.readNext();
-                        moleculesIn.add(moleculeIn);
-                    }
-                } catch (InterruptedException e) {
-                    return;
-                }
-            }
-        });
-
-        Thread writer = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                clientConnector.write(moleculeOut);
-                clientConnector.write(moleculeOut);
-                clientConnector.write(moleculeOut);
-            }
-        });
-
-        reader.start();
-        writer.start();
-        Thread.sleep(1000);
-        reader.interrupt();
-
-        assertEquals(3, moleculesIn.size());
-        Molecule moleculeIn = moleculesIn.get(0);
-        assertEquals(moleculeOut.getChannel(), moleculeIn.getChannel());
-        assertEquals(moleculeOut.getAction(), moleculeIn.getAction());
+        assertTrue(bToServer.getClientSide().isClosed());
+        assertTrue(bToServer.getServerSide().isClosed());
     }
 
     @Test
     public void testBoxesSendReceive() throws Exception {
         Molecule moleculeOut = new Molecule("test", Molecule.Action.SEND, new ArrayList<Atom>());
 
-        SocketChannel clientSide = aToServer.getClientSide();
+        Socket clientSide = aToServer.getClientSide();
         assertTrue(clientSide.isConnected());
-        assertTrue(clientSide.isOpen());
-
-        Socket clientSocket = clientSide.socket();
-        assertTrue(clientSocket.isConnected());
-        assertFalse(clientSocket.isClosed());
+        assertFalse(clientSide.isClosed());
 
         SocketProtocConnector clientConnector = new SocketProtocConnector(clientSide);
 
-        SocketChannel serverSide = aToServer.getServerSide();
+        Socket serverSide = aToServer.getServerSide();
         assertTrue(serverSide.isConnected());
-        assertTrue(serverSide.isOpen());
-
-        Socket serverSocket = serverSide.socket();
-        assertTrue(serverSocket.isConnected());
-        assertFalse(serverSocket.isClosed());
+        assertFalse(serverSide.isClosed());
 
         SocketProtocConnector serverConnector = new SocketProtocConnector(serverSide);
 
@@ -211,23 +114,15 @@ public class SocketProtocDipTripleTest extends DipTripleTest {
     public void testSessionsSendReceive() throws Exception {
         Molecule moleculeOut = new Molecule("test", Molecule.Action.SEND, new ArrayList<Atom>());
 
-        SocketChannel clientSide = aToServer.getClientSide();
+        Socket clientSide = aToServer.getClientSide();
         assertTrue(clientSide.isConnected());
-        assertTrue(clientSide.isOpen());
-
-        Socket clientSocket = clientSide.socket();
-        assertTrue(clientSocket.isConnected());
-        assertFalse(clientSocket.isClosed());
+        assertFalse(clientSide.isClosed());
 
         SocketProtocConnector clientConnector = new SocketProtocConnector(clientSide);
 
-        SocketChannel serverSide = aToServer.getServerSide();
+        Socket serverSide = aToServer.getServerSide();
         assertTrue(serverSide.isConnected());
-        assertTrue(serverSide.isOpen());
-
-        Socket serverSocket = serverSide.socket();
-        assertTrue(serverSocket.isConnected());
-        assertFalse(serverSocket.isClosed());
+        assertFalse(serverSide.isClosed());
 
         SocketProtocConnector serverConnector = new SocketProtocConnector(serverSide);
 
