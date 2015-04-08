@@ -8,8 +8,6 @@ import java.net.Socket;
 
 /**
  * Created by Ben on 4/1/15.
- * <p/>
- * TODO: reimplement with regular IO, short-lived acceptor thread
  */
 public class LocalSocketPair {
 
