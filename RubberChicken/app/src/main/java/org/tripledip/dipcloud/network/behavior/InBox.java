@@ -3,6 +3,8 @@ package org.tripledip.dipcloud.network.behavior;
 import org.tripledip.dipcloud.network.contract.Connector;
 import org.tripledip.dipcloud.network.contract.InBoxListener;
 
+import java.io.IOException;
+
 /**
  * Created by Ben on 3/1/15.
  */
@@ -23,7 +25,7 @@ public class InBox<T> {
         listener.onInboxItemArrived(item);
     }
 
-    public void processNext() throws InterruptedException {
+    public void processNext() throws InterruptedException, IOException {
         T item = connector.readNext();
         process(item);
     }
@@ -39,9 +41,10 @@ public class InBox<T> {
 
     private void receiveForever() {
         while (true) {
-            // TODO: quit on any exception
             try {
                 processNext();
+            } catch (IOException e) {
+                return;
             } catch (InterruptedException e) {
                 return;
             }

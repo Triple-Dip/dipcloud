@@ -7,6 +7,8 @@ import org.tripledip.dipcloud.network.contract.Connector;
 import org.tripledip.dipcloud.network.protocol.MoleculeProtocMapper;
 import org.tripledip.dipcloud.network.protocol.MoleculeProtos;
 
+import java.io.IOException;
+
 /**
  * Created by Ben on 3/29/15.
  */
@@ -32,7 +34,7 @@ public class InMemoryProtocConnectorPair extends InMemoryConnectorPair<Molecule>
         }
 
         @Override
-        public Molecule readNext() throws InterruptedException {
+        public Molecule readNext() throws InterruptedException, IOException {
             byte[] bytes = readQueue.readNext();
 
             MoleculeProtos.Molecule proto;
@@ -46,7 +48,7 @@ public class InMemoryProtocConnectorPair extends InMemoryConnectorPair<Molecule>
         }
 
         @Override
-        public void write(Molecule outData) {
+        public void write(Molecule outData) throws InterruptedException, IOException {
             writeQueue.write(MoleculeProtocMapper.toProto(outData).toByteArray());
         }
     }

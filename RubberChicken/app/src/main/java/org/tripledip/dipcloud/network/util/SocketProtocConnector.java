@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.channels.ClosedByInterruptException;
 
 /**
  * Created by Ben on 4/1/15.
@@ -23,34 +22,21 @@ public class SocketProtocConnector implements Connector<Molecule> {
     }
 
     @Override
-    // TODO: propagate any exception
-    public Molecule readNext() throws InterruptedException {
-        try {
-            InputStream inputStream = socket.getInputStream();
+    public Molecule readNext() throws InterruptedException, IOException {
+        InputStream inputStream = socket.getInputStream();
 
-            MoleculeProtos.Molecule proto = MoleculeProtos.Molecule.parseDelimitedFrom(inputStream);
-            if (null == proto) {
-                return null;
-            }
-            return MoleculeProtocMapper.fromProto(proto);
-
-        } catch (ClosedByInterruptException e) {
-            throw (InterruptedException) new InterruptedException("Read interrupted.").initCause(e);
-        } catch (IOException e) {
-            throw (InterruptedException) new InterruptedException("Read error.").initCause(e);
+        MoleculeProtos.Molecule proto = MoleculeProtos.Molecule.parseDelimitedFrom(inputStream);
+        if (null == proto) {
+            return null;
         }
+        return MoleculeProtocMapper.fromProto(proto);
     }
 
     @Override
-    // TODO: propagate any exception
-    public void write(Molecule outData) {
-        try {
-            MoleculeProtos.Molecule proto = MoleculeProtocMapper.toProto(outData);
-            OutputStream outputStream = socket.getOutputStream();
-            proto.writeDelimitedTo(outputStream);
-            outputStream.flush();
-        } catch (IOException e) {
-            return;
-        }
+    public void write(Molecule outData) throws InterruptedException, IOException {
+        MoleculeProtos.Molecule proto = MoleculeProtocMapper.toProto(outData);
+        OutputStream outputStream = socket.getOutputStream();
+        proto.writeDelimitedTo(outputStream);
+        outputStream.flush();
     }
 }

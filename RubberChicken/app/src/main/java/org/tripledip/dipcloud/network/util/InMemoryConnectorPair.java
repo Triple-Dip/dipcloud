@@ -2,6 +2,7 @@ package org.tripledip.dipcloud.network.util;
 
 import org.tripledip.dipcloud.network.contract.Connector;
 
+import java.io.IOException;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -14,11 +15,9 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class InMemoryConnectorPair<T> {
 
-    private Random rand = new Random();
-
     protected Connector<T> aSendToBConnector;
     protected Connector<T> bSendToAConnector;
-
+    private Random rand = new Random();
     private int jankMillis = 0;
 
     public InMemoryConnectorPair() {
@@ -46,7 +45,7 @@ public class InMemoryConnectorPair<T> {
     }
 
     protected void awaitRandomJank() throws InterruptedException {
-        if (jankMillis <=  0) {
+        if (jankMillis <= 0) {
             return;
         }
 
@@ -65,14 +64,13 @@ public class InMemoryConnectorPair<T> {
         }
 
         @Override
-        public T readNext() throws InterruptedException {
+        public T readNext() throws InterruptedException, IOException {
             T message = readQueue.readNext();
-
             return message;
         }
 
         @Override
-        public void write(T outData) {
+        public void write(T outData) throws InterruptedException, IOException {
             writeQueue.write(outData);
         }
     }

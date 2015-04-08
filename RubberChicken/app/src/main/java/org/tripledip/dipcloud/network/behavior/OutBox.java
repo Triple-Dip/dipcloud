@@ -2,6 +2,7 @@ package org.tripledip.dipcloud.network.behavior;
 
 import org.tripledip.dipcloud.network.contract.Connector;
 
+import java.io.IOException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.Condition;
@@ -18,7 +19,7 @@ public class OutBox<T> {
     private final Lock lock;
     private final Condition notEmpty;
 
-    public OutBox (Connector<T> connector) {
+    public OutBox(Connector<T> connector) {
         this.connector = connector;
         this.toSend = new ConcurrentLinkedQueue<>();
         this.lock = new ReentrantLock(false);
@@ -33,21 +34,19 @@ public class OutBox<T> {
         lock.unlock();
     }
 
-    public boolean sendNext() {
+    public boolean sendNext() throws InterruptedException, IOException {
         T next = toSend.poll();
 
         if (null == next) {
             return false;
         }
 
-        // TODO: propagate any exception
         connector.write(next);
         return true;
     }
 
-    public int sendAll() {
+    public int sendAll() throws InterruptedException, IOException {
         int sent = 0;
-        // TODO: propagate any exception
         while (sendNext()) {
             sent++;
         }
@@ -65,9 +64,8 @@ public class OutBox<T> {
 
     private void sendForever() {
         while (true) {
-            // TODO: quit on any exception
-            this.sendAll();
             try {
+                this.sendAll();
                 lock.lockInterruptibly();
                 try {
                     notEmpty.await();
@@ -77,6 +75,8 @@ public class OutBox<T> {
                     lock.unlock();
                 }
             } catch (InterruptedException e) {
+                return;
+            } catch (IOException e) {
                 return;
             }
         }
