@@ -11,7 +11,6 @@ import org.tripledip.dipcloud.network.util.LocalSocketPair;
 import org.tripledip.dipcloud.network.util.SocketProtocConnector;
 
 import java.net.Socket;
-import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,12 +52,7 @@ public class SocketProtocDipTripleTest extends DipTripleTest {
     @After
     public void tearDown() throws Exception {
         aToServer.close();
-        assertTrue(aToServer.getClientSide().isClosed());
-        assertTrue(aToServer.getServerSide().isClosed());
-
         bToServer.close();
-        assertTrue(bToServer.getClientSide().isClosed());
-        assertTrue(bToServer.getServerSide().isClosed());
     }
 
     @Test
@@ -130,7 +124,8 @@ public class SocketProtocDipTripleTest extends DipTripleTest {
 
         Session<Molecule> clientSession = new Session<>(clientConnector, new InBoxListener<Molecule>() {
             @Override
-            public void onInboxItemArrived(Molecule item) {}
+            public void onInboxItemArrived(Molecule item) {
+            }
         });
 
         Session<Molecule> serverSession = new Session<>(serverConnector, new InBoxListener<Molecule>() {
@@ -143,7 +138,7 @@ public class SocketProtocDipTripleTest extends DipTripleTest {
         // TODO: why is client inbox breaking the test?
         serverSession.startInBox();
         serverSession.startOutBox();
-        //clientSession.startInBox();
+        clientSession.startInBox();
         clientSession.startOutBox();
 
         clientSession.sendMessage(moleculeOut);

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -39,45 +40,37 @@ public class LocalSocketPairTest {
         localSocketPair.close();
     }
 
-    private int sendStreamData(OutputStream from, InputStream to, byte[] message) {
+    private void sendReceiveStreamData(OutputStream from, InputStream to, byte[] outMessage)
+            throws IOException {
 
-        try {
-            from.write(message);
-        } catch (IOException e) {
-            return -1;
-        }
+        from.write(outMessage);
 
         int bytesRead = 0;
-        byte[] inMessage = new byte[message.length];
-        try {
-            bytesRead = to.read(inMessage);
-        } catch (IOException e) {
-            return bytesRead;
-        }
+        byte[] inMessage = new byte[outMessage.length];
+        bytesRead = to.read(inMessage);
 
-        return bytesRead;
+        assertEquals(outMessage.length, bytesRead);
+        assertArrayEquals(outMessage, inMessage);
     }
 
     @Test
     public void testStreamClientToServer() throws Exception {
         String message = "Client says current millis are " + System.currentTimeMillis();
         byte[] messageBytes = message.getBytes();
-        int bytesSent = sendStreamData(
+        sendReceiveStreamData(
                 localSocketPair.getClientSide().getOutputStream(),
                 localSocketPair.getServerSide().getInputStream(),
                 messageBytes);
-        assertEquals(messageBytes.length, bytesSent);
     }
 
     @Test
     public void testStreamServerToClient() throws Exception {
         String message = "Current millis according to server: " + System.currentTimeMillis();
         byte[] messageBytes = message.getBytes();
-        int bytesSent = sendStreamData(
+        sendReceiveStreamData(
                 localSocketPair.getServerSide().getOutputStream(),
                 localSocketPair.getClientSide().getInputStream(),
                 messageBytes);
-        assertEquals(messageBytes.length, bytesSent);
     }
 
 }

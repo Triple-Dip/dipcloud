@@ -27,8 +27,13 @@ public class SocketProtocConnector implements Connector<Molecule> {
     public Molecule readNext() throws InterruptedException {
         try {
             InputStream inputStream = socket.getInputStream();
+
             MoleculeProtos.Molecule proto = MoleculeProtos.Molecule.parseDelimitedFrom(inputStream);
+            if (null == proto) {
+                return null;
+            }
             return MoleculeProtocMapper.fromProto(proto);
+
         } catch (ClosedByInterruptException e) {
             throw (InterruptedException) new InterruptedException("Read interrupted.").initCause(e);
         } catch (IOException e) {

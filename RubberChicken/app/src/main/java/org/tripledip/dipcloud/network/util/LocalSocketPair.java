@@ -18,17 +18,6 @@ public class LocalSocketPair {
     private Socket clientSide;
     private Socket serverSide;
 
-    private static void closeSocket(Socket socket) {
-        if (null == socket) {
-            return;
-        }
-
-        try {
-            socket.close();
-        } catch (IOException e) {
-        }
-    }
-
     public Socket getClientSide() {
         return clientSide;
     }
@@ -75,6 +64,17 @@ public class LocalSocketPair {
         clientSide = null;
         closeSocket(serverSide);
         serverSide = null;
+    }
+
+    private static void closeSocket(Socket socket) {
+        if (null == socket) {
+            return;
+        }
+
+        try {
+            socket.close();
+        } catch (IOException e) {
+        }
     }
 
     private Socket makeLocalConnection(int port) {
