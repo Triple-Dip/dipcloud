@@ -66,9 +66,11 @@ public class ServerActivity extends Activity {
 
     private void attachFragments() {
 
+        ServerConnectionFragment serverConnectionFragment = ServerConnectionFragment.newInstance();
         DemoFragment serverFragment = DemoFragment.newInstance("Server", Color.RED, server);
 
         getFragmentManager().beginTransaction()
+                .add(R.id.connection_frame, serverConnectionFragment)
                 .add(R.id.game_frame, serverFragment)
                 .commit();
     }
