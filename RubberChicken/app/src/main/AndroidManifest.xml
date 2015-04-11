@@ -12,7 +12,12 @@
             android:name="org.tripledip.demo.DemoActivity"
             android:exported="true"
             android:label="@string/title_activity_demo"
-            android:screenOrientation="sensorLandscape"/>
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name="org.tripledip.landemo.ServerActivity"
+            android:exported="true"
+            android:label="@string/title_activity_lan_demo"
+            android:screenOrientation="sensorLandscape" />
     </application>
 
 </manifest>
