@@ -153,7 +153,7 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
         setRightContainerColor(Color.DKGRAY);
         setLeftContainerColor(Color.DKGRAY);
 
-        long sequenceNumber = 100;
+        long sequenceNumber = dipAccess.getNimbase().nextSequenceNumber();
 
         boolean unitOfWork = ((DemoActivity) getActivity()).isConsistentUpdates();
         if (unitOfWork) {
