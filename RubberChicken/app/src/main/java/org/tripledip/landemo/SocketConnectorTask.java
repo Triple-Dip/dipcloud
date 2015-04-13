@@ -9,13 +9,11 @@ import java.net.SocketAddress;
 /**
  * Created by Ben on 4/8/15.
  */
-public class SocketConnectorTask extends AsyncTask<Socket, Void, Socket> {
+public class SocketConnectorTask extends AsyncTask<SocketAddress, Void, Socket> {
 
+    public static final int DEFAULT_TIMEOUT_MILLIS = 1000;
+    private int timeoutMillis = DEFAULT_TIMEOUT_MILLIS;
     private Listener listener;
-
-    private SocketAddress remoteAddress;
-
-    private int timeoutMillis;
 
     public Listener getListener() {
         return listener;
@@ -23,14 +21,6 @@ public class SocketConnectorTask extends AsyncTask<Socket, Void, Socket> {
 
     public void setListener(Listener listener) {
         this.listener = listener;
-    }
-
-    public SocketAddress getRemoteAddress() {
-        return remoteAddress;
-    }
-
-    public void setRemoteAddress(SocketAddress remoteAddress) {
-        this.remoteAddress = remoteAddress;
     }
 
     public int getTimeoutMillis() {
@@ -42,16 +32,14 @@ public class SocketConnectorTask extends AsyncTask<Socket, Void, Socket> {
     }
 
     @Override
-    protected Socket doInBackground(Socket... params) {
+    protected Socket doInBackground(SocketAddress... params) {
         if (null == params || 0 == params.length) {
             return null;
         }
 
-        final Socket socket = params[0];
+        final SocketAddress remoteAddress = params[0];
 
-        if (null == remoteAddress) {
-            return null;
-        }
+        final Socket socket = new Socket();
 
         try {
             socket.connect(remoteAddress, timeoutMillis);
