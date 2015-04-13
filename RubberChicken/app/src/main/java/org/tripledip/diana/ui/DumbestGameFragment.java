@@ -26,7 +26,6 @@ public class DumbestGameFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,14 +37,17 @@ public class DumbestGameFragment extends Fragment {
         return rootView;
     }
 
-
     public class ShipStatusDisplay implements EventUiListener{
 
         private TextView shipHpTextView;
         private TextView shipDestroyedTextView;
         private Button damageShipButton;
 
-        public ShipStatusDisplay(View container){
+        public ShipStatusDisplay(View rootView){
+
+            shipHpTextView = (TextView) rootView.findViewById(R.id.shipHp);
+            shipDestroyedTextView = (TextView) rootView.findViewById(R.id.shipDestroyed);
+            damageShipButton = (Button) rootView.findViewById(R.id.damageButton);
 
         }
 
@@ -60,8 +62,13 @@ public class DumbestGameFragment extends Fragment {
 
         private TextView messageOutputTextView;
         private EditText messageInputEditText;
+        private Button sendMessageButton;
 
-        public ComlinkDisplay(){
+        public ComlinkDisplay(View rootView){
+
+            messageInputEditText = (EditText) rootView.findViewById(R.id.messageInput);
+            messageOutputTextView = (TextView) rootView.findViewById(R.id.messageOutput);
+            sendMessageButton = (Button) rootView.findViewById(R.id.messageButton);
 
         }
 
