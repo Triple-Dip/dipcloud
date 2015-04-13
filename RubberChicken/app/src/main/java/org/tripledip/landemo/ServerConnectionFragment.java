@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import org.tripledip.rubberchicken.R;
 
-import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
@@ -24,9 +22,9 @@ import java.net.Socket;
  */
 public class ServerConnectionFragment extends Fragment {
 
-    private ArrayAdapter<String> clientAdapter;
+    private int port = 55555;
 
-    private ServerSocket acceptor;
+    private ArrayAdapter<String> clientAdapter;
 
     private SocketAcceptorTask acceptorTask;
 
@@ -91,33 +89,16 @@ public class ServerConnectionFragment extends Fragment {
     private void startAcceptorTask() {
         stopAcceptorTask();
 
-        try {
-            acceptor = new ServerSocket();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
         acceptorTask = new SocketAcceptorTask();
         acceptorTask.setListener(new ClientAcceptedListener());
-        acceptorTask.execute(acceptor);
+        acceptorTask.execute(port);
 
         addMessage("Accepting clients...");
     }
 
     private void stopAcceptorTask() {
-        if (null != acceptor) {
-            try {
-                acceptor.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            addMessage("No more clients.");
-        }
-        acceptor = null;
-
         if (null != acceptorTask) {
-            acceptorTask.cancel(true);
+            acceptorTask.cancelAcceptor();
         }
         acceptorTask = null;
     }

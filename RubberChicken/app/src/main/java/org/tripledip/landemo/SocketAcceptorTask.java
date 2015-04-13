@@ -9,7 +9,9 @@ import java.net.Socket;
 /**
  * Created by Ben on 4/8/15.
  */
-public class SocketAcceptorTask extends AsyncTask<ServerSocket, Socket, Void> {
+public class SocketAcceptorTask extends AsyncTask<Integer, Socket, Void> {
+
+    private ServerSocket acceptor;
 
     private Listener listener;
 
@@ -21,13 +23,28 @@ public class SocketAcceptorTask extends AsyncTask<ServerSocket, Socket, Void> {
         this.listener = listener;
     }
 
+    public void cancelAcceptor() {
+        if (null != acceptor) {
+            try {
+                acceptor.close();
+            } catch (IOException e) {
+            }
+        }
+        acceptor = null;
+        cancel(true);
+    }
+
     @Override
-    protected Void doInBackground(ServerSocket... params) {
+    protected Void doInBackground(Integer... params) {
         if (null == params || 0 == params.length) {
             return null;
         }
 
-        final ServerSocket acceptor = params[0];
+        try {
+            acceptor = new ServerSocket(params[0]);
+        } catch (IOException e) {
+            return null;
+        }
 
         while (!isCancelled()) {
             try {
