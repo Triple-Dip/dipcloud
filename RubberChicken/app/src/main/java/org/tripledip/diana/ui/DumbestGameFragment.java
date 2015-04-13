@@ -46,7 +46,7 @@ public class DumbestGameFragment extends Fragment {
         private Button damageShipButton;
 
         public ShipStatusDisplay(View container){
-            container.findViewById(R.id.)
+
         }
 
 
