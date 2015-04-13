@@ -14,6 +14,8 @@ public interface Crudable<T> {
     public boolean remove(T thing);
     public int size();
 
+    public long nextSequenceNumber();
+
     public Collection<T> fillCollection(Collection<T> collection);
     public T[] toOrderedArray(Comparator<T> comparator);
 }

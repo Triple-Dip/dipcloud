@@ -119,8 +119,8 @@ public class DipTripleTest {
         Atom atomA = server.getNimbase().get("A");
         Atom atomB = server.getNimbase().get("B");
 
-        Atom atomAUpdated = atomA.copy("Updated", atomA.getTimeStamp() + 1);
-        Atom atomBUpdated = atomB.copy("Updated", atomB.getTimeStamp());
+        Atom atomAUpdated = atomA.copy("Updated", atomA.getSequenceNumber() + 1);
+        Atom atomBUpdated = atomB.copy("Updated", atomB.getSequenceNumber());
         Molecule toUpdate = new Molecule("test update", atomAUpdated, atomBUpdated);
 
         server.startSessions();
@@ -146,7 +146,7 @@ public class DipTripleTest {
         makeSureAllNimbasesEqual();
     }
 
-    // Add remove an atom from one client and make the remove propagates to all nodes.
+    // Remove an atom from one client and make the remove propagates to all nodes.
     @Test
     public void testRemovePropagation() throws Exception {
         addTestAtomsToAll();
@@ -274,9 +274,9 @@ public class DipTripleTest {
         // Wait until updates have finished.
         long endTime = System.nanoTime() + MAX_WAIT_NANOS;
         while (System.nanoTime() < endTime
-                && (server.getNimbase().get(testAtom.getId()).getTimeStamp() < updateCount
-                || clientA.getNimbase().get(testAtom.getId()).getTimeStamp() < updateCount
-                || clientB.getNimbase().get(testAtom.getId()).getTimeStamp() < updateCount)) {
+                && (server.getNimbase().get(testAtom.getId()).getSequenceNumber() < updateCount
+                || clientA.getNimbase().get(testAtom.getId()).getSequenceNumber() < updateCount
+                || clientB.getNimbase().get(testAtom.getId()).getSequenceNumber() < updateCount)) {
             Thread.sleep(SLEEP_MILLIS);
         }
 
@@ -284,7 +284,7 @@ public class DipTripleTest {
         stopAllSessions();
 
         // all Nimbases should see the last word from clientB
-        assertEquals(updateCount, server.getNimbase().get(testAtom.getId()).getTimeStamp());
+        assertEquals(updateCount, server.getNimbase().get(testAtom.getId()).getSequenceNumber());
         assertEquals("clientB", server.getNimbase().get(testAtom.getId()).getStringData());
         makeSureAllNimbasesEqual();
 

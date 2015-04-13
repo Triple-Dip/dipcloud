@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.tripledip.diana.data.AtomMapper;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.local.contract.ScrudListener;
 import org.tripledip.dipcloud.local.model.Atom;
@@ -154,25 +153,25 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
         setRightContainerColor(Color.DKGRAY);
         setLeftContainerColor(Color.DKGRAY);
 
-        long timeStamp = AtomMapper.generateTimeStamp();
+        long sequenceNumber = 100;
 
         boolean unitOfWork = ((DemoActivity) getActivity()).isConsistentUpdates();
         if (unitOfWork) {
 
             Molecule molecule = new Molecule(COLOUR_CHANNEL,
-                    new Atom(LEFT_COLOUR, timeStamp, colorId),
-                    new Atom(RIGHT_COLOUR, timeStamp, colorId));
+                    new Atom(LEFT_COLOUR, sequenceNumber, colorId),
+                    new Atom(RIGHT_COLOUR, sequenceNumber, colorId));
             dipAccess.proposeUpdate(molecule);
 
 
         } else {
 
             Molecule leftMolecule = new Molecule(COLOUR_CHANNEL,
-                    new Atom(LEFT_COLOUR, timeStamp, colorId));
+                    new Atom(LEFT_COLOUR, sequenceNumber, colorId));
             dipAccess.proposeUpdate(leftMolecule);
 
             Molecule rightMolecule = new Molecule(COLOUR_CHANNEL,
-                    new Atom(RIGHT_COLOUR, timeStamp, colorId));
+                    new Atom(RIGHT_COLOUR, sequenceNumber, colorId));
             dipAccess.proposeUpdate(rightMolecule);
 
         }

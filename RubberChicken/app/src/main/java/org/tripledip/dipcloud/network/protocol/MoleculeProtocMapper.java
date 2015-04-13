@@ -18,7 +18,7 @@ public class MoleculeProtocMapper {
         MoleculeProtos.Atom.Builder builder = MoleculeProtos.Atom.newBuilder();
 
         builder.setId(atom.getId());
-        builder.setTimestamp(atom.getTimeStamp());
+        builder.setSequenceNumber(atom.getSequenceNumber());
         builder.setStringData(atom.getStringData());
         builder.setIntData(atom.getIntData());
         builder.setDoubleData(atom.getDoubleData());
@@ -30,7 +30,7 @@ public class MoleculeProtocMapper {
     public static Atom fromProto(MoleculeProtos.Atom proto) {
         return new Atom(
                 proto.getId(),
-                proto.getTimestamp(),
+                proto.getSequenceNumber(),
                 proto.getStringData(),
                 proto.getIntData(),
                 proto.getDoubleData());

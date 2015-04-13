@@ -27,13 +27,13 @@ public final class MoleculeProtos {
         getIdBytes();
 
     /**
-     * <code>optional int64 timestamp = 2;</code>
+     * <code>optional int64 sequenceNumber = 2;</code>
      */
-    boolean hasTimestamp();
+    boolean hasSequenceNumber();
     /**
-     * <code>optional int64 timestamp = 2;</code>
+     * <code>optional int64 sequenceNumber = 2;</code>
      */
-    long getTimestamp();
+    long getSequenceNumber();
 
     /**
      * <code>optional string stringData = 3;</code>
@@ -127,7 +127,7 @@ public final class MoleculeProtos {
             }
             case 16: {
               bitField0_ |= 0x00000002;
-              timestamp_ = input.readInt64();
+              sequenceNumber_ = input.readInt64();
               break;
             }
             case 26: {
@@ -228,19 +228,19 @@ public final class MoleculeProtos {
       }
     }
 
-    public static final int TIMESTAMP_FIELD_NUMBER = 2;
-    private long timestamp_;
+    public static final int SEQUENCENUMBER_FIELD_NUMBER = 2;
+    private long sequenceNumber_;
     /**
-     * <code>optional int64 timestamp = 2;</code>
+     * <code>optional int64 sequenceNumber = 2;</code>
      */
-    public boolean hasTimestamp() {
+    public boolean hasSequenceNumber() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional int64 timestamp = 2;</code>
+     * <code>optional int64 sequenceNumber = 2;</code>
      */
-    public long getTimestamp() {
-      return timestamp_;
+    public long getSequenceNumber() {
+      return sequenceNumber_;
     }
 
     public static final int STRINGDATA_FIELD_NUMBER = 3;
@@ -317,7 +317,7 @@ public final class MoleculeProtos {
 
     private void initFields() {
       id_ = "";
-      timestamp_ = 0L;
+      sequenceNumber_ = 0L;
       stringData_ = "";
       intData_ = 0;
       doubleData_ = 0D;
@@ -339,7 +339,7 @@ public final class MoleculeProtos {
         output.writeBytes(1, getIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt64(2, timestamp_);
+        output.writeInt64(2, sequenceNumber_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBytes(3, getStringDataBytes());
@@ -365,7 +365,7 @@ public final class MoleculeProtos {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, timestamp_);
+          .computeInt64Size(2, sequenceNumber_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -498,7 +498,7 @@ public final class MoleculeProtos {
         super.clear();
         id_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        timestamp_ = 0L;
+        sequenceNumber_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
         stringData_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -541,7 +541,7 @@ public final class MoleculeProtos {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.timestamp_ = timestamp_;
+        result.sequenceNumber_ = sequenceNumber_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
@@ -575,8 +575,8 @@ public final class MoleculeProtos {
           id_ = other.id_;
           onChanged();
         }
-        if (other.hasTimestamp()) {
-          setTimestamp(other.getTimestamp());
+        if (other.hasSequenceNumber()) {
+          setSequenceNumber(other.getSequenceNumber());
         }
         if (other.hasStringData()) {
           bitField0_ |= 0x00000004;
@@ -692,34 +692,34 @@ public final class MoleculeProtos {
         return this;
       }
 
-      private long timestamp_ ;
+      private long sequenceNumber_ ;
       /**
-       * <code>optional int64 timestamp = 2;</code>
+       * <code>optional int64 sequenceNumber = 2;</code>
        */
-      public boolean hasTimestamp() {
+      public boolean hasSequenceNumber() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional int64 timestamp = 2;</code>
+       * <code>optional int64 sequenceNumber = 2;</code>
        */
-      public long getTimestamp() {
-        return timestamp_;
+      public long getSequenceNumber() {
+        return sequenceNumber_;
       }
       /**
-       * <code>optional int64 timestamp = 2;</code>
+       * <code>optional int64 sequenceNumber = 2;</code>
        */
-      public Builder setTimestamp(long value) {
+      public Builder setSequenceNumber(long value) {
         bitField0_ |= 0x00000002;
-        timestamp_ = value;
+        sequenceNumber_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 timestamp = 2;</code>
+       * <code>optional int64 sequenceNumber = 2;</code>
        */
-      public Builder clearTimestamp() {
+      public Builder clearSequenceNumber() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        timestamp_ = 0L;
+        sequenceNumber_ = 0L;
         onChanged();
         return this;
       }
@@ -1918,17 +1918,17 @@ public final class MoleculeProtos {
   static {
     java.lang.String[] descriptorData = {
       "\n\016molecule.proto\022\'org.tripledip.dipcloud" +
-      ".network.protocol\"^\n\004Atom\022\n\n\002id\030\001 \001(\t\022\021\n" +
-      "\ttimestamp\030\002 \001(\003\022\022\n\nstringData\030\003 \001(\t\022\017\n\007" +
-      "intData\030\004 \001(\005\022\022\n\ndoubleData\030\005 \001(\001\"\350\001\n\010Mo" +
-      "lecule\022\017\n\007channel\030\001 \001(\t\022P\n\006action\030\002 \001(\0162" +
-      "@.org.tripledip.dipcloud.network.protoco" +
-      "l.Molecule.MoleculeAction\022<\n\005atoms\030\003 \003(\013" +
-      "2-.org.tripledip.dipcloud.network.protoc" +
-      "ol.Atom\";\n\016MoleculeAction\022\007\n\003ADD\020\001\022\n\n\006UP" +
-      "DATE\020\002\022\n\n\006REMOVE\020\003\022\010\n\004SEND\020\004B9\n\'org.trip",
-      "ledip.dipcloud.network.protocolB\016Molecul" +
-      "eProtos"
+      ".network.protocol\"c\n\004Atom\022\n\n\002id\030\001 \001(\t\022\026\n" +
+      "\016sequenceNumber\030\002 \001(\003\022\022\n\nstringData\030\003 \001(" +
+      "\t\022\017\n\007intData\030\004 \001(\005\022\022\n\ndoubleData\030\005 \001(\001\"\350" +
+      "\001\n\010Molecule\022\017\n\007channel\030\001 \001(\t\022P\n\006action\030\002" +
+      " \001(\0162@.org.tripledip.dipcloud.network.pr" +
+      "otocol.Molecule.MoleculeAction\022<\n\005atoms\030" +
+      "\003 \003(\0132-.org.tripledip.dipcloud.network.p" +
+      "rotocol.Atom\";\n\016MoleculeAction\022\007\n\003ADD\020\001\022" +
+      "\n\n\006UPDATE\020\002\022\n\n\006REMOVE\020\003\022\010\n\004SEND\020\004B9\n\'org",
+      ".tripledip.dipcloud.network.protocolB\016Mo" +
+      "leculeProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1947,7 +1947,7 @@ public final class MoleculeProtos {
     internal_static_org_tripledip_dipcloud_network_protocol_Atom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_org_tripledip_dipcloud_network_protocol_Atom_descriptor,
-        new java.lang.String[] { "Id", "Timestamp", "StringData", "IntData", "DoubleData", });
+        new java.lang.String[] { "Id", "SequenceNumber", "StringData", "IntData", "DoubleData", });
     internal_static_org_tripledip_dipcloud_network_protocol_Molecule_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_org_tripledip_dipcloud_network_protocol_Molecule_fieldAccessorTable = new

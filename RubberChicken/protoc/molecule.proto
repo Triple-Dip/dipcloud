@@ -5,7 +5,7 @@ option java_outer_classname = "MoleculeProtos";
 
 message Atom {
     optional string id = 1;
-    optional int64 timestamp = 2;
+    optional int64 sequenceNumber = 2;
     optional string stringData = 3;
     optional int32 intData = 4;
     optional double doubleData = 5;
