@@ -14,6 +14,7 @@ public class SocketConnectorTask extends AsyncTask<SocketAddress, Void, Socket> 
     public static final int DEFAULT_TIMEOUT_MILLIS = 1000;
     private int timeoutMillis = DEFAULT_TIMEOUT_MILLIS;
     private Listener listener;
+    private Socket socket;
 
     public Listener getListener() {
         return listener;
@@ -31,6 +32,18 @@ public class SocketConnectorTask extends AsyncTask<SocketAddress, Void, Socket> 
         this.timeoutMillis = timeoutMillis;
     }
 
+    public void cancelConnector() {
+        if (null != socket) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+            }
+        }
+        socket = null;
+        cancel(true);
+    }
+
+
     @Override
     protected Socket doInBackground(SocketAddress... params) {
         if (null == params || 0 == params.length) {
@@ -39,7 +52,7 @@ public class SocketConnectorTask extends AsyncTask<SocketAddress, Void, Socket> 
 
         final SocketAddress remoteAddress = params[0];
 
-        final Socket socket = new Socket();
+        socket = new Socket();
 
         try {
             socket.connect(remoteAddress, timeoutMillis);

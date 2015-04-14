@@ -19,7 +19,11 @@ public class MoleculeProtocMapper {
 
         builder.setId(atom.getId());
         builder.setSequenceNumber(atom.getSequenceNumber());
-        builder.setStringData(atom.getStringData());
+
+        String stringData = atom.getStringData();
+        if (null != stringData) {
+            builder.setStringData(stringData);
+        }
         builder.setIntData(atom.getIntData());
         builder.setDoubleData(atom.getDoubleData());
 

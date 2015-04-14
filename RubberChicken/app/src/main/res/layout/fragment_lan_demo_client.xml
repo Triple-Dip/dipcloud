@@ -7,8 +7,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Server"
-        android:id="@+id/server_label_text"
+        android:text="Client"
+        android:id="@+id/client_label_text"
         android:padding="10dp"
         android:layout_gravity="center_horizontal" />
 
@@ -17,41 +17,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:id="@+id/address_pickers"
         android:gravity="center_horizontal">
 
-        <TextView
+        <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="wifi ip"
-            android:id="@+id/server_ip_text"
-            android:padding="10dp"
+            android:id="@+id/ip_picker_1"
+            android:orientation="vertical"
             android:gravity="center_horizontal" />
 
-        <TextView
+        <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="port"
-            android:id="@+id/server_port_text"
-            android:padding="10dp"
+            android:id="@+id/ip_picker_2"
+            android:orientation="vertical"
+            android:gravity="center_horizontal" />
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ip_picker_3"
+            android:orientation="vertical"
+            android:gravity="center_horizontal" />
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ip_picker_4"
+            android:orientation="vertical"
+            android:gravity="center_horizontal" />
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/port_picker"
+            android:orientation="vertical"
             android:gravity="center_horizontal" />
     </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop!"
+        android:text="Connect!"
         android:id="@+id/start_button"
         android:padding="30dp"
         android:layout_gravity="center_horizontal" />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/client_list_view"
-        android:layout_gravity="center_horizontal"
-        android:choiceMode="none"
-        android:padding="20dp" />
 
 </LinearLayout>

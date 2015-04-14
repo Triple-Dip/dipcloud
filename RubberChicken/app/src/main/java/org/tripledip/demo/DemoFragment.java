@@ -45,8 +45,6 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
         demoFragment.setColorId(colorId);
         demoFragment.setDipAccess(dipAccess);
 
-        dipAccess.getChannelListeners().registerListener(COLOUR_CHANNEL, demoFragment);
-
         return demoFragment;
     }
 
@@ -78,7 +76,7 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
     }
 
     public void setRightContainerColor(int colorId) {
-        rightContainer.getBackground().setColorFilter(colorId,PorterDuff.Mode.SRC_ATOP);
+        rightContainer.getBackground().setColorFilter(colorId, PorterDuff.Mode.SRC_ATOP);
     }
 
     public String getName() {
@@ -103,6 +101,9 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
 
     public void setDipAccess(DipAccess dipAccess) {
         this.dipAccess = dipAccess;
+        if (null != dipAccess) {
+            dipAccess.getChannelListeners().registerListener(COLOUR_CHANNEL, this);
+        }
     }
 
 
@@ -154,26 +155,9 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
         setLeftContainerColor(Color.DKGRAY);
 
         long sequenceNumber = dipAccess.getNimbase().nextSequenceNumber();
-
-        boolean unitOfWork = ((DemoActivity) getActivity()).isConsistentUpdates();
-        if (unitOfWork) {
-
-            Molecule molecule = new Molecule(COLOUR_CHANNEL,
-                    new Atom(LEFT_COLOUR, sequenceNumber, colorId),
-                    new Atom(RIGHT_COLOUR, sequenceNumber, colorId));
-            dipAccess.proposeUpdate(molecule);
-
-
-        } else {
-
-            Molecule leftMolecule = new Molecule(COLOUR_CHANNEL,
-                    new Atom(LEFT_COLOUR, sequenceNumber, colorId));
-            dipAccess.proposeUpdate(leftMolecule);
-
-            Molecule rightMolecule = new Molecule(COLOUR_CHANNEL,
-                    new Atom(RIGHT_COLOUR, sequenceNumber, colorId));
-            dipAccess.proposeUpdate(rightMolecule);
-
-        }
+        Molecule molecule = new Molecule(COLOUR_CHANNEL,
+                new Atom(LEFT_COLOUR, sequenceNumber, colorId),
+                new Atom(RIGHT_COLOUR, sequenceNumber, colorId));
+        dipAccess.proposeUpdate(molecule);
     }
 }

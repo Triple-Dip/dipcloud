@@ -22,7 +22,7 @@ import java.net.Socket;
  */
 public class ServerConnectionFragment extends Fragment {
 
-    private int port = 55555;
+    public static final int PORT = 55555;
 
     private ArrayAdapter<String> clientAdapter;
 
@@ -47,6 +47,9 @@ public class ServerConnectionFragment extends Fragment {
         TextView ipText = (TextView) rootView.findViewById(R.id.server_ip_text);
         ipText.setText(getWifiAddress());
 
+        TextView portText = (TextView) rootView.findViewById(R.id.server_port_text);
+        portText.setText(Integer.toString(PORT));
+
         Button goButton = (Button) rootView.findViewById(R.id.start_button);
         goButton.setOnClickListener(new GoButtonListener());
 
@@ -60,9 +63,7 @@ public class ServerConnectionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         clientAdapter.clear();
-
         startAcceptorTask();
     }
 
@@ -91,7 +92,7 @@ public class ServerConnectionFragment extends Fragment {
 
         acceptorTask = new SocketAcceptorTask();
         acceptorTask.setListener(new ClientAcceptedListener());
-        acceptorTask.execute(port);
+        acceptorTask.execute(PORT);
 
         addMessage("Accepting clients...");
     }
@@ -99,6 +100,7 @@ public class ServerConnectionFragment extends Fragment {
     private void stopAcceptorTask() {
         if (null != acceptorTask) {
             acceptorTask.cancelAcceptor();
+            addMessage("No more clients!");
         }
         acceptorTask = null;
     }
@@ -108,6 +110,7 @@ public class ServerConnectionFragment extends Fragment {
     }
 
     private void addClient(Socket client) {
+        ((ServerActivity) getActivity()).addSession(client);
         addMessage(client.getInetAddress().getHostAddress());
     }
 
@@ -115,6 +118,7 @@ public class ServerConnectionFragment extends Fragment {
         @Override
         public void onClick(View v) {
             stopAcceptorTask();
+            ((ServerActivity) getActivity()).startSessions();
         }
     }
 
