@@ -28,6 +28,7 @@ public class SocketAcceptorTask extends AsyncTask<Integer, Socket, Void> {
             try {
                 acceptor.close();
             } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         acceptor = null;

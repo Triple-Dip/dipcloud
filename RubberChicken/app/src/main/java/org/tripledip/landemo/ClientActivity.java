@@ -1,6 +1,7 @@
 package org.tripledip.landemo;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -10,14 +11,17 @@ import org.tripledip.dipcloud.network.behavior.DipClient;
 import org.tripledip.dipcloud.network.util.SocketProtocConnector;
 import org.tripledip.rubberchicken.R;
 
+import java.io.IOException;
 import java.net.Socket;
+import java.util.Random;
 
 /**
  * Created by Ben on 4/8/15.
  */
 public class ClientActivity extends Activity {
 
-    private DipClient client;
+    private DipClient dipClient;
+    private Socket socket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +37,7 @@ public class ClientActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        stopDip();
-    }
-
-    private void stopDip() {
-        if (null == client) {
-            return;
-        }
-        client.stop();
+        stopClient();
     }
 
     private void attachFragments() {
@@ -51,15 +48,42 @@ public class ClientActivity extends Activity {
     }
 
     public void startClient(Socket socket) {
-        client = new DipClient(new Nimbase(), new SocketProtocConnector(socket));
+        Random random = new Random();
+        int clientColor = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+
+        dipClient = new DipClient(new Nimbase(), new SocketProtocConnector(socket));
 
         ClientConnectionFragment clientConnectionFragment = ClientConnectionFragment.newInstance();
-        DemoFragment clientFragment = DemoFragment.newInstance("Client", Color.BLUE, client);
+        DemoFragment clientFragment = DemoFragment.newInstance("Client", clientColor, dipClient);
 
         getFragmentManager().beginTransaction()
                 .add(R.id.game_frame, clientFragment)
                 .commit();
 
-        client.start();
+        dipClient.start();
     }
+
+    public void stopClient() {
+        if (null != dipClient) {
+            dipClient.stop();
+        }
+        dipClient = null;
+
+        if (null != socket) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        socket = null;
+
+        Fragment clientFragment = getFragmentManager().findFragmentById(R.id.game_frame);
+        if (null != clientFragment) {
+            getFragmentManager().beginTransaction()
+                    .remove(clientFragment)
+                    .commit();
+        }
+    }
+
 }

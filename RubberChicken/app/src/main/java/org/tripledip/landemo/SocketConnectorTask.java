@@ -37,6 +37,7 @@ public class SocketConnectorTask extends AsyncTask<SocketAddress, Void, Socket> 
             try {
                 socket.close();
             } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         socket = null;
@@ -57,6 +58,7 @@ public class SocketConnectorTask extends AsyncTask<SocketAddress, Void, Socket> 
         try {
             socket.connect(remoteAddress, timeoutMillis);
         } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
 

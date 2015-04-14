@@ -12,14 +12,18 @@ import org.tripledip.dipcloud.network.behavior.DipServer;
 import org.tripledip.dipcloud.network.util.SocketProtocConnector;
 import org.tripledip.rubberchicken.R;
 
+import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ben on 4/8/15.
  */
 public class ServerActivity extends Activity {
 
-    private DipServer server;
+    private DipServer dipServer;
+    private List<Socket> sockets = new ArrayList<Socket>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,6 @@ public class ServerActivity extends Activity {
 
         createDip();
 
-        // create a ui
         if (savedInstanceState == null) {
             attachFragments();
         }
@@ -37,29 +40,25 @@ public class ServerActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        stopDip();
+        stopSessions();
     }
 
     private void createDip() {
-        server = new DipServer(new Nimbase());
-    }
-
-    private void stopDip() {
-        server.stopSessions();
+        dipServer = new DipServer(new Nimbase());
     }
 
     private void addBootstrapAtoms() {
-        long sequenceNumber = server.getNimbase().nextSequenceNumber();
+        long sequenceNumber = dipServer.getNimbase().nextSequenceNumber();
         final Molecule bootstrap = new Molecule(DemoFragment.COLOUR_CHANNEL,
                 new Atom(DemoFragment.LEFT_COLOUR, sequenceNumber, Color.DKGRAY),
                 new Atom(DemoFragment.RIGHT_COLOUR, sequenceNumber, Color.DKGRAY));
-        server.proposeAdd(bootstrap);
+        dipServer.proposeAdd(bootstrap);
     }
 
     private void attachFragments() {
 
         ServerConnectionFragment serverConnectionFragment = ServerConnectionFragment.newInstance();
-        DemoFragment serverFragment = DemoFragment.newInstance("Server", Color.RED, server);
+        DemoFragment serverFragment = DemoFragment.newInstance("Server", Color.RED, dipServer);
 
         getFragmentManager().beginTransaction()
                 .add(R.id.connection_frame, serverConnectionFragment)
@@ -68,11 +67,26 @@ public class ServerActivity extends Activity {
     }
 
     public void addSession(Socket socket) {
-        server.addSession(new SocketProtocConnector(socket));
+        dipServer.addSession(new SocketProtocConnector(socket));
     }
 
     public void startSessions() {
-        server.startSessions();
+        dipServer.startSessions();
+        addBootstrapAtoms();
+    }
+
+    public void stopSessions() {
+        dipServer.stopSessions();
+        for (Socket socket : sockets) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        sockets.clear();
+        dipServer.removeSessions();
+
         addBootstrapAtoms();
     }
 }

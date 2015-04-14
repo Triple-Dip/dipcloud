@@ -42,6 +42,11 @@ public class DipServer extends SuperDip implements InBoxListener<Molecule>, Iter
         }
     }
 
+    public void removeSessions() {
+        stopSessions();
+        sessions.clear();
+    }
+
     public void informClients(Molecule molecule) {
         for (Session<Molecule> session : sessions) {
             session.sendMessage(molecule);

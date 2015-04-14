@@ -13,6 +13,7 @@ import android.widget.NumberPicker;
 
 import org.tripledip.rubberchicken.R;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -75,6 +76,7 @@ public class ClientConnectionFragment extends Fragment {
     @Override
     public void onPause() {
         stopConnectorTask();
+        disconnect();
         super.onPause();
     }
 
@@ -132,18 +134,27 @@ public class ClientConnectionFragment extends Fragment {
             connectorTask.cancelConnector();
         }
         connectorTask = null;
+    }
 
+    private void disconnect() {
+        stopConnectorTask();
+        ((ClientActivity) getActivity()).stopClient();
         goButton.setText("Connect!");
     }
 
     private void addConnection(Socket socket) {
         ((ClientActivity) getActivity()).startClient(socket);
+        goButton.setText("Disconnect.");
     }
 
     private class GoButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            startConnectorTask();
+            if (null == connectorTask) {
+                startConnectorTask();
+            } else {
+                disconnect();
+            }
         }
     }
 
@@ -151,11 +162,10 @@ public class ClientConnectionFragment extends Fragment {
         @Override
         public void onSocketConnected(Socket socket) {
             if (null == socket) {
-                stopConnectorTask();
+                disconnect();
                 return;
             }
             addConnection(socket);
-            goButton.setText("Connected.");
         }
     }
 }

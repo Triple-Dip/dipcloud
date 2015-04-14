@@ -24,6 +24,8 @@ public class ServerConnectionFragment extends Fragment {
 
     public static final int PORT = 55555;
 
+    private Button goButton;
+
     private ArrayAdapter<String> clientAdapter;
 
     private SocketAcceptorTask acceptorTask;
@@ -50,7 +52,7 @@ public class ServerConnectionFragment extends Fragment {
         TextView portText = (TextView) rootView.findViewById(R.id.server_port_text);
         portText.setText(Integer.toString(PORT));
 
-        Button goButton = (Button) rootView.findViewById(R.id.start_button);
+        goButton = (Button) rootView.findViewById(R.id.start_button);
         goButton.setOnClickListener(new GoButtonListener());
 
         ListView clientList = (ListView) rootView.findViewById(R.id.client_list_view);
@@ -63,7 +65,6 @@ public class ServerConnectionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        clientAdapter.clear();
         startAcceptorTask();
     }
 
@@ -94,7 +95,9 @@ public class ServerConnectionFragment extends Fragment {
         acceptorTask.setListener(new ClientAcceptedListener());
         acceptorTask.execute(PORT);
 
+        clearMessages();
         addMessage("Accepting clients...");
+        goButton.setText("Play!");
     }
 
     private void stopAcceptorTask() {
@@ -103,6 +106,11 @@ public class ServerConnectionFragment extends Fragment {
             addMessage("No more clients!");
         }
         acceptorTask = null;
+        goButton.setText("Reset.");
+    }
+
+    private void clearMessages() {
+        clientAdapter.clear();
     }
 
     private void addMessage(String message) {
@@ -117,8 +125,13 @@ public class ServerConnectionFragment extends Fragment {
     private class GoButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            stopAcceptorTask();
-            ((ServerActivity) getActivity()).startSessions();
+            if (null == acceptorTask) {
+                ((ServerActivity) getActivity()).stopSessions();
+                startAcceptorTask();
+            } else {
+                stopAcceptorTask();
+                ((ServerActivity) getActivity()).startSessions();
+            }
         }
     }
 
