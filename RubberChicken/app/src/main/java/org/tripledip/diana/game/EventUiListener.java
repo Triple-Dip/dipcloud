@@ -5,8 +5,8 @@ import org.tripledip.dipcloud.local.model.Atom;
 /**
  * Created by Wolfe on 4/11/2015.
  */
-public interface EventUiListener {
+public interface EventUiListener<T> {
 
-    public void onEventOccurred(Atom atom);
+    public void onEventOccurred(T gameObject);
 
 }
