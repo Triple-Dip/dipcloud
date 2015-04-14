@@ -1,58 +1,96 @@
 package org.tripledip.diana.game;
 
 import org.tripledip.dipcloud.local.contract.DipAccess;
+import org.tripledip.dipcloud.local.contract.ScrudListener;
+import org.tripledip.dipcloud.local.model.Atom;
 
 import java.util.List;
 
 /**
  * Created by Wolfe on 4/11/2015.
  */
-public class GameCore {
+public class GameCore implements ScrudListener<Atom>{
 
-    private GameEventListeners gameEventListeners;
-    private Ship ship;
-    private ComlinkMessage comlinkMessage;
+    // Dipstuff
     private DipAccess dipAccess;
+
+    // Event Listeners
+    private GameEventListener<Integer> onShipDamagedListener;
+
+    // Game Fields
+    private int shipHp;
+    private boolean shipDestroyed;
 
 
     public GameCore (){
-
-        this.gameEventListeners = new GameEventListeners();
-
-        // Start the game with a fresh non-destroyed ship with max hp
-        ship = new Ship(false, GameConstants.SHIP_MAX_HP);
-
-        // Start with a default message
-        comlinkMessage = new ComlinkMessage(GameConstants.COMLINK_DEFAULT_MSG);
-
+        //start fresh
+        shipHp = GameConstants.SHIP_MAX_HP;
+        shipDestroyed = false;
     }
 
     // propse damage to the dip
-    public void proposeDamageShip(){
-
+    public void proposeDamageShip(int damage){
+        // get copy of current ship
+        // set current ship hp to currentHp - damage
+        // smash ship and send to dipaccess propose update
 
 
     }
 
     // set actual damage, fire listeners
-    private void damageShip(){
+    private void damageShip(int damage){
 
     }
 
+    // propose ship is destroyed
     public void proposeDestroyShip(){
 
     }
 
+    // set ship to destroyed, fire listeners
     private void destroyShip(){
 
     }
 
+    // send message to dip and fire listeners
     public void sendComlinkMessage(){
 
     }
 
-    public GameEventListeners getGameEventListeners(){
-        return this.gameEventListeners;
+    public void setOnShipDamagedListener(GameEventListener<Integer> onShipDamagedListener) {
+        this.onShipDamagedListener = onShipDamagedListener;
+    }
+
+    /**
+     *
+     *
+     *
+     *
+     *
+     *
+     */
+
+
+    @Override
+    public void onAdded(Atom thing) {
+
+    }
+
+    @Override
+    public void onUpdated(Atom thing) {
+        // compare ship hp to current hp
+        // if lower, call damage with difference
+        // if negative call destroy ship
+    }
+
+    @Override
+    public void onRemoved(Atom thing) {
+
+    }
+
+    @Override
+    public void onSent(Atom thing) {
+        // set incoming comlink message in ui
     }
 
     public void setDipAccess(DipAccess dipAccess) {

@@ -10,12 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.tripledip.diana.game.ComlinkMessage;
-import org.tripledip.diana.game.EventUiListener;
+import org.tripledip.diana.game.GameEventListener;
 import org.tripledip.diana.game.GameCore;
-import org.tripledip.diana.game.Ship;
 import org.tripledip.dipcloud.local.contract.DipAccess;
-import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.rubberchicken.R;
 
 /**
@@ -36,14 +33,16 @@ public class DumbestGameFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_dumbest_game, container, false);
 
         gameCore = new GameCore();
+
         //register listeners
+        gameCore.setOnShipDamagedListener(new ShipStatusDisplay(rootView));
 
 
 
         return rootView;
     }
 
-    public class ShipStatusDisplay implements EventUiListener<Ship>, View.OnClickListener{
+    public class ShipStatusDisplay implements GameEventListener<Integer>, View.OnClickListener{
 
         private TextView shipHpTextView;
         private TextView shipDestroyedTextView;
@@ -67,13 +66,13 @@ public class DumbestGameFragment extends Fragment {
         }
 
         @Override
-        public void onEventOccurred(Ship gameObject) {
+        public void onEventOccurred(Integer thing) {
 
         }
     }
 
 
-    public class ComlinkDisplay implements EventUiListener<ComlinkMessage>{
+    public class ComlinkDisplay implements GameEventListener<String> {
 
         private TextView messageOutputTextView;
         private EditText messageInputEditText;
@@ -89,7 +88,7 @@ public class DumbestGameFragment extends Fragment {
 
 
         @Override
-        public void onEventOccurred(ComlinkMessage gameObject) {
+        public void onEventOccurred(String thing) {
 
         }
     }
