@@ -3,6 +3,7 @@ package org.tripledip.diana.game;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.local.contract.ScrudListener;
 import org.tripledip.dipcloud.local.model.Atom;
+import org.tripledip.dipcloud.local.model.Molecule;
 
 import java.util.List;
 
@@ -11,21 +12,22 @@ import java.util.List;
  */
 public class GameCore implements ScrudListener<Atom>{
 
-    // Dipstuff
+    // Dip Stuff
     private DipAccess dipAccess;
 
     // Event Listeners
-    private GameEventListener<Integer> onShipDamagedListener;
+    private GameEventListener<Ship> onShipDamagedListener;
+    private GameEventListener<ComlinkMessage> onMessageSentListener;
 
-    // Game Fields
-    private int shipHp;
-    private boolean shipDestroyed;
+    // Game Objects
+    Ship ship;
 
 
     public GameCore (){
-        //start fresh
-        shipHp = GameConstants.SHIP_MAX_HP;
-        shipDestroyed = false;
+
+        // start fresh
+        ship = new Ship(Ship.MAX_HP, false);
+
     }
 
     // propse damage to the dip
@@ -33,6 +35,7 @@ public class GameCore implements ScrudListener<Atom>{
         // get copy of current ship
         // set current ship hp to currentHp - damage
         // smash ship and send to dipaccess propose update
+
 
 
     }
@@ -52,13 +55,19 @@ public class GameCore implements ScrudListener<Atom>{
 
     }
 
-    // send message to dip and fire listeners
-    public void sendComlinkMessage(){
+    // send message to dip
+    public void sendComlinkMessage(String message){
+
+        dipAccess.proposeSend(new Molecule(ComlinkMessage.class.getName(), new Atom(ComlinkMessage.MESSAGE, 1, message)));
 
     }
 
-    public void setOnShipDamagedListener(GameEventListener<Integer> onShipDamagedListener) {
+    public void setOnShipDamagedListener(GameEventListener<Ship> onShipDamagedListener) {
         this.onShipDamagedListener = onShipDamagedListener;
+    }
+
+    public void setOnMessageSentListener(GameEventListener<ComlinkMessage> onMessageSentListener) {
+        this.onMessageSentListener = onMessageSentListener;
     }
 
     /**
@@ -90,10 +99,24 @@ public class GameCore implements ScrudListener<Atom>{
 
     @Override
     public void onSent(Atom thing) {
+
         // set incoming comlink message in ui
+        onMessageSentListener.onEventOccurred(new ComlinkMessage(thing.getStringData()));
+
     }
 
     public void setDipAccess(DipAccess dipAccess) {
         this.dipAccess = dipAccess;
+        dipAccess.getIdListeners().registerListener(ComlinkMessage.MESSAGE,this);
+    }
+
+    public void bootStrapGame(){
+
+        dipAccess.proposeAdd(new Molecule(Ship.class.getName(),
+                new Atom(Ship.HP, 0, ship.getShipHp())));
+
+        dipAccess.proposeSend(new Molecule(ComlinkMessage.class.getName(),
+                new Atom(ComlinkMessage.MESSAGE, 0, ComlinkMessage.DEFAULT_MSG)));
+
     }
 }

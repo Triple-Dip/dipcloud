@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import org.tripledip.demo.DemoFragment;
+import org.tripledip.diana.ui.DumbestGameFragment;
 import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.network.behavior.DipClient;
 import org.tripledip.dipcloud.network.util.SocketProtocConnector;
@@ -53,8 +54,11 @@ public class ClientActivity extends Activity {
 
         dipClient = new DipClient(new Nimbase(), new SocketProtocConnector(socket));
 
-        ClientConnectionFragment clientConnectionFragment = ClientConnectionFragment.newInstance();
-        DemoFragment clientFragment = DemoFragment.newInstance("Client", clientColor, dipClient);
+//        ClientConnectionFragment clientConnectionFragment = ClientConnectionFragment.newInstance();
+//        DemoFragment clientFragment = DemoFragment.newInstance("Client", clientColor, dipClient);
+
+        DumbestGameFragment clientFragment = new DumbestGameFragment();
+        clientFragment.setGameCoreDipAccess(dipClient);
 
         getFragmentManager().beginTransaction()
                 .add(R.id.game_frame, clientFragment)

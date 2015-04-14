@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import org.tripledip.demo.DemoFragment;
+import org.tripledip.diana.ui.DumbestGameFragment;
 import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
@@ -58,10 +59,10 @@ public class ServerActivity extends Activity {
     private void attachFragments() {
 
         ServerConnectionFragment serverConnectionFragment = ServerConnectionFragment.newInstance();
-        DemoFragment serverFragment = DemoFragment.newInstance("Server", Color.RED, dipServer);
+//        DemoFragment serverFragment = DemoFragment.newInstance("Server", Color.RED, dipServer);
 
-//        DumbestGameFragment serverFragment = new DumbestGameFragment();
-//        serverFragment.setDipAccess(dipServer);
+        DumbestGameFragment serverFragment = new DumbestGameFragment();
+        serverFragment.setGameCoreDipAccess(dipServer);
 
         getFragmentManager().beginTransaction()
                 .add(R.id.connection_frame, serverConnectionFragment)
