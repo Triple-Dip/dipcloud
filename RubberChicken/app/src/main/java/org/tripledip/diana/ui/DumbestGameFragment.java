@@ -36,10 +36,10 @@ public class DumbestGameFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_dumbest_game, container, false);
 
         //register listeners
-        gameCore.setOnShipDamagedListener(new ShipStatusDisplay(rootView));
+        ShipStatusDisplay shipStatusDisplay = new ShipStatusDisplay(rootView);
+        gameCore.setOnShipDamagedListener(shipStatusDisplay);
+        gameCore.setOnShipDestroyedListener(shipStatusDisplay);
         gameCore.setOnMessageSentListener(new ComlinkDisplay(rootView));
-        gameCore.bootStrapGame();
-
 
         return rootView;
     }
@@ -62,11 +62,26 @@ public class DumbestGameFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-
+            gameCore.bootStrapGame();
+            gameCore.proposeDamageShip(1);
         }
 
         @Override
         public void onEventOccurred(Ship thing) {
+            setShipOnUiThread(thing);
+        }
+
+        private void setShipOnUiThread (final Ship ship) {
+
+            final Runnable ShipUi = new Runnable() {
+                @Override
+                public void run() {
+                    shipHpTextView.setText(String.valueOf(ship.getShipHp()));
+                    shipDestroyedTextView.setText(String.valueOf(ship.isShipDestroyed()));
+                }
+            };
+
+            getActivity().runOnUiThread(ShipUi);
 
         }
     }
@@ -89,7 +104,7 @@ public class DumbestGameFragment extends Fragment {
 
         @Override
         public void onEventOccurred(ComlinkMessage thing) {
-            setComlinkOnUiThread(thing.getMessage());
+            setComlinkOnUiThread(thing);
         }
 
         @Override
@@ -98,16 +113,16 @@ public class DumbestGameFragment extends Fragment {
         }
 
 
-        private void setComlinkOnUiThread (final String message) {
+        private void setComlinkOnUiThread (final ComlinkMessage comlinkMessage) {
 
-            final Runnable comlinkUi = new Runnable() {
+            final Runnable ComlinkUi = new Runnable() {
                 @Override
                 public void run() {
-                    messageOutputTextView.setText(message);
+                    messageOutputTextView.setText(comlinkMessage.getMessage());
                 }
             };
 
-            getActivity().runOnUiThread(comlinkUi);
+            getActivity().runOnUiThread(ComlinkUi);
 
         }
     }

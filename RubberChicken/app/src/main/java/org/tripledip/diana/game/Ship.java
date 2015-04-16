@@ -21,7 +21,15 @@ public class Ship {
         return shipHp;
     }
 
+    public void setShipHp(int shipHp) {
+        this.shipHp = shipHp;
+    }
+
     public boolean isShipDestroyed() {
         return shipDestroyed;
+    }
+
+    public void setShipDestroyed(boolean shipDestroyed) {
+        this.shipDestroyed = shipDestroyed;
     }
 }

@@ -5,54 +5,81 @@ import org.tripledip.dipcloud.local.contract.ScrudListener;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
 
-import java.util.List;
-
 /**
  * Created by Wolfe on 4/11/2015.
+ *
+ * This class is supposed to be the bread and butter brain of the game. The idea is to have all the
+ * events of the game: Damage/Repair Ship, Charge Shields, Destroy Ship, etc etc housed in
+ * this class.
+ *
+ * It acts as the intermediate between the DipAccess and the UI.
+ *
+ * Input from the player is taken from the UI which calls methods that propose changes to the
+ * DipAccess.
+ *
+ * This class is the listener for changes in the NimBase/Dip - these changes come in through the
+ * interfaced methods which compare the changes to the current values. These changes are then
+ * set locally by calling the relevant event methods. For example if the incoming ship atoms had
+ * lower hp compared to the current ship, the damageShip() method would be called with the
+ * difference.
  */
-public class GameCore implements ScrudListener<Atom>{
+public class GameCore implements ScrudListener<Molecule> {
 
     // Dip Stuff
     private DipAccess dipAccess;
 
     // Event Listeners
     private GameEventListener<Ship> onShipDamagedListener;
+    private GameEventListener<Ship> onShipDestroyedListener;
     private GameEventListener<ComlinkMessage> onMessageSentListener;
 
     // Game Objects
-    Ship ship;
+    Ship currentShip;
 
 
     public GameCore (){
 
         // start fresh
-        ship = new Ship(Ship.MAX_HP, false);
+        currentShip = new Ship(Ship.MAX_HP, false);
 
     }
 
-    // propse damage to the dip
+    // propose damage to the dip
     public void proposeDamageShip(int damage){
-        // get copy of current ship
-        // set current ship hp to currentHp - damage
-        // smash ship and send to dipaccess propose update
 
+        //TODO:
+        // get copy of current currentShip
+        // set current currentShip hp to currentHp - damage
+        // smash currentShip and send to dipaccess propose update
+
+
+        //Right now we're just using a molecule for the currentShip
+        Atom shipHpAtom = new Atom(Ship.HP,
+                dipAccess.getNimbase().nextSequenceNumber(),
+                currentShip.getShipHp() - damage);
+        dipAccess.proposeUpdate(new Molecule(Ship.class.getName(), shipHpAtom));
 
 
     }
 
     // set actual damage, fire listeners
     private void damageShip(int damage){
-
+        currentShip.setShipHp(currentShip.getShipHp()-damage);
+        onShipDamagedListener.onEventOccurred(currentShip);
+        if(currentShip.getShipHp() <= 0){
+            destroyShip();
+        }
     }
 
-    // propose ship is destroyed
+    // propose currentShip is destroyed
     public void proposeDestroyShip(){
 
     }
 
-    // set ship to destroyed, fire listeners
+    // set currentShip to destroyed, fire listeners
     private void destroyShip(){
-
+        currentShip.setShipDestroyed(true);
+        onShipDestroyedListener.onEventOccurred(currentShip);
     }
 
     // send message to dip
@@ -66,6 +93,10 @@ public class GameCore implements ScrudListener<Atom>{
         this.onShipDamagedListener = onShipDamagedListener;
     }
 
+    public void setOnShipDestroyedListener(GameEventListener<Ship> onShipDestroyedListener) {
+        this.onShipDestroyedListener = onShipDestroyedListener;
+    }
+
     public void setOnMessageSentListener(GameEventListener<ComlinkMessage> onMessageSentListener) {
         this.onMessageSentListener = onMessageSentListener;
     }
@@ -74,49 +105,61 @@ public class GameCore implements ScrudListener<Atom>{
      *
      *
      *
-     *
+     *      Dippy Stuff
      *
      *
      */
 
 
     @Override
-    public void onAdded(Atom thing) {
+    public void onAdded(Molecule thing) {
 
     }
 
     @Override
-    public void onUpdated(Atom thing) {
-        // compare ship hp to current hp
+    public void onUpdated(Molecule thing) {
+        // compare currentShip hp to current hp
         // if lower, call damage with difference
-        // if negative call destroy ship
+        // if negative call destroy currentShip
+
+        int currentHp = currentShip.getShipHp();
+        int updatedHp = thing.findById(Ship.HP).getIntData();
+
+
+        if(updatedHp < currentHp){
+            int difference = currentHp - updatedHp;
+            damageShip(difference);
+        }
+
+
+
     }
 
     @Override
-    public void onRemoved(Atom thing) {
+    public void onRemoved(Molecule thing) {
 
     }
 
     @Override
-    public void onSent(Atom thing) {
+    public void onSent(Molecule thing) {
 
         // set incoming comlink message in ui
-        onMessageSentListener.onEventOccurred(new ComlinkMessage(thing.getStringData()));
+        onMessageSentListener.onEventOccurred(new ComlinkMessage(thing.findById(ComlinkMessage.MESSAGE).getStringData()));
 
     }
 
+    //TODO: should wiring up the ScrudListeners be done here? Seems better in its own method
     public void setDipAccess(DipAccess dipAccess) {
         this.dipAccess = dipAccess;
-        dipAccess.getIdListeners().registerListener(ComlinkMessage.MESSAGE,this);
+        dipAccess.getChannelListeners().registerListener(ComlinkMessage.class.getName(),this);
+        dipAccess.getChannelListeners().registerListener(Ship.class.getName(),this);
     }
 
+    //TODO: Right now this is a hack to solve the problem of how we get the initial atoms in the dip
     public void bootStrapGame(){
 
         dipAccess.proposeAdd(new Molecule(Ship.class.getName(),
-                new Atom(Ship.HP, 0, ship.getShipHp())));
-
-        dipAccess.proposeSend(new Molecule(ComlinkMessage.class.getName(),
-                new Atom(ComlinkMessage.MESSAGE, 0, ComlinkMessage.DEFAULT_MSG)));
+                new Atom(Ship.HP, 0, currentShip.getShipHp())));
 
     }
 }
