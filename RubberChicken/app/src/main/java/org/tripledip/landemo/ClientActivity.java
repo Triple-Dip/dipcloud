@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import org.tripledip.demo.DemoFragment;
+import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.ui.DumbestGameFragment;
 import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.network.behavior.DipClient;
@@ -33,6 +34,9 @@ public class ClientActivity extends Activity {
         if (savedInstanceState == null) {
             attachFragments();
         }
+
+        // start the game service
+        startService(GameService.makeIntent(this));
     }
 
     @Override
