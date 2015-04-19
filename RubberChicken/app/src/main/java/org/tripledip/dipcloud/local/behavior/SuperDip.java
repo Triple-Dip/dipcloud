@@ -2,9 +2,12 @@ package org.tripledip.dipcloud.local.behavior;
 
 import org.tripledip.dipcloud.local.contract.Crudable;
 import org.tripledip.dipcloud.local.contract.DipAccess;
+import org.tripledip.dipcloud.local.contract.Smashable;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,12 +18,16 @@ public class SuperDip implements DipAccess {
     private final Atomizer atomizer;
     private final ScrudNotifier<Atom> idListeners;
     private final ScrudNotifier<Molecule> channelListeners;
+    private final ScrudNotifier<Smashable> smashableListeners;
+    private final Map<String, Smashable> smashableTemplates;
 
     public SuperDip(Crudable<Atom> nimbase) {
         this.nimbase = nimbase;
         this.atomizer = new Atomizer(nimbase);
         this.idListeners = new ScrudNotifier<>();
         this.channelListeners = new ScrudNotifier<>();
+        this.smashableListeners = new ScrudNotifier<>();
+        this.smashableTemplates = new HashMap<>();
     }
 
     protected void add(Molecule molecule) {
@@ -37,6 +44,12 @@ public class SuperDip implements DipAccess {
             idListeners.notifyAdded(atom.getId(), atom);
         }
         channelListeners.notifyAdded(molecule.getChannel(), molecule);
+
+        Smashable smashable = smashableTemplates.get(molecule.getChannel());
+        smashable = smashable.newInstance();
+        smashable.unSmashMe(molecule);
+        smashableListeners.notifyAdded(smashable.getId(), smashable);
+
     }
 
     protected void update(Molecule molecule) {
@@ -53,6 +66,11 @@ public class SuperDip implements DipAccess {
             idListeners.notifyUpdated(atom.getId(), atom);
         }
         channelListeners.notifyUpdated(molecule.getChannel(), molecule);
+
+        Smashable smashable = smashableTemplates.get(molecule.getChannel());
+        smashable = smashable.newInstance();
+        smashable.unSmashMe(molecule);
+        smashableListeners.notifyUpdated(smashable.getId(), smashable);
     }
 
     protected void remove(Molecule molecule) {
@@ -69,6 +87,12 @@ public class SuperDip implements DipAccess {
             idListeners.notifyRemoved(atom.getId(), atom);
         }
         channelListeners.notifyRemoved(molecule.getChannel(), molecule);
+
+
+        Smashable smashable = smashableTemplates.get(molecule.getChannel());
+        smashable = smashable.newInstance();
+        smashable.unSmashMe(molecule);
+        smashableListeners.notifyRemoved(smashable.getId(), smashable);
     }
 
     protected void send(Molecule molecule) {
@@ -81,6 +105,11 @@ public class SuperDip implements DipAccess {
             idListeners.notifySent(atom.getId(), atom);
         }
         channelListeners.notifySent(molecule.getChannel(), molecule);
+
+        Smashable smashable = smashableTemplates.get(molecule.getChannel());
+        smashable = smashable.newInstance();
+        smashable.unSmashMe(molecule);
+        smashableListeners.notifySent(smashable.getId(), smashable);
     }
 
     @Override
@@ -99,8 +128,23 @@ public class SuperDip implements DipAccess {
     }
 
     @Override
+    public ScrudNotifier<Smashable> getSmashableListeners() {
+        return smashableListeners;
+    }
+
+    @Override
+    public void registerSmashable(Smashable smashable) {
+        smashableTemplates.put(smashable.getId(), smashable);
+    }
+
+    @Override
     public void proposeAdd(Molecule molecule) {
         add(molecule);
+    }
+
+    @Override
+    public void proposeAdd(Smashable smashable) {
+        add(smashable.smashMe(new Molecule(smashable.getId())));
     }
 
     @Override
@@ -109,12 +153,27 @@ public class SuperDip implements DipAccess {
     }
 
     @Override
+    public void proposeUpdate(Smashable smashable) {
+        update(smashable.smashMe(new Molecule(smashable.getId())));
+    }
+
+    @Override
     public void proposeRemove(Molecule molecule) {
         remove(molecule);
     }
 
     @Override
+    public void proposeRemove(Smashable smashable) {
+        remove(smashable.smashMe(new Molecule(smashable.getId())));
+    }
+
+    @Override
     public void proposeSend(Molecule molecule) {
         send(molecule);
+    }
+
+    @Override
+    public void proposeSend(Smashable smashable) {
+        send(smashable.smashMe(new Molecule(smashable.getId())));
     }
 }

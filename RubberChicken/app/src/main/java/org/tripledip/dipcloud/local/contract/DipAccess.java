@@ -11,15 +11,27 @@ public interface DipAccess {
 
     public void proposeAdd(Molecule molecule);
 
+    public void proposeAdd (Smashable smashable);
+
     public void proposeUpdate(Molecule molecule);
+
+    public void proposeUpdate (Smashable smashable);
 
     public void proposeRemove(Molecule molecule);
 
+    public void proposeRemove (Smashable smashable);
+
     public void proposeSend(Molecule molecule);
+
+    public void proposeSend (Smashable smashable);
 
     public Crudable<Atom> getNimbase();
 
     public ScrudNotifier<Atom> getIdListeners();
 
     public ScrudNotifier<Molecule> getChannelListeners();
+
+    public ScrudNotifier<Smashable> getSmashableListeners();
+
+    public void registerSmashable(Smashable smashable);
 }

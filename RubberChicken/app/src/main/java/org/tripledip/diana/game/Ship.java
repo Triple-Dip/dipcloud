@@ -6,6 +6,7 @@ package org.tripledip.diana.game;
 public class Ship {
 
     public static final int MAX_HP = 10;
+    public static final int MIN_HP = 0;
     public static final String HP = "shipHp";
     public static final String DESTROYED = "shipDestroyed";
 
@@ -13,6 +14,7 @@ public class Ship {
         this.shipHp = shipHp;
         this.shipDestroyed = shipDestroyed;
     }
+
     // Game Fields
     private int shipHp;
     private boolean shipDestroyed;
