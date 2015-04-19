@@ -37,9 +37,11 @@ public class DumbestGameFragment extends Fragment {
 
         //register listeners
         ShipStatusDisplay shipStatusDisplay = new ShipStatusDisplay(rootView);
+        ComlinkDisplay comlinkDisplay = new ComlinkDisplay(rootView);
+
         gameCore.setOnShipDamagedListener(shipStatusDisplay);
         gameCore.setOnShipDestroyedListener(shipStatusDisplay);
-        gameCore.setOnMessageSentListener(new ComlinkDisplay(rootView));
+        gameCore.setOnMessageSentListener(comlinkDisplay);
 
         return rootView;
     }
