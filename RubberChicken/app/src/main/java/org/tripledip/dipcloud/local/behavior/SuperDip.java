@@ -45,11 +45,6 @@ public class SuperDip implements DipAccess {
         }
         channelListeners.notifyAdded(molecule.getChannel(), molecule);
 
-        Smashable smashable = smashableTemplates.get(molecule.getChannel());
-        smashable = smashable.newInstance();
-        smashable.unSmashMe(molecule);
-        smashableListeners.notifyAdded(smashable.getId(), smashable);
-
     }
 
     protected void update(Molecule molecule) {
@@ -66,11 +61,6 @@ public class SuperDip implements DipAccess {
             idListeners.notifyUpdated(atom.getId(), atom);
         }
         channelListeners.notifyUpdated(molecule.getChannel(), molecule);
-
-        Smashable smashable = smashableTemplates.get(molecule.getChannel());
-        smashable = smashable.newInstance();
-        smashable.unSmashMe(molecule);
-        smashableListeners.notifyUpdated(smashable.getId(), smashable);
     }
 
     protected void remove(Molecule molecule) {
@@ -88,11 +78,6 @@ public class SuperDip implements DipAccess {
         }
         channelListeners.notifyRemoved(molecule.getChannel(), molecule);
 
-
-        Smashable smashable = smashableTemplates.get(molecule.getChannel());
-        smashable = smashable.newInstance();
-        smashable.unSmashMe(molecule);
-        smashableListeners.notifyRemoved(smashable.getId(), smashable);
     }
 
     protected void send(Molecule molecule) {
@@ -105,11 +90,6 @@ public class SuperDip implements DipAccess {
             idListeners.notifySent(atom.getId(), atom);
         }
         channelListeners.notifySent(molecule.getChannel(), molecule);
-
-        Smashable smashable = smashableTemplates.get(molecule.getChannel());
-        smashable = smashable.newInstance();
-        smashable.unSmashMe(molecule);
-        smashableListeners.notifySent(smashable.getId(), smashable);
     }
 
     @Override
