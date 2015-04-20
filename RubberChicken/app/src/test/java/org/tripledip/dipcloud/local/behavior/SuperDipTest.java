@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.tripledip.dipcloud.local.contract.Crudable;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.local.contract.ScrudListener;
+import org.tripledip.dipcloud.local.contract.Smashable;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
 
@@ -135,6 +136,30 @@ public class SuperDipTest {
         @Override
         public void onSent(T thing) {
             lastSent = thing;
+        }
+    }
+
+    private static class TestSmashable extends Smashable {
+
+        private String aString;
+        private int anInt;
+        private double aDouble;
+
+
+
+        @Override
+        public void smashMe(Molecule molecule) {
+
+        }
+
+        @Override
+        public void unsmashMe(Molecule molecule) {
+
+        }
+
+        @Override
+        public Smashable newInstance() {
+            return new TestSmashable();
         }
     }
 }

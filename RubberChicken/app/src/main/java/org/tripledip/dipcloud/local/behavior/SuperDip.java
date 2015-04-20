@@ -45,6 +45,10 @@ public class SuperDip implements DipAccess {
         }
         channelListeners.notifyAdded(molecule.getChannel(), molecule);
 
+        Smashable smashable = getAndUnsmash(molecule);
+        if (null != smashable){
+            smashableListeners.notifyAdded(smashable.getId(), smashable);
+        }
     }
 
     protected void update(Molecule molecule) {
@@ -61,6 +65,11 @@ public class SuperDip implements DipAccess {
             idListeners.notifyUpdated(atom.getId(), atom);
         }
         channelListeners.notifyUpdated(molecule.getChannel(), molecule);
+
+        Smashable smashable = getAndUnsmash(molecule);
+        if (null != smashable){
+            smashableListeners.notifyUpdated(smashable.getId(), smashable);
+        }
     }
 
     protected void remove(Molecule molecule) {
@@ -78,6 +87,10 @@ public class SuperDip implements DipAccess {
         }
         channelListeners.notifyRemoved(molecule.getChannel(), molecule);
 
+        Smashable smashable = getAndUnsmash(molecule);
+        if (null != smashable){
+            smashableListeners.notifyRemoved(smashable.getId(), smashable);
+        }
     }
 
     protected void send(Molecule molecule) {
@@ -90,6 +103,12 @@ public class SuperDip implements DipAccess {
             idListeners.notifySent(atom.getId(), atom);
         }
         channelListeners.notifySent(molecule.getChannel(), molecule);
+
+        Smashable smashable = getAndUnsmash(molecule);
+        if (null != smashable){
+            smashableListeners.notifySent(smashable.getId(), smashable);
+        }
+
     }
 
     @Override
@@ -124,7 +143,11 @@ public class SuperDip implements DipAccess {
 
     @Override
     public void proposeAdd(Smashable smashable) {
-        add(smashable.smashMe(new Molecule(smashable.getId())));
+
+        Molecule molecule = new Molecule(smashable.getId());
+        smashable.smashMe(molecule);
+        add(molecule);
+
     }
 
     @Override
@@ -134,7 +157,11 @@ public class SuperDip implements DipAccess {
 
     @Override
     public void proposeUpdate(Smashable smashable) {
-        update(smashable.smashMe(new Molecule(smashable.getId())));
+
+        Molecule molecule = new Molecule(smashable.getId());
+        smashable.smashMe(molecule);
+        update(molecule);
+
     }
 
     @Override
@@ -144,7 +171,11 @@ public class SuperDip implements DipAccess {
 
     @Override
     public void proposeRemove(Smashable smashable) {
-        remove(smashable.smashMe(new Molecule(smashable.getId())));
+
+        Molecule molecule = new Molecule(smashable.getId());
+        smashable.smashMe(molecule);
+        remove(molecule);
+
     }
 
     @Override
@@ -154,6 +185,26 @@ public class SuperDip implements DipAccess {
 
     @Override
     public void proposeSend(Smashable smashable) {
-        send(smashable.smashMe(new Molecule(smashable.getId())));
+
+        Molecule molecule = new Molecule(smashable.getId());
+        smashable.smashMe(molecule);
+
+        send(molecule);
+
     }
+
+    private Smashable getAndUnsmash(Molecule molecule){
+
+        Smashable smashable = smashableTemplates.get(molecule.getChannel());
+        if(null == smashable){
+            return null;
+        }
+        smashable = smashable.newInstance();
+        smashable.unsmashMe(molecule);
+
+        return smashable;
+
+    }
+
+
 }

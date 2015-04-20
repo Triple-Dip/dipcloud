@@ -7,15 +7,17 @@ import org.tripledip.dipcloud.local.model.Molecule;
  *
  * HULKSMASH!
  *
- * Implement this interface into your program domain objects when you wanna use the dip but you
- * don't wan't atoms and molecules permeating throughout your application.
+ * extend this abstract class in your program domain objects when you wanna use the dip but you
+ * don't want atoms and molecules permeating throughout your application.
  *
  */
-public interface Smashable {
+public abstract class Smashable {
 
-    public String getId();
-    public Molecule smashMe(Molecule molecule);
-    public void unSmashMe(Molecule molecule);
-    public Smashable newInstance();
+    public String getId(){
+        return this.getClass().getSimpleName();
+    }
+    public abstract void smashMe(Molecule molecule);
+    public abstract void unsmashMe(Molecule molecule);
+    public abstract Smashable newInstance();
 
 }
