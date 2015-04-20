@@ -17,8 +17,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Ship HP:"
+            android:id="@+id/shipHpLabel" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="N/A"
             android:id="@+id/shipHp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Ship Destroyed:"
+            android:id="@+id/shipDestroyedLabel" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,8 +43,9 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Damage"
+            android:text="Damage Ship"
             android:id="@+id/damageButton" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -44,8 +59,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="N/A"
-            android:id="@+id/messageOutput" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Messages:"
+            android:id="@+id/comlinkMessagesLabel" />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:id="@+id/message_list_view"
+            android:layout_gravity="center_horizontal"
+            android:choiceMode="none"
+            android:padding="10dp" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -58,5 +82,6 @@
             android:layout_height="wrap_content"
             android:text="Send Message"
             android:id="@+id/messageButton" />
+
     </LinearLayout>
 </LinearLayout>

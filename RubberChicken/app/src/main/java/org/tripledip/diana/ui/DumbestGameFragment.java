@@ -6,8 +6,10 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.tripledip.diana.game.ComlinkMessage;
@@ -91,15 +93,16 @@ public class DumbestGameFragment extends Fragment {
 
     public class ComlinkDisplay implements GameEventListener<ComlinkMessage>, View.OnClickListener{
 
-
-        private TextView messageOutputTextView;
+        private ArrayAdapter<String> messageAdapter;
+        private ListView messageList;
         private EditText messageInputEditText;
         private Button sendMessageButton;
 
         public ComlinkDisplay(View rootView){
-
+            messageAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
+            messageList = (ListView) rootView.findViewById(R.id.message_list_view);
+            messageList.setAdapter(messageAdapter);
             messageInputEditText = (EditText) rootView.findViewById(R.id.messageInput);
-            messageOutputTextView = (TextView) rootView.findViewById(R.id.messageOutput);
             sendMessageButton = (Button) rootView.findViewById(R.id.messageButton);
             sendMessageButton.setOnClickListener(this);
         }
@@ -114,13 +117,16 @@ public class DumbestGameFragment extends Fragment {
             gameCore.sendComlinkMessage(messageInputEditText.getText().toString());
         }
 
+        private void addMessage(String message) {
+            messageAdapter.add(message);
+        }
 
         private void setComlinkOnUiThread (final ComlinkMessage comlinkMessage) {
 
             final Runnable ComlinkUi = new Runnable() {
                 @Override
                 public void run() {
-                    messageOutputTextView.setText(comlinkMessage.getMessage());
+                    addMessage(comlinkMessage.getMessage());
                 }
             };
 
@@ -128,6 +134,7 @@ public class DumbestGameFragment extends Fragment {
 
         }
     }
+
 
 
     public void setGameCoreDipAccess(DipAccess dipAccess){
