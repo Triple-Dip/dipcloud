@@ -16,7 +16,7 @@ public abstract class Smashable {
     public String getId(){
         return this.getClass().getSimpleName();
     }
-    public abstract void smashMe(Molecule molecule);
+    public abstract void smashMe(Molecule molecule, long sequenceNumber);
     public abstract void unsmashMe(Molecule molecule);
     public abstract Smashable newInstance();
 

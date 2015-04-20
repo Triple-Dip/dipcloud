@@ -145,7 +145,7 @@ public class SuperDip implements DipAccess {
     public void proposeAdd(Smashable smashable) {
 
         Molecule molecule = new Molecule(smashable.getId());
-        smashable.smashMe(molecule);
+        smashable.smashMe(molecule, nimbase.nextSequenceNumber());
         add(molecule);
 
     }
@@ -159,7 +159,7 @@ public class SuperDip implements DipAccess {
     public void proposeUpdate(Smashable smashable) {
 
         Molecule molecule = new Molecule(smashable.getId());
-        smashable.smashMe(molecule);
+        smashable.smashMe(molecule, nimbase.nextSequenceNumber());
         update(molecule);
 
     }
@@ -173,7 +173,7 @@ public class SuperDip implements DipAccess {
     public void proposeRemove(Smashable smashable) {
 
         Molecule molecule = new Molecule(smashable.getId());
-        smashable.smashMe(molecule);
+        smashable.smashMe(molecule, nimbase.nextSequenceNumber());
         remove(molecule);
 
     }
@@ -187,7 +187,7 @@ public class SuperDip implements DipAccess {
     public void proposeSend(Smashable smashable) {
 
         Molecule molecule = new Molecule(smashable.getId());
-        smashable.smashMe(molecule);
+        smashable.smashMe(molecule, nimbase.nextSequenceNumber());
 
         send(molecule);
 
