@@ -36,7 +36,7 @@ public class ClientActivity extends Activity {
         }
 
         // start the game service
-        startService(GameService.makeIntent(this));
+        // startService(GameService.makeIntent(this));
     }
 
     @Override

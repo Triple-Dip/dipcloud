@@ -21,6 +21,7 @@ public class GameService extends Service {
     public GameService() {
     }
 
+    // TODO: let caller pass in the activity to launch from the notification.
     public static Intent makeIntent(Context context) {
         return new Intent(context, GameService.class);
     }
