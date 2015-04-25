@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 public class DipTripleTest {
 
-    private static final long MAX_WAIT_NANOS = (long) 10e9;
+    private static final long MAX_WAIT_NANOS = (long) 2e9;
     private static final long SLEEP_MILLIS = 10;
 
     protected DipServer server;
@@ -293,6 +293,19 @@ public class DipTripleTest {
         assertFalse(clientAUpdaterThread.isAlive());
         assertFalse(clientBUpdaterThread.isAlive());
     }
+
+    // Hammer on concurrency test which had been failing intermittently.
+    @Test
+    public void testConcurrentUpdatesRepeatedly() throws Exception {
+        int reps = 100;
+        while (reps > 0) {
+            reps--;
+            testConcurrentUpdates();
+            setUp();
+        }
+        stopAllSessions();
+    }
+
 
     // Runnable to async pound on a Dip node.
     private static class Updater implements Runnable {

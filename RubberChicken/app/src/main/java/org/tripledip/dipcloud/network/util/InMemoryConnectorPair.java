@@ -3,12 +3,9 @@ package org.tripledip.dipcloud.network.util;
 import org.tripledip.dipcloud.network.contract.Connector;
 
 import java.io.IOException;
-import java.util.Queue;
 import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * Created by Ben on 3/7/15.
@@ -76,43 +73,20 @@ public class InMemoryConnectorPair<T> {
     }
 
     protected class MessageQueue<T> {
-        private final Queue<T> written;
-        private final Lock lock;
-        private final Condition notEmpty;
+        private final BlockingQueue<T> written;
 
         public MessageQueue() {
-            this.written = new ConcurrentLinkedQueue<>();
-            this.lock = new ReentrantLock(false);
-            this.notEmpty = lock.newCondition();
+            this.written = new LinkedBlockingDeque<>();
         }
 
         public T readNext() throws InterruptedException {
-
-            T message = written.poll();
-            if (null != message) {
-                awaitRandomJank();
-                return message;
-            }
-
-            lock.lockInterruptibly();
-            try {
-                while (null == message) {
-                    notEmpty.await();
-                    message = written.poll();
-                }
-            } finally {
-                lock.unlock();
-            }
-
+            T message = written.take();
             awaitRandomJank();
             return message;
         }
 
         public void write(T outData) {
             written.add(outData);
-            lock.lock();
-            notEmpty.signal();
-            lock.unlock();
         }
     }
 }

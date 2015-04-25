@@ -63,7 +63,7 @@ public class Nimbase implements Crudable<Atom> {
     }
 
     @Override
-    public long nextSequenceNumber() {
+    public synchronized long nextSequenceNumber() {
         return maxSequenceNumber + 1;
     }
 

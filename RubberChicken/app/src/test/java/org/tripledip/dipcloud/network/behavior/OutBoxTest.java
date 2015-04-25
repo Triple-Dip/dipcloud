@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 
 public class OutBoxTest {
-    private static final long MAX_WAIT_NANOS = (long) 10e9;
+    private static final long MAX_WAIT_NANOS = (long) 2e9;
     private static final long SLEEP_MILLIS = 10;
 
     private TestConnector connector;
@@ -56,7 +56,9 @@ public class OutBoxTest {
         assertTrue(connector.getSent().isEmpty());
 
         // synchronously move all test messages to our connector
-        outBox.sendAll();
+        for (String s : testItems) {
+            outBox.sendNext();
+        }
         assertEquals(testItems.size(), connector.getSent().size());
         assertArrayEquals(testItems.toArray(), connector.getSent().toArray());
     }

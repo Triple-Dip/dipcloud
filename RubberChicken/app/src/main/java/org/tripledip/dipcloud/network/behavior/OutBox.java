@@ -4,7 +4,10 @@ import org.tripledip.dipcloud.network.contract.Connector;
 
 import java.io.IOException;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -15,32 +18,19 @@ import java.util.concurrent.locks.ReentrantLock;
 public class OutBox<T> {
 
     private final Connector<T> connector;
-    private final Queue<T> toSend;
-    private final Lock lock;
-    private final Condition notEmpty;
+    private final BlockingQueue<T> toSend;
 
     public OutBox(Connector<T> connector) {
         this.connector = connector;
-        this.toSend = new ConcurrentLinkedQueue<>();
-        this.lock = new ReentrantLock(false);
-        this.notEmpty = lock.newCondition();
+        this.toSend = new LinkedBlockingQueue<>();
     }
 
     public void add(T item) {
         toSend.add(item);
-
-        lock.lock();
-        notEmpty.signal();
-        lock.unlock();
     }
 
     public boolean sendNext() throws InterruptedException, IOException {
-        T next = toSend.poll();
-
-        if (null == next) {
-            return false;
-        }
-
+        T next = toSend.take();
         connector.write(next);
         return true;
     }
@@ -66,14 +56,6 @@ public class OutBox<T> {
         while (true) {
             try {
                 this.sendAll();
-                lock.lockInterruptibly();
-                try {
-                    notEmpty.await();
-                } catch (InterruptedException e) {
-                    return;
-                } finally {
-                    lock.unlock();
-                }
             } catch (InterruptedException e) {
                 return;
             } catch (IOException e) {
