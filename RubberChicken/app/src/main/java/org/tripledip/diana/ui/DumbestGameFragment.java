@@ -12,10 +12,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.tripledip.diana.game.ComlinkMessage;
+import org.tripledip.diana.smashables.ComlinkMessage;
 import org.tripledip.diana.game.GameEventListener;
 import org.tripledip.diana.game.GameCore;
-import org.tripledip.diana.game.Ship;
+import org.tripledip.diana.smashables.Ship;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.rubberchicken.R;
 
