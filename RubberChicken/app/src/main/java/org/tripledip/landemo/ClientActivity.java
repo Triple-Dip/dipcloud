@@ -58,11 +58,10 @@ public class ClientActivity extends Activity {
 
         dipClient = new DipClient(new Nimbase(), new SocketProtocConnector(socket));
 
-//        ClientConnectionFragment clientConnectionFragment = ClientConnectionFragment.newInstance();
-//        DemoFragment clientFragment = DemoFragment.newInstance("Client", clientColor, dipClient);
+        DemoFragment clientFragment = DemoFragment.newInstance("Client", clientColor, dipClient);
 
-        DumbestGameFragment clientFragment = new DumbestGameFragment();
-        clientFragment.setGameCoreDipAccess(dipClient);
+//        DumbestGameFragment clientFragment = new DumbestGameFragment();
+//        clientFragment.setGameCoreDipAccess(dipClient);
 
         getFragmentManager().beginTransaction()
                 .add(R.id.game_frame, clientFragment)
