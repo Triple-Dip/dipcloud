@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import org.tripledip.demo.DemoFragment;
 import org.tripledip.diana.service.GameService;
-import org.tripledip.diana.ui.DumbestGameFragment;
 import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.network.behavior.DipClient;
 import org.tripledip.dipcloud.network.util.SocketProtocConnector;
@@ -36,7 +35,7 @@ public class ClientActivity extends Activity {
         }
 
         // start the game service
-        // startService(GameService.makeIntent(this));
+        startService(GameService.makeIntent(this, ClientActivity.class));
     }
 
     @Override
