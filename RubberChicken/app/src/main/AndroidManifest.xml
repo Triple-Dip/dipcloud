@@ -10,22 +10,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="org.tripledip.diana.ui.ServerActivity"
-            android:exported="true"
-            android:label="@string/title_activity_lan_demo"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name="org.tripledip.diana.ui.ClientActivity"
-            android:exported="true"
-            android:label="@string/title_activity_lan_demo"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <service
-            android:name="org.tripledip.diana.service.GameService"
-            android:enabled="true"
-            android:exported="false" />
 
         <activity
             android:name="org.tripledip.diana.ui.OpeningActivity"
@@ -36,6 +20,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="org.tripledip.diana.ui.ServerActivity"
+            android:exported="true"
+            android:label="@string/title_activity_server_connect"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name="org.tripledip.diana.ui.ClientActivity"
+            android:exported="true"
+            android:label="@string/title_activity_client_connect"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <service
+            android:name="org.tripledip.diana.service.GameService"
+            android:enabled="true"
+            android:exported="false" />
+
     </application>
 
 </manifest>
