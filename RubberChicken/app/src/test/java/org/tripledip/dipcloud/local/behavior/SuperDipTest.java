@@ -6,11 +6,9 @@ import org.tripledip.dipcloud.local.contract.Crudable;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.local.contract.ScrudListener;
 import org.tripledip.dipcloud.local.contract.Smashable;
+import org.tripledip.dipcloud.local.contract.SmashableBuilder;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
-
-import java.util.Comparator;
-import java.util.PriorityQueue;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -48,7 +46,7 @@ public class SuperDipTest {
     public void testAddNotifyCorrectSubject() throws Exception {
         dupCluud.getIdListeners().registerListener("B", idListener);
         dupCluud.getChannelListeners().registerListener("channel", channelListener);
-        dupCluud.getSmashableListeners().registerListener(new TestSmashable().getId(), smashableListener);
+        dupCluud.getSmashableListeners().registerListener(new TestSmashable().getChannel(), smashableListener);
 
         dupCluud.getIdListeners().registerListener("wrong", wrongIdListener);
         dupCluud.getChannelListeners().registerListener("wrong", wrongChannelListener);
@@ -58,7 +56,8 @@ public class SuperDipTest {
         Molecule molecule = new Molecule("channel", numbus.get("A"), atomB);
         dupCluud.proposeAdd(molecule);
 
-        Smashable smashable = new TestSmashable("butts",4,2.0);
+        TestSmashable smashable = new TestSmashable("butts",4,2.0);
+
         dupCluud.proposeAdd(smashable);
 
         assertEquals(molecule.getAction(), Molecule.Action.ADD);
@@ -74,7 +73,7 @@ public class SuperDipTest {
     public void testUpdateNotifyCorrectSubject() throws Exception {
         dupCluud.getIdListeners().registerListener("A", idListener);
         dupCluud.getChannelListeners().registerListener("channel", channelListener);
-        dupCluud.getSmashableListeners().registerListener(new TestSmashable().getId(), smashableListener);
+        dupCluud.getSmashableListeners().registerListener(new TestSmashable().getChannel(), smashableListener);
 
         dupCluud.getIdListeners().registerListener("wrong", wrongIdListener);
         dupCluud.getChannelListeners().registerListener("wrong", wrongChannelListener);
@@ -85,11 +84,14 @@ public class SuperDipTest {
         Molecule molecule = new Molecule("channel", atomA, atomB);
         dupCluud.proposeUpdate(molecule);
 
-        Smashable intialSmashable = new TestSmashable("butts",4,2.0);
-        dupCluud.proposeAdd(intialSmashable);
+        TestSmashable testSmashable = new TestSmashable("butts",4,2.0);
+        dupCluud.proposeAdd(testSmashable);
 
-        Smashable updateSmashable = new TestSmashable("farts",5,2.3);
-        dupCluud.proposeUpdate(updateSmashable);
+        testSmashable.setaString("farts");
+        testSmashable.setAnInt(5);
+        testSmashable.setaDouble(2.3);
+
+        dupCluud.proposeUpdate(testSmashable);
 
         assertEquals(molecule.getAction(), Molecule.Action.UPDATE);
         assertNull(wrongIdListener.lastUpdated);
@@ -97,14 +99,14 @@ public class SuperDipTest {
         assertNull(wrongSmashableListener.lastUpdated);
         assertEquals(atomA, idListener.lastUpdated);
         assertEquals(molecule, channelListener.lastUpdated);
-        assertEquals(updateSmashable, smashableListener.lastUpdated);
+        assertEquals(testSmashable, smashableListener.lastUpdated);
     }
 
     @Test
     public void testRemoveNotifyCorrectSubject() throws Exception {
         dupCluud.getIdListeners().registerListener("A", idListener);
         dupCluud.getChannelListeners().registerListener("channel", channelListener);
-        dupCluud.getSmashableListeners().registerListener(new TestSmashable().getId(), smashableListener);
+        dupCluud.getSmashableListeners().registerListener(new TestSmashable().getChannel(), smashableListener);
 
         dupCluud.getIdListeners().registerListener("wrong", wrongIdListener);
         dupCluud.getChannelListeners().registerListener("wrong", wrongChannelListener);
@@ -115,7 +117,7 @@ public class SuperDipTest {
         Molecule molecule = new Molecule("channel", atomA, atomB);
         dupCluud.proposeRemove(molecule);
 
-        Smashable intialSmashable = new TestSmashable("butts",4,2.0);
+        TestSmashable intialSmashable = new TestSmashable("butts",4,2.0);
         dupCluud.proposeAdd(intialSmashable);
 
         dupCluud.proposeRemove(intialSmashable);
@@ -134,7 +136,7 @@ public class SuperDipTest {
     public void testSendNotifyCorrectSubject() throws Exception {
         dupCluud.getIdListeners().registerListener("B", idListener);
         dupCluud.getChannelListeners().registerListener("channel", channelListener);
-        dupCluud.getSmashableListeners().registerListener(new TestSmashable().getId(), smashableListener);
+        dupCluud.getSmashableListeners().registerListener(new TestSmashable().getChannel(), smashableListener);
 
         dupCluud.getIdListeners().registerListener("wrong", wrongIdListener);
         dupCluud.getChannelListeners().registerListener("wrong", wrongChannelListener);
@@ -145,7 +147,7 @@ public class SuperDipTest {
         Molecule molecule = new Molecule("channel", atomA, atomB);
         dupCluud.proposeSend(molecule);
 
-        Smashable sentSmashable = new TestSmashable("butts",4,2.0);
+        TestSmashable sentSmashable = new TestSmashable("butts",4,2.0);
         dupCluud.proposeSend(sentSmashable);
 
         assertEquals(molecule.getAction(), Molecule.Action.SEND);
@@ -155,6 +157,44 @@ public class SuperDipTest {
         assertEquals(atomB, idListener.lastSent);
         assertEquals(molecule, channelListener.lastSent);
         assertEquals(sentSmashable, smashableListener.lastSent);
+    }
+
+    @Test
+    public void testMultipleSmashableInstances() throws Exception {
+        dupCluud.getSmashableListeners().registerListener(new TestSmashable().getChannel(), smashableListener);
+        dupCluud.getSmashableListeners().registerListener("wrong", wrongSmashableListener);
+
+        TestSmashable firstSmashable = new TestSmashable("butts",4,2.0);
+        TestSmashable secondSmashable = new TestSmashable("farts",3,1.0);
+        TestSmashable thirdSmashable = new TestSmashable("turds",6,9.0);
+
+        dupCluud.proposeAdd(firstSmashable);
+        assertEquals(firstSmashable, smashableListener.lastAdded);
+
+        dupCluud.proposeAdd(secondSmashable);
+        assertEquals(secondSmashable, smashableListener.lastAdded);
+
+        dupCluud.proposeAdd(thirdSmashable);
+        assertEquals(thirdSmashable, smashableListener.lastAdded);
+
+
+        firstSmashable.setaString("butts2");
+        dupCluud.proposeUpdate(firstSmashable);
+        assertEquals(firstSmashable, smashableListener.lastUpdated);
+
+        secondSmashable.setaString("farts2");
+        dupCluud.proposeUpdate(secondSmashable);
+        assertEquals(secondSmashable, smashableListener.lastUpdated);
+
+        thirdSmashable.setaString("turds2");
+        dupCluud.proposeUpdate(thirdSmashable);
+        assertEquals(thirdSmashable, smashableListener.lastUpdated);
+
+
+        // 1 test atom
+        // 3 x Smashables with 3 fields = 9
+        // 1 + 9 = 10 expected atoms in Nimbase
+        assertEquals(10, numbus.size());
     }
 
     private static class TestListener<T> implements ScrudListener<T> {
@@ -204,39 +244,48 @@ public class SuperDipTest {
             this.aDouble = aDouble;
         }
 
+
         @Override
-        public void smashMe(Molecule molecule, long sequenceNumber) {
-
-            molecule.addOrReplace(new Atom(A_STRING,sequenceNumber, aString));
-            molecule.addOrReplace(new Atom(AN_INT,sequenceNumber, anInt));
-            molecule.addOrReplace(new Atom(A_DOUBLE,sequenceNumber, aDouble));
-
+        public void smashMe(SmashableBuilder smashableBuilder) {
+            smashableBuilder.addDoubleData(A_DOUBLE, aDouble);
+            smashableBuilder.addIntData(AN_INT, anInt);
+            smashableBuilder.addStringData(A_STRING, aString);
         }
 
         @Override
-        public void unsmashMe(Molecule molecule) {
-
-            aString = molecule.findById(A_STRING).getStringData();
-            anInt = molecule.findById(AN_INT).getIntData();
-            aDouble = molecule.findById(A_DOUBLE).getDoubleData();
-
-        }
-
-        @Override
-        public Smashable newInstance() {
-            return new TestSmashable();
+        public void unsmashMe(SmashableBuilder smashableBuilder) {
+            this.aString = smashableBuilder.getStringData(A_STRING);
+            this.anInt = smashableBuilder.getIntData(AN_INT);
+            this.aDouble = smashableBuilder.getDoubleData(A_DOUBLE);
         }
 
         public String getaString() {
             return aString;
         }
 
+        public void setaString(String aString) {
+            this.aString = aString;
+        }
+
         public int getAnInt() {
             return anInt;
         }
 
+        public void setAnInt(int anInt) {
+            this.anInt = anInt;
+        }
+
         public double getaDouble() {
             return aDouble;
+        }
+
+        public void setaDouble(double aDouble) {
+            this.aDouble = aDouble;
+        }
+
+        @Override
+        public Smashable newInstance() {
+            return new TestSmashable();
         }
 
         // For testing
