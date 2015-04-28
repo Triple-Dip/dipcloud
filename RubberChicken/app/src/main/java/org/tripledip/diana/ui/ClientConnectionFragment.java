@@ -1,4 +1,4 @@
-package org.tripledip.landemo;
+package org.tripledip.diana.ui;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -11,15 +11,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
 
+import org.tripledip.diana.service.SocketConnectorTask;
+import org.tripledip.diana.service.SocketListener;
 import org.tripledip.rubberchicken.R;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
 /**
  * Created by Ben on 4/11/15.
+ *
+ * This fragment exposes the lifecycle of the GameService from a client point of view.
+ *
+ * It let's the user pick an IP and port for connecting to the server and lets the user try to
+ * connect to the server.
+ *
+ * It starts the game when connection is successful.  It lets the user quit the game.  It also lets
+ * the user stop the GameService if they want.
+ *
+ * The activity that attaches this fragment needs to help.  It needs to pass in a GameService that
+ * this fragment can work with.  It needs to pass in a listener that this fragment call call back to
+ * when it's time to start and stop the game.
+ *
  */
 public class ClientConnectionFragment extends Fragment {
 
@@ -158,7 +172,7 @@ public class ClientConnectionFragment extends Fragment {
         }
     }
 
-    private class SocketConnectedListener implements SocketConnectorTask.Listener {
+    private class SocketConnectedListener implements SocketListener {
         @Override
         public void onSocketConnected(Socket socket) {
             if (null == socket) {

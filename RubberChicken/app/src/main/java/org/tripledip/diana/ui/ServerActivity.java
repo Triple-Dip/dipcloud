@@ -1,11 +1,9 @@
-package org.tripledip.landemo;
+package org.tripledip.diana.ui;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import org.tripledip.demo.DemoFragment;
-import org.tripledip.diana.ui.DumbestGameFragment;
 import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
@@ -50,16 +48,16 @@ public class ServerActivity extends Activity {
 
     private void addBootstrapAtoms() {
         long sequenceNumber = dipServer.getNimbase().nextSequenceNumber();
-        final Molecule bootstrap = new Molecule(DemoFragment.COLOUR_CHANNEL,
-                new Atom(DemoFragment.LEFT_COLOUR, sequenceNumber, Color.DKGRAY),
-                new Atom(DemoFragment.RIGHT_COLOUR, sequenceNumber, Color.DKGRAY));
+        final Molecule bootstrap = new Molecule(ColorButtonFragment.COLOUR_CHANNEL,
+                new Atom(ColorButtonFragment.LEFT_COLOUR, sequenceNumber, Color.DKGRAY),
+                new Atom(ColorButtonFragment.RIGHT_COLOUR, sequenceNumber, Color.DKGRAY));
         dipServer.proposeAdd(bootstrap);
     }
 
     private void attachFragments() {
 
         ServerConnectionFragment serverConnectionFragment = ServerConnectionFragment.newInstance();
-        DemoFragment serverFragment = DemoFragment.newInstance("Server", Color.RED, dipServer);
+        ColorButtonFragment serverFragment = ColorButtonFragment.newInstance("Server", Color.RED, dipServer);
 
 //        DumbestGameFragment serverFragment = new DumbestGameFragment();
 //        serverFragment.setGameCoreDipAccess(dipServer);

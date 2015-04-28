@@ -1,4 +1,4 @@
-package org.tripledip.landemo;
+package org.tripledip.diana.service;
 
 import android.os.AsyncTask;
 
@@ -13,13 +13,13 @@ public class SocketAcceptorTask extends AsyncTask<Integer, Socket, Void> {
 
     private ServerSocket acceptor;
 
-    private Listener listener;
+    private SocketListener listener;
 
-    public Listener getListener() {
+    public SocketListener getListener() {
         return listener;
     }
 
-    public void setListener(Listener listener) {
+    public void setListener(SocketListener listener) {
         this.listener = listener;
     }
 
@@ -69,10 +69,6 @@ public class SocketAcceptorTask extends AsyncTask<Integer, Socket, Void> {
             return;
         }
 
-        listener.onSocketAccepted(values[0]);
-    }
-
-    public interface Listener {
-        public void onSocketAccepted(Socket socket);
+        listener.onSocketConnected(values[0]);
     }
 }

@@ -1,11 +1,10 @@
-package org.tripledip.landemo;
+package org.tripledip.diana.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import org.tripledip.demo.DemoFragment;
 import org.tripledip.diana.service.GameService;
 import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.network.behavior.DipClient;
@@ -57,7 +56,7 @@ public class ClientActivity extends Activity {
 
         dipClient = new DipClient(new Nimbase(), new SocketProtocConnector(socket));
 
-        DemoFragment clientFragment = DemoFragment.newInstance("Client", clientColor, dipClient);
+        ColorButtonFragment clientFragment = ColorButtonFragment.newInstance("Client", clientColor, dipClient);
 
 //        DumbestGameFragment clientFragment = new DumbestGameFragment();
 //        clientFragment.setGameCoreDipAccess(dipClient);

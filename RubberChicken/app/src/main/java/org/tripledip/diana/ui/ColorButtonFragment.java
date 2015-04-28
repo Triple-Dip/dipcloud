@@ -1,4 +1,4 @@
-package org.tripledip.demo;
+package org.tripledip.diana.ui;
 
 
 import android.app.Fragment;
@@ -19,7 +19,7 @@ import org.tripledip.rubberchicken.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DemoFragment extends Fragment implements ScrudListener<Molecule>, View.OnClickListener {
+public class ColorButtonFragment extends Fragment implements ScrudListener<Molecule>, View.OnClickListener {
 
     public static final String LEFT_COLOUR = "leftColor";
     public static final String RIGHT_COLOUR = "rightColor";
@@ -33,19 +33,19 @@ public class DemoFragment extends Fragment implements ScrudListener<Molecule>, V
     private View leftContainer;
     private View rightContainer;
 
-    public DemoFragment() {
+    public ColorButtonFragment() {
         // Required empty public constructor
     }
 
-    public static DemoFragment newInstance(String name, int colorId, DipAccess dipAccess) {
+    public static ColorButtonFragment newInstance(String name, int colorId, DipAccess dipAccess) {
 
-        DemoFragment demoFragment = new DemoFragment();
+        ColorButtonFragment colorButtonFragment = new ColorButtonFragment();
 
-        demoFragment.setName(name);
-        demoFragment.setColorId(colorId);
-        demoFragment.setDipAccess(dipAccess);
+        colorButtonFragment.setName(name);
+        colorButtonFragment.setColorId(colorId);
+        colorButtonFragment.setDipAccess(dipAccess);
 
-        return demoFragment;
+        return colorButtonFragment;
     }
 
     @Override
