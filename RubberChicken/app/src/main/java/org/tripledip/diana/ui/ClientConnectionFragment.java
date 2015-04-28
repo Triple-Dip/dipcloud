@@ -82,7 +82,7 @@ public class ClientConnectionFragment extends Fragment {
         portPicker.setMaxValue(65535);
         portPicker.setMinValue(0);
 
-        addressToPickers(getWifiAddress(), ServerConnectionFragment.PORT);
+        addressToPickers(getWifiAddress(), ServerConnectionFragment.DEFAULT_PORT);
 
         return rootView;
     }
@@ -153,7 +153,7 @@ public class ClientConnectionFragment extends Fragment {
     private void disconnect() {
         stopConnectorTask();
         //((ClientActivity) getActivity()).stopClient();
-        goButton.setText("Connect!");
+        goButton.setText("Connect.");
     }
 
     private void addConnection(Socket socket) {

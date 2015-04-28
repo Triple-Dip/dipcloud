@@ -1,50 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Server"
-        android:id="@+id/server_label_text"
-        android:padding="10dp"
-        android:layout_gravity="center_horizontal" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="wifi ip"
-            android:id="@+id/server_ip_text"
-            android:padding="10dp"
-            android:gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="port"
-            android:id="@+id/server_port_text"
-            android:padding="10dp"
-            android:gravity="center_horizontal" />
-    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start!"
+        android:text="Accept your crew."
         android:id="@+id/start_button"
-        android:padding="30dp"
-        android:layout_gravity="center_horizontal" />
+        android:padding="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_centerHorizontal="true" />
 
     <ListView
         android:layout_width="match_parent"
@@ -52,6 +19,40 @@
         android:id="@+id/client_list_view"
         android:layout_gravity="center_horizontal"
         android:choiceMode="none"
-        android:padding="20dp" />
+        android:padding="20dp"
+        android:layout_below="@+id/start_button"
+        android:layout_alignParentStart="true" />
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="server ip"
+            android:id="@+id/server_ip_text"
+            android:layout_alignParentTop="false"
+            android:layout_centerVertical="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/port_picker"
+            android:layout_toRightOf="@+id/server_ip_text"
+            android:text="1234"
+            android:textAlignment="center"
+            android:layout_centerVertical="true"
+            android:maxLength="5"
+            android:digits="5"
+            android:gravity="center" />
+    </RelativeLayout>
+
+</RelativeLayout>
