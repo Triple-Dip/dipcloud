@@ -19,7 +19,7 @@ public class CrewShipHelper extends AbstractHelper<Ship> {
     private Ship theShip;
 
     public CrewShipHelper(DipAccess dipAccess){
-        super(dipAccess);
+        super(dipAccess, new Ship());
     }
 
     /******************************************
