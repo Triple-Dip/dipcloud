@@ -1,8 +1,7 @@
-package org.tripledip.diana.game;
+package org.tripledip.diana.game.crew;
 
-import org.tripledip.diana.game.crew.CrewShipHelper;
+import org.tripledip.diana.game.AbstractGameCore;
 import org.tripledip.dipcloud.local.contract.DipAccess;
-import org.tripledip.dipcloud.local.contract.Smashable;
 
 /**
  * Created by Wolfe on 4/11/2015.
@@ -22,30 +21,15 @@ import org.tripledip.dipcloud.local.contract.Smashable;
  * lower hp compared to the current ship, the damageShip() method would be called with the
  * difference.
  */
-public class GameCore {
+public class CrewGameCore extends AbstractGameCore{
 
-    private DipAccess dipAccess;
-    private CrewShipHelper crewShipHelper;
+    private final CrewShipHelper shipHelper;
+    private final CrewChallengeHelper challengeHelper;
 
-    public GameCore (){
-
+    public CrewGameCore(DipAccess dipAccess){
+        super(dipAccess);
+        shipHelper = new CrewShipHelper(dipAccess);
+        challengeHelper = new CrewChallengeHelper(dipAccess);
     }
 
-    public DipAccess getDipAccess(){
-        return dipAccess;
-    }
-
-    public void registerSmashable(Smashable smashable){
-        dipAccess.registerSmashable(smashable);
-    }
-
-    //TODO: should wiring up the ScrudListeners be done here? Seems better in its own method
-    public void setDipAccess(DipAccess dipAccess) {
-        this.dipAccess = dipAccess;
-    }
-
-    //TODO: Right now this is a hack to solve the problem of how we get the initial atoms in the dip
-    public void bootStrapGame(){
-
-    }
 }

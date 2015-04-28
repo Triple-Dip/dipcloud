@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import org.tripledip.diana.game.smashables.ComlinkMessage;
 import org.tripledip.diana.game.GameEventListener;
-import org.tripledip.diana.game.GameCore;
+import org.tripledip.diana.game.crew.CrewGameCore;
 import org.tripledip.diana.game.smashables.Ship;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.rubberchicken.R;
@@ -24,11 +24,11 @@ import org.tripledip.rubberchicken.R;
  */
 public class DumbestGameFragment extends Fragment {
 
-    GameCore gameCore;
+    CrewGameCore crewGameCore;
 
     public DumbestGameFragment() {
         // Required empty public constructor
-        gameCore = new GameCore();
+        crewGameCore = new CrewGameCore();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class DumbestGameFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            gameCore.bootStrapGame();
+            crewGameCore.bootStrapGame();
         }
 
         @Override
@@ -128,7 +128,7 @@ public class DumbestGameFragment extends Fragment {
 
 
     public void setGameCoreDipAccess(DipAccess dipAccess){
-        gameCore.setDipAccess(dipAccess);
+        crewGameCore.setDipAccess(dipAccess);
     }
 
 
