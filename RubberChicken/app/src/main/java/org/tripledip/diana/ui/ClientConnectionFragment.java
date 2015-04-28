@@ -152,12 +152,12 @@ public class ClientConnectionFragment extends Fragment {
 
     private void disconnect() {
         stopConnectorTask();
-        ((ClientActivity) getActivity()).stopClient();
+        //((ClientActivity) getActivity()).stopClient();
         goButton.setText("Connect!");
     }
 
     private void addConnection(Socket socket) {
-        ((ClientActivity) getActivity()).startClient(socket);
+        //((ClientActivity) getActivity()).startClient(socket);
         goButton.setText("Disconnect.");
     }
 

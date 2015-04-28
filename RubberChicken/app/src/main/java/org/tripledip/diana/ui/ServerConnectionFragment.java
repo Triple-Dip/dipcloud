@@ -134,7 +134,7 @@ public class ServerConnectionFragment extends Fragment {
     }
 
     private void addClient(Socket client) {
-        ((ServerActivity) getActivity()).addSession(client);
+//        ((ServerActivity) getActivity()).addSession(client);
         addMessage(client.getInetAddress().getHostAddress());
     }
 
@@ -142,11 +142,11 @@ public class ServerConnectionFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if (null == acceptorTask) {
-                ((ServerActivity) getActivity()).stopSessions();
+                //((ServerActivity) getActivity()).stopSessions();
                 startAcceptorTask();
             } else {
                 stopAcceptorTask();
-                ((ServerActivity) getActivity()).startSessions();
+                //((ServerActivity) getActivity()).startSessions();
             }
         }
     }

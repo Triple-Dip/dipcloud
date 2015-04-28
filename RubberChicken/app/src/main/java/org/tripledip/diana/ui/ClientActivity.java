@@ -1,94 +1,19 @@
 package org.tripledip.diana.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.graphics.Color;
-import android.os.Bundle;
 
-import org.tripledip.diana.service.GameService;
-import org.tripledip.dipcloud.local.behavior.Nimbase;
-import org.tripledip.dipcloud.network.behavior.DipClient;
-import org.tripledip.dipcloud.network.util.SocketProtocConnector;
 import org.tripledip.rubberchicken.R;
-
-import java.io.IOException;
-import java.net.Socket;
-import java.util.Random;
 
 /**
  * Created by Ben on 4/8/15.
  */
-public class ClientActivity extends Activity {
-
-    private DipClient dipClient;
-    private Socket socket;
+public class ClientActivity extends ConnectActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lan_demo);
-
-        // create a ui
-        if (savedInstanceState == null) {
-            attachFragments();
-        }
-
-        // start the game service
-        startService(GameService.makeIntent(this, ClientActivity.class));
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        stopClient();
-    }
-
-    private void attachFragments() {
+    protected void attachFragments() {
         ClientConnectionFragment clientConnectionFragment = ClientConnectionFragment.newInstance();
         getFragmentManager().beginTransaction()
-                .add(R.id.connection_frame, clientConnectionFragment)
+                .add(R.id.connect_frame, clientConnectionFragment)
                 .commit();
     }
-
-    public void startClient(Socket socket) {
-        Random random = new Random();
-        int clientColor = Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256));
-
-        dipClient = new DipClient(new Nimbase(), new SocketProtocConnector(socket));
-
-        ColorButtonFragment clientFragment = ColorButtonFragment.newInstance("Client", clientColor, dipClient);
-
-//        DumbestGameFragment clientFragment = new DumbestGameFragment();
-//        clientFragment.setGameCoreDipAccess(dipClient);
-
-        getFragmentManager().beginTransaction()
-                .add(R.id.game_frame, clientFragment)
-                .commit();
-
-        dipClient.start();
-    }
-
-    public void stopClient() {
-        if (null != dipClient) {
-            dipClient.stop();
-        }
-        dipClient = null;
-
-        if (null != socket) {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        socket = null;
-
-        Fragment clientFragment = getFragmentManager().findFragmentById(R.id.game_frame);
-        if (null != clientFragment) {
-            getFragmentManager().beginTransaction()
-                    .remove(clientFragment)
-                    .commit();
-        }
-    }
-
 }

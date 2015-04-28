@@ -52,7 +52,7 @@ public class ColorButtonFragment extends Fragment implements ScrudListener<Molec
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_demo, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_color_button, container, false);
         nameText = (TextView) rootView.findViewById(R.id.colorFragName);
         leftContainer = rootView.findViewById(R.id.leftColor);
         rightContainer = rootView.findViewById(R.id.rightColor);

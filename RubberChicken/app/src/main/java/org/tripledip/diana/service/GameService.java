@@ -59,8 +59,10 @@ public class GameService extends Service {
     public static final int NOTIFICATION_ID = 42;
     public static final String NOTIFICATION_TITLE = "Diana";
     public static final String NOTIFICATION_TEXT = "Return to game.";
+    public static final String NOTIFICATION_SHUTDOWN = "Stop";
 
     public static final String HOME_ACTIVITY_KEY = "homeActivity";
+    public static final String POISON_PILL_KEY = "poisonPill";
 
     private final IBinder binder = new LocalGameService();
 
@@ -115,7 +117,15 @@ public class GameService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        putUpForegroundNotification((Class<? extends Activity>) intent.getExtras().getSerializable(HOME_ACTIVITY_KEY));
+        if (intent.hasExtra(POISON_PILL_KEY)) {
+            stopSelf();
+            return START_NOT_STICKY;
+        }
+
+        if (intent.hasExtra(HOME_ACTIVITY_KEY)) {
+            putUpForegroundNotification(
+                    (Class<? extends Activity>) intent.getExtras().getSerializable(HOME_ACTIVITY_KEY));
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -132,21 +142,28 @@ public class GameService extends Service {
 
     private void putUpForegroundNotification(Class<? extends Activity> homeActivity) {
         // Activity to launch from the service foreground notification
-        Intent resultIntent = new Intent(this, homeActivity);
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        this,
-                        0,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
+        Intent homeIntent = new Intent(this, homeActivity);
+        PendingIntent homePendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                homeIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent shutdownIntent = new Intent(this, GameService.class);
+        shutdownIntent.putExtra(POISON_PILL_KEY, true);
+        PendingIntent shutdownPendingIntent = PendingIntent.getService(
+                this,
+                0,
+                shutdownIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         // the notification itself
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(android.R.drawable.ic_dialog_alert)
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(NOTIFICATION_TITLE)
                 .setContentText(NOTIFICATION_TEXT)
-                .setContentIntent(resultPendingIntent);
+                .setContentIntent(homePendingIntent)
+                .addAction(android.R.drawable.ic_delete, NOTIFICATION_SHUTDOWN, shutdownPendingIntent);
 
         startForeground(NOTIFICATION_ID, builder.build());
     }
