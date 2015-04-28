@@ -60,7 +60,7 @@ public class ServerConnectionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_lan_demo_server, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_connect_server, container, false);
 
         TextView ipText = (TextView) rootView.findViewById(R.id.server_ip_text);
         ipText.setText(getWifiAddress());
