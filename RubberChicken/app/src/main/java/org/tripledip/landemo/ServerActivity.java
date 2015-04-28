@@ -59,10 +59,10 @@ public class ServerActivity extends Activity {
     private void attachFragments() {
 
         ServerConnectionFragment serverConnectionFragment = ServerConnectionFragment.newInstance();
-//        DemoFragment serverFragment = DemoFragment.newInstance("Server", Color.RED, dipServer);
+        DemoFragment serverFragment = DemoFragment.newInstance("Server", Color.RED, dipServer);
 
-        DumbestGameFragment serverFragment = new DumbestGameFragment();
-        serverFragment.setGameCoreDipAccess(dipServer);
+//        DumbestGameFragment serverFragment = new DumbestGameFragment();
+//        serverFragment.setGameCoreDipAccess(dipServer);
 
         getFragmentManager().beginTransaction()
                 .add(R.id.connection_frame, serverConnectionFragment)

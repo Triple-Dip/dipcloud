@@ -41,8 +41,6 @@ public class DumbestGameFragment extends Fragment {
         ShipStatusDisplay shipStatusDisplay = new ShipStatusDisplay(rootView);
         ComlinkDisplay comlinkDisplay = new ComlinkDisplay(rootView);
 
-
-
         return rootView;
     }
 
@@ -50,14 +48,12 @@ public class DumbestGameFragment extends Fragment {
 
         //status
         private TextView shipHpTextView;
-        private TextView shipDestroyedTextView;
         private Button damageShipButton;
 
         public ShipStatusDisplay(View rootView){
 
             //status
             shipHpTextView = (TextView) rootView.findViewById(R.id.shipHp);
-            shipDestroyedTextView = (TextView) rootView.findViewById(R.id.shipDestroyed);
             damageShipButton = (Button) rootView.findViewById(R.id.damageButton);
             damageShipButton.setOnClickListener(this);
         }
@@ -65,7 +61,6 @@ public class DumbestGameFragment extends Fragment {
         @Override
         public void onClick(View v) {
             gameCore.bootStrapGame();
-
         }
 
         @Override
@@ -79,7 +74,6 @@ public class DumbestGameFragment extends Fragment {
                 @Override
                 public void run() {
                     shipHpTextView.setText(String.valueOf(ship.getShipHp()));
-
                 }
             };
 
