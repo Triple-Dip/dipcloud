@@ -1,16 +1,13 @@
-package org.tripledip.diana.game.helpers;
+package org.tripledip.diana.game.crew;
 
-import org.tripledip.diana.game.GameEventListener;
-import org.tripledip.diana.game.GameEventNotifier;
-import org.tripledip.diana.smashables.Ship;
+import org.tripledip.diana.game.AbstractHelper;
+import org.tripledip.diana.game.smashables.Ship;
 import org.tripledip.dipcloud.local.contract.DipAccess;
-import org.tripledip.dipcloud.local.contract.ScrudListener;
-import org.tripledip.dipcloud.local.contract.Smashable;
 
 /**
  * Created by Wolfe on 4/26/2015.
  */
-public class ShipHelper extends AbstractHelper<Ship> {
+public class CrewShipHelper extends AbstractHelper<Ship> {
 
     public static final String EVENT_DAMAGE_HP = "damageHpEvent";
     public static final String EVENT_REPAIR_HP = "repairHpEvent";
@@ -21,7 +18,7 @@ public class ShipHelper extends AbstractHelper<Ship> {
 
     private Ship theShip;
 
-    public ShipHelper(DipAccess dipAccess){
+    public CrewShipHelper(DipAccess dipAccess){
         super(dipAccess);
     }
 

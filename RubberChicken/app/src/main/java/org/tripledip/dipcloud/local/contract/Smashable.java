@@ -13,11 +13,23 @@ import org.tripledip.dipcloud.local.model.Molecule;
  */
 public abstract class Smashable {
 
-    public String getId(){
-        return this.getClass().getSimpleName();
-    }
-    public abstract void smashMe(Molecule molecule, long sequenceNumber);
-    public abstract void unsmashMe(Molecule molecule);
+    private String instanceId;
+
+    public abstract void smashMe(SmashableBuilder smashableBuilder);
+
+    public abstract void unsmashMe(SmashableBuilder smashableBuilder);
+
     public abstract Smashable newInstance();
 
+    public String getChannel(){
+        return this.getClass().getName();
+    }
+
+    public String getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(String instanceId) {
+        this.instanceId = instanceId;
+    }
 }

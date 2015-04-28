@@ -3,12 +3,14 @@ package org.tripledip.dipcloud.local.behavior;
 import org.tripledip.dipcloud.local.contract.Crudable;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.local.contract.Smashable;
+import org.tripledip.dipcloud.local.contract.SmashableBuilder;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by Ben on 2/23/15.
@@ -45,9 +47,9 @@ public class SuperDip implements DipAccess {
         }
         channelListeners.notifyAdded(molecule.getChannel(), molecule);
 
-        Smashable smashable = getAndUnsmash(molecule);
+        Smashable smashable = unsmashWithBuilder(molecule);
         if (null != smashable){
-            smashableListeners.notifyAdded(smashable.getId(), smashable);
+            smashableListeners.notifyAdded(smashable.getChannel(), smashable);
         }
     }
 
@@ -66,9 +68,9 @@ public class SuperDip implements DipAccess {
         }
         channelListeners.notifyUpdated(molecule.getChannel(), molecule);
 
-        Smashable smashable = getAndUnsmash(molecule);
+        Smashable smashable = unsmashWithBuilder(molecule);
         if (null != smashable){
-            smashableListeners.notifyUpdated(smashable.getId(), smashable);
+            smashableListeners.notifyUpdated(smashable.getChannel(), smashable);
         }
     }
 
@@ -87,9 +89,9 @@ public class SuperDip implements DipAccess {
         }
         channelListeners.notifyRemoved(molecule.getChannel(), molecule);
 
-        Smashable smashable = getAndUnsmash(molecule);
+        Smashable smashable = unsmashWithBuilder(molecule);
         if (null != smashable){
-            smashableListeners.notifyRemoved(smashable.getId(), smashable);
+            smashableListeners.notifyRemoved(smashable.getChannel(), smashable);
         }
     }
 
@@ -104,9 +106,9 @@ public class SuperDip implements DipAccess {
         }
         channelListeners.notifySent(molecule.getChannel(), molecule);
 
-        Smashable smashable = getAndUnsmash(molecule);
+        Smashable smashable = unsmashWithBuilder(molecule);
         if (null != smashable){
-            smashableListeners.notifySent(smashable.getId(), smashable);
+            smashableListeners.notifySent(smashable.getChannel(), smashable);
         }
 
     }
@@ -133,7 +135,7 @@ public class SuperDip implements DipAccess {
 
     @Override
     public void registerSmashable(Smashable smashable) {
-        smashableTemplates.put(smashable.getId(), smashable);
+        smashableTemplates.put(smashable.getChannel(), smashable);
     }
 
     @Override
@@ -143,11 +145,7 @@ public class SuperDip implements DipAccess {
 
     @Override
     public void proposeAdd(Smashable smashable) {
-
-        Molecule molecule = new Molecule(smashable.getId());
-        smashable.smashMe(molecule, nimbase.nextSequenceNumber());
-        add(molecule);
-
+        add(smashWithBuilder(smashable));
     }
 
     @Override
@@ -157,11 +155,7 @@ public class SuperDip implements DipAccess {
 
     @Override
     public void proposeUpdate(Smashable smashable) {
-
-        Molecule molecule = new Molecule(smashable.getId());
-        smashable.smashMe(molecule, nimbase.nextSequenceNumber());
-        update(molecule);
-
+        update(smashWithBuilder(smashable));
     }
 
     @Override
@@ -171,10 +165,7 @@ public class SuperDip implements DipAccess {
 
     @Override
     public void proposeRemove(Smashable smashable) {
-
-        Molecule molecule = new Molecule(smashable.getId());
-        smashable.smashMe(molecule, nimbase.nextSequenceNumber());
-        remove(molecule);
+        remove(smashWithBuilder(smashable));
 
     }
 
@@ -185,26 +176,45 @@ public class SuperDip implements DipAccess {
 
     @Override
     public void proposeSend(Smashable smashable) {
-
-        Molecule molecule = new Molecule(smashable.getId());
-        smashable.smashMe(molecule, nimbase.nextSequenceNumber());
-
-        send(molecule);
-
+        send(smashWithBuilder(smashable));
     }
 
-    private Smashable getAndUnsmash(Molecule molecule){
+    private Smashable unsmashWithBuilder(Molecule molecule){
 
         Smashable smashable = smashableTemplates.get(molecule.getChannel());
         if(null == smashable){
             return null;
         }
         smashable = smashable.newInstance();
-        smashable.unsmashMe(molecule);
+
+        SmashableBuilder smashableBuilder =
+                new SmashableBuilder(nimbase.nextSequenceNumber(), molecule);
+
+        smashable.unsmashMe(smashableBuilder);
 
         return smashable;
 
     }
 
+    private Molecule smashWithBuilder(Smashable smashable){
+
+        Molecule molecule = new Molecule(smashable.getChannel());
+
+        // Set instance id to the user given id or generate if none is given
+        // should usually only be null when new smashables are added
+        String instanceId = smashable.getInstanceId();
+        if(null == instanceId){
+            instanceId = UUID.randomUUID().toString();
+            smashable.setInstanceId(instanceId);
+        }
+        molecule.setInstanceId(instanceId);
+
+        SmashableBuilder smashableBuilder =
+                new SmashableBuilder(nimbase.nextSequenceNumber(), molecule);
+        smashable.smashMe(smashableBuilder);
+
+        return smashableBuilder.getMolecule();
+
+    }
 
 }

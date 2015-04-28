@@ -1,6 +1,7 @@
-package org.tripledip.diana.smashables;
+package org.tripledip.diana.game.smashables;
 
 import org.tripledip.dipcloud.local.contract.Smashable;
+import org.tripledip.dipcloud.local.contract.SmashableBuilder;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
 
@@ -30,12 +31,6 @@ public class Ship extends Smashable {
         // Empty constructor for smashable template
     }
 
-    public Ship(int shipHp, int shipShield, int shipEnergy){
-        this.shipHp = shipHp;
-        this.shipShield = shipShield;
-        this.shipEnergy = shipEnergy;
-    }
-
     public int getShipHp() {
         return shipHp;
     }
@@ -48,18 +43,27 @@ public class Ship extends Smashable {
         return shipEnergy;
     }
 
+    public void setShipHp(int shipHp) {
+        this.shipHp = shipHp;
+    }
+
+    public void setShipShield(int shipShield) {
+        this.shipShield = shipShield;
+    }
+
+    public void setShipEnergy(int shipEnergy) {
+        this.shipEnergy = shipEnergy;
+    }
+
+
     @Override
-    public void smashMe(Molecule molecule, long sequenceNumber) {
-        molecule.addOrReplace(new Atom(HP,sequenceNumber, shipHp));
-        molecule.addOrReplace(new Atom(ENERGY,sequenceNumber, shipEnergy));
-        molecule.addOrReplace(new Atom(SHIELD,sequenceNumber, shipShield));
+    public void smashMe(SmashableBuilder smashableBuilder) {
+
     }
 
     @Override
-    public void unsmashMe(Molecule molecule) {
-        shipHp = molecule.findById(HP).getIntData();
-        shipEnergy = molecule.findById(ENERGY).getIntData();
-        shipShield = molecule.findById(SHIELD).getIntData();
+    public void unsmashMe(SmashableBuilder smashableBuilder) {
+
     }
 
     @Override

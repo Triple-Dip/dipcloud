@@ -1,4 +1,4 @@
-package org.tripledip.diana.game.helpers;
+package org.tripledip.diana.game;
 
 import org.tripledip.diana.game.GameEventListener;
 import org.tripledip.diana.game.GameEventNotifier;

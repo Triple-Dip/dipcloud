@@ -1,11 +1,8 @@
 package org.tripledip.diana.game;
 
-import org.tripledip.diana.game.helpers.ShipHelper;
+import org.tripledip.diana.game.crew.CrewShipHelper;
 import org.tripledip.dipcloud.local.contract.DipAccess;
-import org.tripledip.dipcloud.local.contract.ScrudListener;
 import org.tripledip.dipcloud.local.contract.Smashable;
-import org.tripledip.dipcloud.local.model.Atom;
-import org.tripledip.dipcloud.local.model.Molecule;
 
 /**
  * Created by Wolfe on 4/11/2015.
@@ -28,7 +25,7 @@ import org.tripledip.dipcloud.local.model.Molecule;
 public class GameCore {
 
     private DipAccess dipAccess;
-    private ShipHelper shipHelper;
+    private CrewShipHelper crewShipHelper;
 
     public GameCore (){
 

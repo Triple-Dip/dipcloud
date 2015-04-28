@@ -24,6 +24,7 @@ public class Molecule implements Iterable<Atom>{
 
     private final Map<String, Atom> atoms;
     private final String channel;
+    private String instanceId;
     private Action action;
 
     public Molecule(String channel) {
@@ -57,6 +58,14 @@ public class Molecule implements Iterable<Atom>{
 
     public void setAction(Action action) {
         this.action = action;
+    }
+
+    public String getInstanceId(){
+        return this.instanceId;
+    }
+
+    public void setInstanceId(String instanceId){
+        this.instanceId = instanceId;
     }
 
     public int size(){

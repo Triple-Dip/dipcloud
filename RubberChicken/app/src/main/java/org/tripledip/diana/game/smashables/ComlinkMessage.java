@@ -1,6 +1,7 @@
-package org.tripledip.diana.smashables;
+package org.tripledip.diana.game.smashables;
 
 import org.tripledip.dipcloud.local.contract.Smashable;
+import org.tripledip.dipcloud.local.contract.SmashableBuilder;
 import org.tripledip.dipcloud.local.model.Molecule;
 
 /**
@@ -8,13 +9,14 @@ import org.tripledip.dipcloud.local.model.Molecule;
  */
 public class ComlinkMessage extends Smashable{
 
+
     @Override
-    public void smashMe(Molecule molecule, long sequenceNumber) {
+    public void smashMe(SmashableBuilder smashableBuilder) {
 
     }
 
     @Override
-    public void unsmashMe(Molecule molecule) {
+    public void unsmashMe(SmashableBuilder smashableBuilder) {
 
     }
 

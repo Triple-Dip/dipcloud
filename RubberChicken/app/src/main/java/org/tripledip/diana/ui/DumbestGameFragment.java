@@ -12,10 +12,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.tripledip.diana.smashables.ComlinkMessage;
+import org.tripledip.diana.game.smashables.ComlinkMessage;
 import org.tripledip.diana.game.GameEventListener;
 import org.tripledip.diana.game.GameCore;
-import org.tripledip.diana.smashables.Ship;
+import org.tripledip.diana.game.smashables.Ship;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.rubberchicken.R;
 
@@ -41,10 +41,6 @@ public class DumbestGameFragment extends Fragment {
         ShipStatusDisplay shipStatusDisplay = new ShipStatusDisplay(rootView);
         ComlinkDisplay comlinkDisplay = new ComlinkDisplay(rootView);
 
-        //gameCore.setOnShipDamagedListener(shipStatusDisplay);
-        //gameCore.setOnShipDestroyedListener(shipStatusDisplay);
-        //gameCore.setOnMessageSentListener(comlinkDisplay);
-
         return rootView;
     }
 
@@ -52,14 +48,12 @@ public class DumbestGameFragment extends Fragment {
 
         //status
         private TextView shipHpTextView;
-        private TextView shipDestroyedTextView;
         private Button damageShipButton;
 
         public ShipStatusDisplay(View rootView){
 
             //status
             shipHpTextView = (TextView) rootView.findViewById(R.id.shipHp);
-            shipDestroyedTextView = (TextView) rootView.findViewById(R.id.shipDestroyed);
             damageShipButton = (Button) rootView.findViewById(R.id.damageButton);
             damageShipButton.setOnClickListener(this);
         }
@@ -67,7 +61,6 @@ public class DumbestGameFragment extends Fragment {
         @Override
         public void onClick(View v) {
             gameCore.bootStrapGame();
-            //gameCore.proposeDamageShip(1);
         }
 
         @Override
@@ -81,7 +74,6 @@ public class DumbestGameFragment extends Fragment {
                 @Override
                 public void run() {
                     shipHpTextView.setText(String.valueOf(ship.getShipHp()));
-                    //shipDestroyedTextView.setText(String.valueOf(ship.isShipDestroyed()));
                 }
             };
 
@@ -114,7 +106,6 @@ public class DumbestGameFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            //gameCore.sendComlinkMessage(messageInputEditText.getText().toString());
         }
 
         private void addMessage(String message) {
@@ -126,7 +117,6 @@ public class DumbestGameFragment extends Fragment {
             final Runnable ComlinkUi = new Runnable() {
                 @Override
                 public void run() {
-                    //addMessage(comlinkMessage.getMessage());
                 }
             };
 
