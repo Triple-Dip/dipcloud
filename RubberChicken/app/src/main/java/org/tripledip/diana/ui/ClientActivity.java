@@ -1,7 +1,5 @@
 package org.tripledip.diana.ui;
 
-import android.app.Activity;
-
 import org.tripledip.rubberchicken.R;
 
 /**
@@ -15,5 +13,10 @@ public class ClientActivity extends ConnectActivity {
         getFragmentManager().beginTransaction()
                 .add(R.id.connect_frame, clientConnectionFragment)
                 .commit();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_connect_client;
     }
 }

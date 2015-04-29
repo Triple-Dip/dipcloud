@@ -14,7 +14,7 @@ public abstract class ConnectActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_connect);
+        setContentView(getLayoutId());
 
         if (null == savedInstanceState) {
             attachFragments();
@@ -25,4 +25,6 @@ public abstract class ConnectActivity extends Activity {
     }
 
     protected abstract void attachFragments();
+
+    protected abstract int getLayoutId();
 }
