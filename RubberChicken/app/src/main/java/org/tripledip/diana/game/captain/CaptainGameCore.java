@@ -1,6 +1,7 @@
 package org.tripledip.diana.game.captain;
 
 import org.tripledip.diana.game.AbstractGameCore;
+import org.tripledip.diana.game.Player;
 import org.tripledip.diana.game.captain.encounter.EncounterController;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 
@@ -13,10 +14,10 @@ public class CaptainGameCore extends AbstractGameCore {
     private final CaptainShipHelper shipHelper;
     private final EncounterController encounterHelper;
 
-    public CaptainGameCore(DipAccess dipAccess){
-        super(dipAccess);
-        challengeHelper = new CaptainChallengeHelper(dipAccess);
-        shipHelper = new CaptainShipHelper(dipAccess);
+    public CaptainGameCore(DipAccess dipAccess, Player player){
+        super(dipAccess, player);
+        challengeHelper = new CaptainChallengeHelper(dipAccess, player);
+        shipHelper = new CaptainShipHelper(dipAccess, player);
         encounterHelper = new EncounterController();
     }
 

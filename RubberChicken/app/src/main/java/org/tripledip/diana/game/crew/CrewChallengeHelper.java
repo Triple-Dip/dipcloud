@@ -1,6 +1,7 @@
 package org.tripledip.diana.game.crew;
 
 import org.tripledip.diana.game.AbstractHelper;
+import org.tripledip.diana.game.Player;
 import org.tripledip.diana.game.smashables.Challenge;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 
@@ -19,18 +20,17 @@ public class CrewChallengeHelper extends AbstractHelper<Challenge>{
     private final List<Challenge> challenges = new ArrayList<>();
     private Challenge currentChallenge;
 
-    public CrewChallengeHelper(DipAccess dipAccess) {
-        super(dipAccess, new Challenge());
+    public CrewChallengeHelper(DipAccess dipAccess, Player player) {
+        super(dipAccess, player, new Challenge());
     }
 
     public void requestOwnership(Challenge challenge){
-        //TODO: How do we model the "player" or "owner"?
-        challenge.setOwner("butts");
+        challenge.setOwner(player.getName());
         dipAccess.proposeUpdate(challenge);
     }
 
     private void verifyOwnership(Challenge challenge){
-        if("butts".equals(challenge.getOwner())){
+        if(player.getName().equals(challenge.getOwner())){
             startChallenge(challenge);
         }
     }

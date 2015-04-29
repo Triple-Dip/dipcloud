@@ -1,6 +1,7 @@
 package org.tripledip.diana.game.crew;
 
 import org.tripledip.diana.game.AbstractGameCore;
+import org.tripledip.diana.game.Player;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 
 /**
@@ -26,10 +27,10 @@ public class CrewGameCore extends AbstractGameCore{
     private final CrewShipHelper shipHelper;
     private final CrewChallengeHelper challengeHelper;
 
-    public CrewGameCore(DipAccess dipAccess){
-        super(dipAccess);
-        shipHelper = new CrewShipHelper(dipAccess);
-        challengeHelper = new CrewChallengeHelper(dipAccess);
+    public CrewGameCore(DipAccess dipAccess, Player player){
+        super(dipAccess, player);
+        shipHelper = new CrewShipHelper(dipAccess, player);
+        challengeHelper = new CrewChallengeHelper(dipAccess, player);
     }
 
 }

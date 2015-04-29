@@ -1,6 +1,7 @@
 package org.tripledip.diana.game.captain;
 
 import org.tripledip.diana.game.AbstractHelper;
+import org.tripledip.diana.game.Player;
 import org.tripledip.diana.game.smashables.Ship;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 
@@ -11,8 +12,8 @@ public class CaptainShipHelper extends AbstractHelper<Ship>{
 
     private Ship theShip;
 
-    public CaptainShipHelper(DipAccess dipAccess) {
-        super(dipAccess, new Ship());
+    public CaptainShipHelper(DipAccess dipAccess, Player player) {
+        super(dipAccess, player, new Ship());
     }
 
     public Ship getTheShip() {
