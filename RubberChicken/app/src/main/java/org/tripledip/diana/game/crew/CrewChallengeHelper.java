@@ -15,6 +15,7 @@ public class CrewChallengeHelper extends AbstractHelper<Challenge>{
 
     public static final String EVENT_ADD_CHALLENGE= "addChallengeEvent";
     public static final String EVENT_REMOVE_CHALLENGE = "removeChallengeEvent";
+    public static final String EVENT_FINISH_CHALLENGE = "finishChallengeEvent";
     public static final String EVENT_START_CHALLENGE = "startChallengeEvent";
 
     private final List<Challenge> challenges = new ArrayList<>();
@@ -32,9 +33,22 @@ public class CrewChallengeHelper extends AbstractHelper<Challenge>{
 
     // if the incoming challenge is the player's name, start it
     private void verifyOwnership(Challenge challenge){
-        if(player.getName().equals(challenge.getOwner())){
-            startChallenge(challenge);
+        String owner = challenge.getOwner();
+        String result = challenge.getResult();
+
+        // someone definitely owns it now and it's finished
+        if(null != owner && null == result ){
+
+            // it's me!!
+            if(owner.equals(player.getName())){
+                startChallenge(challenge);
+            } else {
+                // or not :(
+                removeChallenge(challenge);
+            }
+
         }
+
     }
 
     // start challenge is a game event... !
@@ -42,6 +56,17 @@ public class CrewChallengeHelper extends AbstractHelper<Challenge>{
         currentChallenge = challenge;
         gameEventNotifier.notifyEventOccurred(EVENT_START_CHALLENGE, challenge);
         //TODO: wire up the fragment minigame and start playin'
+
+    }
+
+    // challenge is finished!
+    private void finishChallenge(Challenge challenge){
+
+        dipAccess.proposeUpdate(challenge);
+        currentChallenge = null;
+        removeChallenge(challenge);
+        gameEventNotifier.notifyEventOccurred(EVENT_FINISH_CHALLENGE, challenge);
+
     }
 
     // challenges get added from an encounter

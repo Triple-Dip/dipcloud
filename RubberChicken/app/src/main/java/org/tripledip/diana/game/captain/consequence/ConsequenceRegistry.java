@@ -10,7 +10,7 @@ public class ConsequenceRegistry {
 
 
 
-    public class DamageShipConsequence extends AbstractConsequence {
+    public static class DamageShipConsequence extends AbstractConsequence {
 
         @Override
         public void doStuff(CaptainGameCore gameCore) {
@@ -20,6 +20,20 @@ public class ConsequenceRegistry {
             gameCore.getDipAccess().proposeUpdate(ship);
 
         }
+
+    }
+
+    public static class RepairShipConsequence extends AbstractConsequence {
+
+        @Override
+        public void doStuff(CaptainGameCore gameCore) {
+
+            Ship ship = gameCore.getShipHelper().getTheShip();
+            ship.setShipHp(ship.getShipHp() + 5);
+            gameCore.getDipAccess().proposeUpdate(ship);
+
+        }
+
     }
 
 
