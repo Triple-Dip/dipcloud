@@ -3,4 +3,12 @@
     <string name="title_activity_client_connect">Connect Client</string>
     <string name="title_activity_server_connect">Connect Server</string>
     <string name="title_activity_opening">Diana</string>
+    <string name="title_activity_captain">CaptainActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_crew">CrewActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
