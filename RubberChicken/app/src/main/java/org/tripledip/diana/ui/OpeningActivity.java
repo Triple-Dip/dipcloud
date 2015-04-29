@@ -19,7 +19,7 @@ public class OpeningActivity extends Activity {
         captainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OpeningActivity.this, ServerActivity.class));
+                startActivity(new Intent(OpeningActivity.this, ServerConnectActivity.class));
             }
         });
 
@@ -27,7 +27,7 @@ public class OpeningActivity extends Activity {
         crewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OpeningActivity.this, ClientActivity.class));
+                startActivity(new Intent(OpeningActivity.this, ClientConnectActivity.class));
             }
         });
     }

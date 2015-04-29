@@ -5,18 +5,18 @@ import org.tripledip.rubberchicken.R;
 /**
  * Created by Ben on 4/8/15.
  */
-public class ServerActivity extends ConnectActivity {
+public class ClientConnectActivity extends ConnectActivity {
 
     @Override
     protected void attachFragments() {
-        ServerConnectionFragment serverConnectionFragment = ServerConnectionFragment.newInstance();
+        ClientConnectionFragment clientConnectionFragment = ClientConnectionFragment.newInstance();
         getFragmentManager().beginTransaction()
-                .add(R.id.connect_frame, serverConnectionFragment)
+                .add(R.id.connect_frame, clientConnectionFragment)
                 .commit();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_connect_server;
+        return R.layout.activity_connect_client;
     }
 }
