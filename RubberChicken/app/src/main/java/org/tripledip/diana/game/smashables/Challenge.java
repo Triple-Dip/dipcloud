@@ -8,17 +8,41 @@ import org.tripledip.dipcloud.local.contract.SmashableBuilder;
  */
 public class Challenge extends Smashable{
 
+    public static final String TYPE_DUMBEST = "dumbestChallenge";
+
+    public static final String RESULT_SUCCESS = "passed";
+    public static final String RESULT_FAILED = "failed";
+
     private static String NAME = "name";
     private static String OWNER = "owner";
     private static String RESULT = "result";
     private static String ENCOUNTER = "encounter";
     private static String TYPE = "type";
 
+    // the unique name of the challenge to differentiate it from other challenges of the same type
     private String name;
+
+    // the crew player owner of the challenge
     private String owner;
+
+    // the pass or fail (or maybe something inbetween) result of the challenge
     private String result;
+
+    // the encounter owner of this challenge
     private String encounter;
+
+    // the type of the challenge that will determine the minigame to be wired up
     private String type;
+
+    public Challenge(){
+        // need dat empty constructor fo'dat templatez
+    }
+
+    public Challenge(String name, String encounter, String type){
+        this.name = name;
+        this.encounter = encounter;
+        this.type = type;
+    }
 
     public String getName() {
         return name;

@@ -12,4 +12,5 @@ public abstract class AbstractConsequence {
 
     public abstract void doStuff(CaptainGameCore gameCore);
 
+
 }

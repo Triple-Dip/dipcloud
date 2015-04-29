@@ -18,7 +18,7 @@ public class CaptainGameCore extends AbstractGameCore {
         super(dipAccess, player);
         challengeHelper = new CaptainChallengeHelper(dipAccess, player);
         shipHelper = new CaptainShipHelper(dipAccess, player);
-        encounterHelper = new EncounterController();
+        encounterHelper = new EncounterController(dipAccess);
     }
 
     public CaptainChallengeHelper getChallengeHelper() {

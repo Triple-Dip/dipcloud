@@ -7,6 +7,11 @@ import org.tripledip.dipcloud.local.contract.DipAccess;
 
 /**
  * Created by Wolfe on 4/28/2015.
+ *
+ * I imagine a digital tumbleweed blowing by when you look at this class...
+ *
+ * I made it thinking it would be necessary but EncounterController will probably be enough
+ *
  */
 public class CaptainChallengeHelper extends AbstractHelper<Challenge>{
 
