@@ -12,9 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.service.SocketAcceptorTask;
 import org.tripledip.diana.service.SocketListener;
 import org.tripledip.rubberchicken.R;
@@ -43,20 +43,20 @@ public class ServerConnectionFragment extends Fragment {
 
     private Button goButton;
     private EditText portPicker;
-
     private ArrayAdapter<String> clientAdapter;
 
-    private SocketAcceptorTask acceptorTask;
+    private GameService gameService;
+
+    public void setGameService(GameService gameService) {
+        this.gameService = gameService;
+    }
 
     public ServerConnectionFragment() {
         // Required empty public constructor
     }
 
     public static ServerConnectionFragment newInstance() {
-
-        ServerConnectionFragment demoFragment = new ServerConnectionFragment();
-
-        return demoFragment;
+        return new ServerConnectionFragment();
     }
 
     @Override
@@ -81,14 +81,7 @@ public class ServerConnectionFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        startAcceptorTask();
-    }
-
-    @Override
     public void onPause() {
-        stopAcceptorTask();
         super.onPause();
     }
 
@@ -116,25 +109,6 @@ public class ServerConnectionFragment extends Fragment {
         }
     }
 
-    private void startAcceptorTask() {
-        stopAcceptorTask();
-
-        acceptorTask = new SocketAcceptorTask();
-        acceptorTask.setListener(new ClientAcceptedListener());
-        acceptorTask.execute(getPortFromInput());
-
-        clearMessages();
-        goButton.setText("Play.");
-    }
-
-    private void stopAcceptorTask() {
-        if (null != acceptorTask) {
-            acceptorTask.cancelAcceptor();
-        }
-        acceptorTask = null;
-        goButton.setText("Reset.");
-    }
-
     private void clearMessages() {
         clientAdapter.clear();
     }
@@ -143,28 +117,16 @@ public class ServerConnectionFragment extends Fragment {
         clientAdapter.add(message);
     }
 
-    private void addClient(Socket client) {
-//        ((ServerActivity) getActivity()).addSession(client);
-        addMessage(client.getInetAddress().getHostAddress());
-    }
-
     private class GoButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if (null == acceptorTask) {
-                //((ServerActivity) getActivity()).stopSessions();
-                startAcceptorTask();
-            } else {
-                stopAcceptorTask();
-                //((ServerActivity) getActivity()).startSessions();
-            }
+
         }
     }
 
     private class ClientAcceptedListener implements SocketListener {
         @Override
         public void onSocketConnected(Socket socket) {
-            addClient(socket);
         }
     }
 }

@@ -64,7 +64,7 @@ public class GameService extends Service {
     public static final String HOME_ACTIVITY_KEY = "homeActivity";
     public static final String POISON_PILL_KEY = "poisonPill";
 
-    private final IBinder binder = new LocalGameService();
+    private final IBinder binder = new GameServiceBinder();
 
     private SocketAcceptorTask socketAcceptorTask;
     private SocketConnectorTask socketConnectorTask;
@@ -77,9 +77,9 @@ public class GameService extends Service {
     public GameService() {
     }
 
-    public class LocalGameService extends Binder {
-        LocalGameService getService() {
-            return LocalGameService.this;
+    public class GameServiceBinder extends Binder {
+        public GameService getService() {
+            return GameService.this;
         }
     }
 
@@ -99,11 +99,17 @@ public class GameService extends Service {
         this.game = game;
     }
 
-    public static Intent makeIntent(Context context, Class<? extends Activity> homeActivity) {
+    public static Intent makeStartIntent(Context context, Class<? extends Activity> homeActivity) {
         Intent intent = new Intent(context, GameService.class);
         intent.putExtra(HOME_ACTIVITY_KEY, homeActivity);
         return intent;
     }
+
+    public static Intent makeBindIntent(Context context) {
+        Intent intent = new Intent(context, GameService.class);
+        return intent;
+    }
+
 
     @Override
     public IBinder onBind(Intent intent) {

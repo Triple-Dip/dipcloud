@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
 
+import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.service.SocketConnectorTask;
 import org.tripledip.diana.service.SocketListener;
 import org.tripledip.rubberchicken.R;
@@ -37,15 +38,18 @@ import java.net.SocketAddress;
  */
 public class ClientConnectionFragment extends Fragment {
 
-    private SocketConnectorTask connectorTask;
-
     private Button goButton;
-
     private NumberPicker ipPicker1;
     private NumberPicker ipPicker2;
     private NumberPicker ipPicker3;
     private NumberPicker ipPicker4;
     private NumberPicker portPicker;
+
+    private GameService gameService;
+
+    public void setGameService(GameService gameService) {
+        this.gameService = gameService;
+    }
 
     public ClientConnectionFragment() {
         // Required empty public constructor
@@ -89,7 +93,6 @@ public class ClientConnectionFragment extends Fragment {
 
     @Override
     public void onPause() {
-        stopConnectorTask();
         disconnect();
         super.onPause();
     }
@@ -133,25 +136,7 @@ public class ClientConnectionFragment extends Fragment {
         return new InetSocketAddress(ip, port);
     }
 
-    private void startConnectorTask() {
-        stopConnectorTask();
-
-        connectorTask = new SocketConnectorTask();
-        connectorTask.setListener(new SocketConnectedListener());
-        connectorTask.execute(pickersToAddress());
-
-        goButton.setText("Connecting...");
-    }
-
-    private void stopConnectorTask() {
-        if (null != connectorTask) {
-            connectorTask.cancelConnector();
-        }
-        connectorTask = null;
-    }
-
     private void disconnect() {
-        stopConnectorTask();
         //((ClientActivity) getActivity()).stopClient();
         goButton.setText("Connect.");
     }
@@ -164,11 +149,11 @@ public class ClientConnectionFragment extends Fragment {
     private class GoButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if (null == connectorTask) {
-                startConnectorTask();
-            } else {
-                disconnect();
-            }
+//            if (null == connectorTask) {
+//                startConnectorTask();
+//            } else {
+//                disconnect();
+//            }
         }
     }
 
