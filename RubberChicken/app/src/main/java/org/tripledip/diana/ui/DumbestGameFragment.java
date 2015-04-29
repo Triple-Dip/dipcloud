@@ -28,7 +28,7 @@ public class DumbestGameFragment extends Fragment {
 
     public DumbestGameFragment() {
         // Required empty public constructor
-        crewGameCore = new CrewGameCore();
+        //crewGameCore = new CrewGameCore();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class DumbestGameFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            crewGameCore.bootStrapGame();
+            //crewGameCore.bootStrapGame();
         }
 
         @Override
@@ -128,7 +128,7 @@ public class DumbestGameFragment extends Fragment {
 
 
     public void setGameCoreDipAccess(DipAccess dipAccess){
-        crewGameCore.setDipAccess(dipAccess);
+        //crewGameCore.setDipAccess(dipAccess);
     }
 
 
