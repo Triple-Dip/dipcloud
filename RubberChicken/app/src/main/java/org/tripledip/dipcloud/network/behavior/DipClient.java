@@ -9,7 +9,6 @@ import org.tripledip.dipcloud.network.contract.InBoxListener;
 
 /**
  * Created by Ben on 3/8/15.
- *
  */
 public class DipClient extends SuperDip implements InBoxListener<Molecule> {
 
@@ -20,11 +19,13 @@ public class DipClient extends SuperDip implements InBoxListener<Molecule> {
         session = new Session<>(connector, this);
     }
 
+    @Override
     public void start() {
         session.startOutBox();
         session.startInBox();
     }
 
+    @Override
     public void stop() {
         session.stopOutBox();
         session.stopInBox();

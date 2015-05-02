@@ -1,4 +1,4 @@
-package org.tripledip.diana.ui;
+package org.tripledip.diana.ui.demo;
 
 
 import android.os.Bundle;

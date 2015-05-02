@@ -1,4 +1,4 @@
-package org.tripledip.diana.ui;
+package org.tripledip.diana.ui.startup;
 
 import android.app.Activity;
 import android.content.Intent;

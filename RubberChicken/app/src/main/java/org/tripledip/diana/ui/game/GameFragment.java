@@ -26,7 +26,7 @@ public class GameFragment<T> extends Fragment implements GameEventListener<T>{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
+        textView.setText(R.string.text_start_game);
         return textView;
     }
 

@@ -65,7 +65,7 @@ public class DipTripleTest {
 
     // Interrupt all sessions and make sure the threads died.
     private void stopAllSessions() throws Exception {
-        server.stopSessions();
+        server.stop();
         clientA.stop();
         clientB.stop();
 
@@ -89,7 +89,7 @@ public class DipTripleTest {
         Atom atomB = new Atom("B", 2, "B", 2, 2.0);
         Molecule toAdd = new Molecule("test add", atomA, atomB);
 
-        server.startSessions();
+        server.start();
         clientA.start();
         clientB.start();
 
@@ -123,7 +123,7 @@ public class DipTripleTest {
         Atom atomBUpdated = atomB.copy("Updated", atomB.getSequenceNumber());
         Molecule toUpdate = new Molecule("test update", atomAUpdated, atomBUpdated);
 
-        server.startSessions();
+        server.start();
         clientA.start();
         clientB.start();
 
@@ -155,7 +155,7 @@ public class DipTripleTest {
 
         Molecule toRemove = new Molecule("test remove", atomA);
 
-        server.startSessions();
+        server.start();
         clientA.start();
         clientB.start();
 
@@ -192,7 +192,7 @@ public class DipTripleTest {
 
         Molecule toSend = new Molecule("test send", atomS);
 
-        server.startSessions();
+        server.start();
         clientA.start();
         clientB.start();
 
@@ -259,7 +259,7 @@ public class DipTripleTest {
         // clientB should get the last word
         Runnable clientBUpdater = new Updater(testAtom.copy("clientB", 0), updateCount + 1, clientB);
 
-        server.startSessions();
+        server.start();
         clientA.start();
         clientB.start();
 

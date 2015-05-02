@@ -1,10 +1,11 @@
-package org.tripledip.diana.ui;
+package org.tripledip.diana.ui.startup;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.tripledip.diana.service.GameService;
-import org.tripledip.diana.service.SocketAcceptorTask;
 import org.tripledip.diana.service.SocketListener;
 import org.tripledip.rubberchicken.R;
 
@@ -31,11 +31,10 @@ import java.net.Socket;
  * It lets the user start listing for client connections and displays the client addresses as they
  * connect.  It lets the user stop listening for clients.
  * <p/>
- * It lets the user start and stop the game.  It also lets the user stop GameService if they want.
+ * It lets the user start and stop the game.
  * <p/>
- * The activity that attaches this fragment needs to help.  It needs to pass in a GameService that
- * this fragment can work with.  It needs to pass in a listener that this fragment can call back to
- * when it's time to start and stop the game.
+ * The activity that attaches this fragment needs to pass in a GameService that this fragment can
+ * work with.
  */
 public class ServerConnectionFragment extends Fragment {
 
@@ -80,11 +79,6 @@ public class ServerConnectionFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
     private String getWifiAddress() {
         WifiManager wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -117,16 +111,40 @@ public class ServerConnectionFragment extends Fragment {
         clientAdapter.add(message);
     }
 
+    private void resetAndStartAccepting() {
+        clearMessages();
+        gameService.makeDipServer(getPortFromInput(), new ClientAcceptedListener());
+        goButton.setText(R.string.text_start_game);
+        addMessage(getString(R.string.text_accepting_clients));
+    }
+
+    private void stopAccepting() {
+        gameService.activateDipServer();
+        goButton.setText(R.string.text_accept_from_client);
+        addMessage(getString(R.string.text_no_more_clients));
+        launchGame();
+    }
+
+    private void launchGame() {
+        Log.i(ServerConnectionFragment.class.getName(), "launching game");
+    }
+
     private class GoButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-
+            if (gameService.isAccepting()) {
+                stopAccepting();
+            } else {
+                resetAndStartAccepting();
+            }
         }
     }
 
     private class ClientAcceptedListener implements SocketListener {
         @Override
         public void onSocketConnected(Socket socket) {
+            final String prefix = getString(R.string.text_client_prefix);
+            addMessage(prefix + socket.getInetAddress().toString());
         }
     }
 }

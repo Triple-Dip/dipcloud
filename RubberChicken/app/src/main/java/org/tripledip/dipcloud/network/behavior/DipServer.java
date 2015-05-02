@@ -13,7 +13,6 @@ import java.util.Set;
 
 /**
  * Created by Ben on 3/8/15.
- *
  */
 public class DipServer extends SuperDip implements InBoxListener<Molecule>, Iterable<Session<Molecule>> {
 
@@ -28,14 +27,16 @@ public class DipServer extends SuperDip implements InBoxListener<Molecule>, Iter
         sessions.add(new Session<>(connector, this));
     }
 
-    public void startSessions() {
+    @Override
+    public void start() {
         for (Session<Molecule> session : sessions) {
             session.startOutBox();
             session.startInBox();
         }
     }
 
-    public void stopSessions() {
+    @Override
+    public void stop() {
         for (Session<Molecule> session : sessions) {
             session.stopOutBox();
             session.stopInBox();
@@ -43,7 +44,7 @@ public class DipServer extends SuperDip implements InBoxListener<Molecule>, Iter
     }
 
     public void removeSessions() {
-        stopSessions();
+        stop();
         sessions.clear();
     }
 

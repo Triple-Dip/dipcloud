@@ -8,8 +8,13 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
+import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.local.contract.DipAccess;
+import org.tripledip.dipcloud.network.behavior.DipClient;
+import org.tripledip.dipcloud.network.behavior.DipServer;
+import org.tripledip.dipcloud.network.util.SocketProtocConnector;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -19,40 +24,39 @@ import java.util.List;
 
 /**
  * Created by Ben on 4/27/15.
- *
+ * <p/>
  * Here is a service that we can use to hold game state and do computations off the UI thread.
- *
+ * <p/>
  * First, some overall flavor.  It's both started and bound.  Started because we want it to outlive
  * activities in the game, and the game should still run if the player needs to Google something.
  * And bound because the game needs to call methods and get responses from it.
- *
- * Since it's a started, we need a way to close it.  The user will have to press a "quit" button to
+ * <p/>
+ * Since it's started, we need a way to stop it.  The user will have to press a "quit" button to
  * make this happen.  To make this easy, the service foregrounds itself and puts up a notification
- * that the user can use to return to the activity.
- *
+ * that the user can use to return to the activity or stop the service.
+ * <p/>
  * The service will hold important state like open sockets, a "game core" object, and a dip client
- * or server.  It provide methods for managing the lifecycle of these things.
- *
+ * or server.  It will provide methods for managing the lifecycle of these things.
+ * <p/>
  * The service will run on the UI thread by default.  For accepting and connecting sockets, it will
  * spawn AsyncTasks.  It will also spawn inbox and outbox threads through the dip.
- *
+ * <p/>
  * The service should be able to run indefinitely and restart itself without leaking resources.  For
  * example, the player should be able to play multiple rounds of the game.  Here is a rough sequence
  * of events that the service should be able to manage and repeat without leaking or getting
  * confused:
- *  - accept/connect one or more sockets
- *  - make a dip client or server
- *  - make a game core
- *  - start up the dip
- *  - start the game
- *  - play the game
- *  - stop the game
- *  - stop the dip
- *  - close the sockets
- *
- *  The same service should be able to work for game clients or game servers.  These activities
- *  would be expected to call some same and some different methods on the service.
- *
+ * - accept/connect one or more sockets
+ * - make a dip client or server
+ * - make a game core
+ * - start up the dip
+ * - start the game
+ * - play the game
+ * - stop the game
+ * - stop the dip
+ * - close the sockets
+ * <p/>
+ * The same service should be able to work for game clients or game servers.  These activities
+ * would be expected to call some same and some different methods on the service.
  */
 public class GameService extends Service {
 
@@ -87,10 +91,6 @@ public class GameService extends Service {
         return dipAccess;
     }
 
-    public void setDipAccess(DipAccess dipAccess) {
-        this.dipAccess = dipAccess;
-    }
-
     public Object getGame() {
         return game;
     }
@@ -110,7 +110,6 @@ public class GameService extends Service {
         return intent;
     }
 
-
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
@@ -123,11 +122,18 @@ public class GameService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // let the system restart the service as needed
+        if (null == intent) {
+            return super.onStartCommand(intent, flags, startId);
+        }
+
+        // special call from notification to kill the service with poison
         if (intent.hasExtra(POISON_PILL_KEY)) {
             stopSelf();
             return START_NOT_STICKY;
         }
 
+        // normal call to start service from our Activity and return to it from the notification
         if (intent.hasExtra(HOME_ACTIVITY_KEY)) {
             putUpForegroundNotification(
                     (Class<? extends Activity>) intent.getExtras().getSerializable(HOME_ACTIVITY_KEY));
@@ -147,6 +153,8 @@ public class GameService extends Service {
     }
 
     private void putUpForegroundNotification(Class<? extends Activity> homeActivity) {
+        Log.i(GameService.class.getName(), "starting foreground with home activity: " + homeActivity.getName());
+
         // Activity to launch from the service foreground notification
         Intent homeIntent = new Intent(this, homeActivity);
         PendingIntent homePendingIntent = PendingIntent.getActivity(
@@ -175,10 +183,12 @@ public class GameService extends Service {
     }
 
     private void takeDownForegroundNotification() {
+        Log.i(GameService.class.getName(), "stopping foreground");
         stopForeground(true);
     }
 
-    public void closeSockets() {
+    private void closeSockets() {
+        Log.i(GameService.class.getName(), "closing sockets: " + sockets.size());
         for (Socket socket : sockets) {
             try {
                 socket.close();
@@ -189,15 +199,46 @@ public class GameService extends Service {
         sockets.clear();
     }
 
+    public void reset() {
+        if (null != dipAccess) {
+            Log.i(GameService.class.getName(), "resetting");
+            dipAccess.stop();
+        }
+        stopAccepting();
+        stopConnecting();
+        closeSockets();
+    }
+
+    // Reset all and set up dip server listening accepting clients.  Notify for each client.
+    public void makeDipServer(int port, final SocketListener listener) {
+        reset();
+        dipAccess = new DipServer(new Nimbase());
+        startAccepting(port, listener);
+    }
+
+    // Stop accepting clients and fire up all the client sessions.
+    public void activateDipServer() {
+        stopAccepting();
+        dipAccess.start();
+    }
+
+    // Reset and try to connect to a server.  Listener will be notified on success.
+    public void makeDipClient(SocketAddress socketAddress, SocketListener listener) {
+        reset();
+        startConnecting(socketAddress, listener);
+    }
+
     private void startAccepting(int port, final SocketListener listener) {
         stopAccepting();
+        Log.i(GameService.class.getName(), "accepting clients on port: " + port);
         socketAcceptorTask = new SocketAcceptorTask();
 
-        // wrap the socket listener so we can keep track of open sockets
+        // wrap the socket listener so we can make sessions and keep track of open sockets
         socketAcceptorTask.setListener(new SocketListener() {
             @Override
             public void onSocketConnected(Socket socket) {
                 sockets.add(socket);
+                ((DipServer) dipAccess).addSession(new SocketProtocConnector(socket));
                 listener.onSocketConnected(socket);
             }
         });
@@ -207,30 +248,43 @@ public class GameService extends Service {
 
     private void stopAccepting() {
         if (null != socketAcceptorTask) {
+            Log.i(GameService.class.getName(), "stop accepting clients");
             socketAcceptorTask.cancelAcceptor();
         }
         socketAcceptorTask = null;
     }
 
-    private void startConnection(SocketAddress socketAddress, final SocketListener socketListener) {
-        stopConnection();
+    public boolean isAccepting() {
+        return null != socketAcceptorTask;
+    }
+
+    private void startConnecting(SocketAddress socketAddress, final SocketListener socketListener) {
+        stopConnecting();
+        Log.i(GameService.class.getName(), "connecting to server at address " + socketAddress.toString());
 
         socketConnectorTask = new SocketConnectorTask();
         socketConnectorTask.setListener(new SocketListener() {
             @Override
             public void onSocketConnected(Socket socket) {
-                sockets.add(socket);
+                if (null != socket) {
+                    sockets.add(socket);
+                    dipAccess = new DipClient(new Nimbase(), new SocketProtocConnector(socket));
+                }
                 socketListener.onSocketConnected(socket);
             }
         });
         socketConnectorTask.execute(socketAddress);
     }
 
-    private void stopConnection() {
+    private void stopConnecting() {
         if (null != socketConnectorTask) {
+            Log.i(GameService.class.getName(), "stop connecting to server");
             socketConnectorTask.cancelConnector();
         }
         socketConnectorTask = null;
     }
 
+    public boolean isConnecting() {
+        return null != socketConnectorTask;
+    }
 }

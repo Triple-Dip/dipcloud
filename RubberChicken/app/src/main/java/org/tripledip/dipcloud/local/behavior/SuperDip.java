@@ -48,7 +48,7 @@ public class SuperDip implements DipAccess {
         channelListeners.notifyAdded(molecule.getChannel(), molecule);
 
         Smashable smashable = unsmashWithBuilder(molecule);
-        if (null != smashable){
+        if (null != smashable) {
             smashableListeners.notifyAdded(smashable.getChannel(), smashable);
         }
     }
@@ -69,7 +69,7 @@ public class SuperDip implements DipAccess {
         channelListeners.notifyUpdated(molecule.getChannel(), molecule);
 
         Smashable smashable = unsmashWithBuilder(molecule);
-        if (null != smashable){
+        if (null != smashable) {
             smashableListeners.notifyUpdated(smashable.getChannel(), smashable);
         }
     }
@@ -90,7 +90,7 @@ public class SuperDip implements DipAccess {
         channelListeners.notifyRemoved(molecule.getChannel(), molecule);
 
         Smashable smashable = unsmashWithBuilder(molecule);
-        if (null != smashable){
+        if (null != smashable) {
             smashableListeners.notifyRemoved(smashable.getChannel(), smashable);
         }
     }
@@ -107,7 +107,7 @@ public class SuperDip implements DipAccess {
         channelListeners.notifySent(molecule.getChannel(), molecule);
 
         Smashable smashable = unsmashWithBuilder(molecule);
-        if (null != smashable){
+        if (null != smashable) {
             smashableListeners.notifySent(smashable.getChannel(), smashable);
         }
 
@@ -179,10 +179,10 @@ public class SuperDip implements DipAccess {
         send(smashWithBuilder(smashable));
     }
 
-    private Smashable unsmashWithBuilder(Molecule molecule){
+    private Smashable unsmashWithBuilder(Molecule molecule) {
 
         Smashable smashable = smashableTemplates.get(molecule.getChannel());
-        if(null == smashable){
+        if (null == smashable) {
             return null;
         }
         smashable = smashable.newInstance();
@@ -196,14 +196,14 @@ public class SuperDip implements DipAccess {
 
     }
 
-    private Molecule smashWithBuilder(Smashable smashable){
+    private Molecule smashWithBuilder(Smashable smashable) {
 
         Molecule molecule = new Molecule(smashable.getChannel());
 
         // Set instance id to the user given id or generate if none is given
         // should usually only be null when new smashables are added
         String instanceId = smashable.getInstanceId();
-        if(null == instanceId){
+        if (null == instanceId) {
             instanceId = UUID.randomUUID().toString();
             smashable.setInstanceId(instanceId);
         }
@@ -217,4 +217,11 @@ public class SuperDip implements DipAccess {
 
     }
 
+    @Override
+    public void start() {
+    }
+
+    @Override
+    public void stop() {
+    }
 }

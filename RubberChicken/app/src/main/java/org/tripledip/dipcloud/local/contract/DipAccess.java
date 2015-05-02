@@ -34,4 +34,8 @@ public interface DipAccess {
     public ScrudNotifier<Smashable> getSmashableListeners();
 
     public void registerSmashable(Smashable smashable);
+
+    public void start();
+
+    public void stop();
 }

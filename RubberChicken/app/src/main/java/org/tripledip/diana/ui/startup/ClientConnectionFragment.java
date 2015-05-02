@@ -1,10 +1,11 @@
-package org.tripledip.diana.ui;
+package org.tripledip.diana.ui.startup;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 
 import org.tripledip.diana.service.GameService;
-import org.tripledip.diana.service.SocketConnectorTask;
 import org.tripledip.diana.service.SocketListener;
 import org.tripledip.rubberchicken.R;
 
@@ -22,19 +22,17 @@ import java.net.SocketAddress;
 
 /**
  * Created by Ben on 4/11/15.
- *
+ * <p/>
  * This fragment exposes the lifecycle of the GameService from a client point of view.
- *
+ * <p/>
  * It let's the user pick an IP and port for connecting to the server and lets the user try to
  * connect to the server.
- *
+ * <p/>
  * It starts the game when connection is successful.  It lets the user quit the game.  It also lets
  * the user stop the GameService if they want.
- *
- * The activity that attaches this fragment needs to help.  It needs to pass in a GameService that
- * this fragment can work with.  It needs to pass in a listener that this fragment call call back to
- * when it's time to start and stop the game.
- *
+ * <p/>
+ * The activity that attaches this fragment needs to pass in a GameService that this fragment can
+ * work with.
  */
 public class ClientConnectionFragment extends Fragment {
 
@@ -56,10 +54,7 @@ public class ClientConnectionFragment extends Fragment {
     }
 
     public static ClientConnectionFragment newInstance() {
-
-        ClientConnectionFragment demoFragment = new ClientConnectionFragment();
-
-        return demoFragment;
+        return new ClientConnectionFragment();
     }
 
     @Override
@@ -86,15 +81,11 @@ public class ClientConnectionFragment extends Fragment {
         portPicker.setMaxValue(65535);
         portPicker.setMinValue(0);
 
-        addressToPickers(getWifiAddress(), ServerConnectionFragment.DEFAULT_PORT);
+        if (null == savedInstanceState) {
+            addressToPickers(getWifiAddress(), ServerConnectionFragment.DEFAULT_PORT);
+        }
 
         return rootView;
-    }
-
-    @Override
-    public void onPause() {
-        disconnect();
-        super.onPause();
     }
 
     private String getWifiAddress() {
@@ -136,24 +127,28 @@ public class ClientConnectionFragment extends Fragment {
         return new InetSocketAddress(ip, port);
     }
 
-    private void disconnect() {
-        //((ClientActivity) getActivity()).stopClient();
-        goButton.setText("Connect.");
+    private void reset() {
+        gameService.reset();
+        goButton.setText(R.string.text_connect_to_server);
     }
 
-    private void addConnection(Socket socket) {
-        //((ClientActivity) getActivity()).startClient(socket);
-        goButton.setText("Disconnect.");
+    private void connect() {
+        gameService.makeDipClient(pickersToAddress(), new SocketConnectedListener());
+        goButton.setText(R.string.text_reset);
+    }
+
+    private void launchGame() {
+        Log.i(ClientConnectionFragment.class.getName(), "launching game");
     }
 
     private class GoButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-//            if (null == connectorTask) {
-//                startConnectorTask();
-//            } else {
-//                disconnect();
-//            }
+            if (gameService.isConnecting()) {
+                reset();
+            } else {
+                connect();
+            }
         }
     }
 
@@ -161,10 +156,10 @@ public class ClientConnectionFragment extends Fragment {
         @Override
         public void onSocketConnected(Socket socket) {
             if (null == socket) {
-                disconnect();
+                reset();
                 return;
             }
-            addConnection(socket);
+            launchGame();
         }
     }
 }
