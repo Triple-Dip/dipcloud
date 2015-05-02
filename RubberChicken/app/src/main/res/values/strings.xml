@@ -1,11 +1,12 @@
 <resources>
     <!-- titles -->
     <string name="app_name">Diana</string>
+    <string name="title_activity_opening">Diana</string>
     <string name="title_activity_client_connect">Connect Client</string>
     <string name="title_activity_server_connect">Connect Server</string>
-    <string name="title_activity_opening">Diana</string>
-    <string name="title_activity_captain">CaptainActivity</string>
-    <string name="title_activity_crew">CrewActivity</string>
+    <string name="title_activity_demo">Demo Activity</string>
+    <string name="title_activity_captain">Captain Activity</string>
+    <string name="title_activity_crew">Crew Activity</string>
 
     <!-- Startup UI text -->
     <string name="text_captain">Captain</string>

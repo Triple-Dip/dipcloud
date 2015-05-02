@@ -1,16 +1,12 @@
 package org.tripledip.dipcloud.network.behavior;
 
+import android.util.Log;
+
 import org.tripledip.dipcloud.network.contract.Connector;
 
 import java.io.IOException;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Ben on 3/1/15.
@@ -26,11 +22,13 @@ public class OutBox<T> {
     }
 
     public void add(T item) {
+        Log.i(OutBox.class.getName(), "add toSend: " + item);
         toSend.add(item);
     }
 
     public boolean sendNext() throws InterruptedException, IOException {
         T next = toSend.take();
+        Log.i(OutBox.class.getName(), "send out: " + next);
         connector.write(next);
         return true;
     }
@@ -52,13 +50,16 @@ public class OutBox<T> {
         };
     }
 
+    // TODO: would like a handler to call back for IOException
     private void sendForever() {
         while (true) {
             try {
                 this.sendAll();
             } catch (InterruptedException e) {
+                Log.i(OutBox.class.getName(), "InterruptedException: " + e.getMessage());
                 return;
             } catch (IOException e) {
+                Log.e(OutBox.class.getName(), "IOException: " + e.getMessage());
                 return;
             }
         }

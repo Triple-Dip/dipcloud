@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import org.tripledip.dipcloud.local.model.Molecule;
 import org.tripledip.rubberchicken.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Our original demo for testing out the dip.  Send people your color!
  */
 public class ColorButtonFragment extends Fragment implements ScrudListener<Molecule>, View.OnClickListener {
 
@@ -49,8 +50,7 @@ public class ColorButtonFragment extends Fragment implements ScrudListener<Molec
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_color_button, container, false);
         nameText = (TextView) rootView.findViewById(R.id.colorFragName);
@@ -103,9 +103,23 @@ public class ColorButtonFragment extends Fragment implements ScrudListener<Molec
         this.dipAccess = dipAccess;
         if (null != dipAccess) {
             dipAccess.getChannelListeners().registerListener(COLOUR_CHANNEL, this);
+            bootstrapAtoms();
         }
     }
 
+    private Molecule makeMolecule(int colorId) {
+        long sequenceNumber = dipAccess.getNimbase().nextSequenceNumber();
+        return new Molecule(COLOUR_CHANNEL,
+                new Atom(LEFT_COLOUR, sequenceNumber, colorId),
+                new Atom(RIGHT_COLOUR, sequenceNumber, colorId));
+    }
+
+    private void bootstrapAtoms() {
+        Molecule bootstrap = makeMolecule(Color.DKGRAY);
+        for (Atom a : bootstrap) {
+            dipAccess.getNimbase().add(a);
+        }
+    }
 
     @Override
     public void onAdded(Molecule thing) {
@@ -142,6 +156,7 @@ public class ColorButtonFragment extends Fragment implements ScrudListener<Molec
                 if (null != rightAtom) {
                     setRightContainerColor(rightAtom.getIntData());
                 }
+                Log.i(ColorButtonFragment.class.getName(), "update");
             }
         };
 
@@ -151,13 +166,9 @@ public class ColorButtonFragment extends Fragment implements ScrudListener<Molec
 
     @Override
     public void onClick(View v) {
+        Log.i(ColorButtonFragment.class.getName(), "click");
         setRightContainerColor(Color.DKGRAY);
         setLeftContainerColor(Color.DKGRAY);
-
-        long sequenceNumber = dipAccess.getNimbase().nextSequenceNumber();
-        Molecule molecule = new Molecule(COLOUR_CHANNEL,
-                new Atom(LEFT_COLOUR, sequenceNumber, colorId),
-                new Atom(RIGHT_COLOUR, sequenceNumber, colorId));
-        dipAccess.proposeUpdate(molecule);
+        dipAccess.proposeUpdate(makeMolecule(colorId));
     }
 }

@@ -105,21 +105,6 @@ public class GameService extends Service {
         return intent;
     }
 
-    public static Intent makeBindIntent(Context context) {
-        Intent intent = new Intent(context, GameService.class);
-        return intent;
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return binder;
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // let the system restart the service as needed
@@ -141,15 +126,31 @@ public class GameService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    public static Intent makeBindIntent(Context context) {
+        Intent intent = new Intent(context, GameService.class);
+        return intent;
+    }
+
     @Override
-    public void onDestroy() {
-        takeDownForegroundNotification();
-        super.onDestroy();
+    public IBinder onBind(Intent intent) {
+        return binder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         return super.onUnbind(intent);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    @Override
+    public void onDestroy() {
+        reset();
+        takeDownForegroundNotification();
+        super.onDestroy();
     }
 
     private void putUpForegroundNotification(Class<? extends Activity> homeActivity) {
@@ -200,8 +201,8 @@ public class GameService extends Service {
     }
 
     public void reset() {
+        Log.i(GameService.class.getName(), "resetting");
         if (null != dipAccess) {
-            Log.i(GameService.class.getName(), "resetting");
             dipAccess.stop();
         }
         stopAccepting();

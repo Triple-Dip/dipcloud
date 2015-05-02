@@ -1,5 +1,7 @@
 package org.tripledip.dipcloud.network.behavior;
 
+import android.util.Log;
+
 import org.tripledip.dipcloud.network.contract.Connector;
 import org.tripledip.dipcloud.network.contract.InBoxListener;
 
@@ -22,6 +24,7 @@ public class InBox<T> {
         if (null == item) {
             return;
         }
+        Log.i(InBox.class.getName(), "got in: " + item);
         listener.onInboxItemArrived(item);
     }
 
@@ -39,13 +42,16 @@ public class InBox<T> {
         };
     }
 
+    // TODO: would like a handler to call back for IOException
     private void receiveForever() {
         while (true) {
             try {
                 processNext();
-            } catch (IOException e) {
-                return;
             } catch (InterruptedException e) {
+                Log.i(InBox.class.getName(), "InterruptedException: " + e.getMessage());
+                return;
+            } catch (IOException e) {
+                Log.e(InBox.class.getName(), "IOException: " + e.getMessage());
                 return;
             }
         }

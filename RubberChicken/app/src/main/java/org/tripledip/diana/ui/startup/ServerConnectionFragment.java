@@ -2,6 +2,7 @@ package org.tripledip.diana.ui.startup;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.service.SocketListener;
+import org.tripledip.diana.ui.demo.DemoActivity;
 import org.tripledip.rubberchicken.R;
 
 import java.net.Socket;
@@ -127,6 +129,7 @@ public class ServerConnectionFragment extends Fragment {
 
     private void launchGame() {
         Log.i(ServerConnectionFragment.class.getName(), "launching game");
+        startActivity(new Intent(getActivity(), DemoActivity.class));
     }
 
     private class GoButtonListener implements View.OnClickListener {
