@@ -10,6 +10,8 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import org.tripledip.diana.game.AbstractGameCore;
+import org.tripledip.diana.game.Player;
 import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.network.behavior.DipClient;
@@ -40,23 +42,7 @@ import java.util.List;
  * <p/>
  * The service will run on the UI thread by default.  For accepting and connecting sockets, it will
  * spawn AsyncTasks.  It will also spawn inbox and outbox threads through the dip.
- * <p/>
- * The service should be able to run indefinitely and restart itself without leaking resources.  For
- * example, the player should be able to play multiple rounds of the game.  Here is a rough sequence
- * of events that the service should be able to manage and repeat without leaking or getting
- * confused:
- * - accept/connect one or more sockets
- * - make a dip client or server
- * - make a game core
- * - start up the dip
- * - start the game
- * - play the game
- * - stop the game
- * - stop the dip
- * - close the sockets
- * <p/>
- * The same service should be able to work for game clients or game servers.  These activities
- * would be expected to call some same and some different methods on the service.
+ *
  */
 public class GameService extends Service {
 
@@ -76,9 +62,27 @@ public class GameService extends Service {
 
     private DipAccess dipAccess;
 
-    private Object game;
+    private AbstractGameCore gameCore;
+
+    private Player player;
 
     public GameService() {
+    }
+
+    public AbstractGameCore getGameCore() {
+        return gameCore;
+    }
+
+    public void setGameCore(AbstractGameCore gameCore) {
+        this.gameCore = gameCore;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public class GameServiceBinder extends Binder {
@@ -89,14 +93,6 @@ public class GameService extends Service {
 
     public DipAccess getDipAccess() {
         return dipAccess;
-    }
-
-    public Object getGame() {
-        return game;
-    }
-
-    public void setGame(Object game) {
-        this.game = game;
     }
 
     public static Intent makeStartIntent(Context context, Class<? extends Activity> homeActivity) {
