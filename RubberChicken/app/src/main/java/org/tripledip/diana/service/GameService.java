@@ -17,6 +17,7 @@ import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.network.behavior.DipClient;
 import org.tripledip.dipcloud.network.behavior.DipServer;
 import org.tripledip.dipcloud.network.util.SocketProtocConnector;
+import org.tripledip.rubberchicken.R;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -42,14 +43,10 @@ import java.util.List;
  * <p/>
  * The service will run on the UI thread by default.  For accepting and connecting sockets, it will
  * spawn AsyncTasks.  It will also spawn inbox and outbox threads through the dip.
- *
  */
 public class GameService extends Service {
 
     public static final int NOTIFICATION_ID = 42;
-    public static final String NOTIFICATION_TITLE = "Diana";
-    public static final String NOTIFICATION_TEXT = "Return to game.";
-    public static final String NOTIFICATION_SHUTDOWN = "Stop";
 
     public static final String HOME_ACTIVITY_KEY = "homeActivity";
     public static final String POISON_PILL_KEY = "poisonPill";
@@ -171,10 +168,12 @@ public class GameService extends Service {
         // the notification itself
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle(NOTIFICATION_TITLE)
-                .setContentText(NOTIFICATION_TEXT)
+                .setContentTitle(getString(R.string.notification_title))
+                .setContentText(getString(R.string.notification_return))
                 .setContentIntent(homePendingIntent)
-                .addAction(android.R.drawable.ic_delete, NOTIFICATION_SHUTDOWN, shutdownPendingIntent);
+                .addAction(android.R.drawable.ic_delete,
+                        getString(R.string.notification_stop),
+                        shutdownPendingIntent);
 
         startForeground(NOTIFICATION_ID, builder.build());
     }

@@ -18,4 +18,10 @@
     <string name="text_client_prefix">crew member&#032;</string>
     <string name="text_no_more_clients">No more crew.</string>
     <string name="text_start_game">Play</string>
+
+    <!-- Notification text -->
+    <string name="notification_title">Diana</string>
+    <string name="notification_return">Return to game.</string>
+    <string name="notification_stop">Quit</string>
+
 </resources>
