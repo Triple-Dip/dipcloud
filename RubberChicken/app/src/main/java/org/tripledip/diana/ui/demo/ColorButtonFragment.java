@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.tripledip.dipcloud.local.contract.DipAccess;
+import org.tripledip.diana.service.GameService;
 import org.tripledip.dipcloud.local.contract.ScrudListener;
 import org.tripledip.dipcloud.local.model.Atom;
 import org.tripledip.dipcloud.local.model.Molecule;
@@ -20,7 +20,7 @@ import org.tripledip.rubberchicken.R;
 /**
  * Our original demo for testing out the dip.  Send people your color!
  */
-public class ColorButtonFragment extends Fragment implements ScrudListener<Molecule>, View.OnClickListener {
+public class ColorButtonFragment extends Fragment {
 
     public static final String LEFT_COLOUR = "leftColor";
     public static final String RIGHT_COLOUR = "rightColor";
@@ -28,7 +28,7 @@ public class ColorButtonFragment extends Fragment implements ScrudListener<Molec
 
     private String name;
     private int colorId;
-    private DipAccess dipAccess;
+    private GameService gameService;
 
     private TextView nameText;
     private View leftContainer;
@@ -38,45 +38,39 @@ public class ColorButtonFragment extends Fragment implements ScrudListener<Molec
         // Required empty public constructor
     }
 
-    public static ColorButtonFragment newInstance(String name, int colorId, DipAccess dipAccess) {
-
+    public static ColorButtonFragment newInstance(String name, int colorId, GameService gameService) {
         ColorButtonFragment colorButtonFragment = new ColorButtonFragment();
-
         colorButtonFragment.setName(name);
         colorButtonFragment.setColorId(colorId);
-        colorButtonFragment.setDipAccess(dipAccess);
-
+        colorButtonFragment.setGameService(gameService);
         return colorButtonFragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_color_button, container, false);
+
         nameText = (TextView) rootView.findViewById(R.id.colorFragName);
         leftContainer = rootView.findViewById(R.id.leftColor);
         rightContainer = rootView.findViewById(R.id.rightColor);
 
         nameText.setText(name);
-        nameText.setOnClickListener(this);
+        nameText.setOnClickListener(onClickListener);
 
-        setNameContainerColor(colorId);
-        setLeftContainerColor(Color.DKGRAY);
-        setRightContainerColor(Color.DKGRAY);
+        setViewContainerColor(nameText, colorId);
+        setViewContainerColor(leftContainer, Color.DKGRAY);
+        setViewContainerColor(rightContainer, Color.DKGRAY);
 
         return rootView;
     }
 
-    public void setNameContainerColor(int colorId) {
-        nameText.getBackground().setColorFilter(colorId, PorterDuff.Mode.SRC_ATOP);
+    public GameService getGameService() {
+        return gameService;
     }
 
-    public void setLeftContainerColor(int colorId) {
-        leftContainer.getBackground().setColorFilter(colorId, PorterDuff.Mode.SRC_ATOP);
-    }
-
-    public void setRightContainerColor(int colorId) {
-        rightContainer.getBackground().setColorFilter(colorId, PorterDuff.Mode.SRC_ATOP);
+    public void setGameService(GameService gameService) {
+        this.gameService = gameService;
+        bootstrapAtoms();
     }
 
     public String getName() {
@@ -95,50 +89,34 @@ public class ColorButtonFragment extends Fragment implements ScrudListener<Molec
         this.colorId = colorId;
     }
 
-    public DipAccess getDipAccess() {
-        return dipAccess;
-    }
-
-    public void setDipAccess(DipAccess dipAccess) {
-        this.dipAccess = dipAccess;
-        if (null != dipAccess) {
-            dipAccess.getChannelListeners().registerListener(COLOUR_CHANNEL, this);
-            bootstrapAtoms();
-        }
-    }
-
-    private Molecule makeMolecule(int colorId) {
-        long sequenceNumber = dipAccess.getNimbase().nextSequenceNumber();
-        return new Molecule(COLOUR_CHANNEL,
-                new Atom(LEFT_COLOUR, sequenceNumber, colorId),
-                new Atom(RIGHT_COLOUR, sequenceNumber, colorId));
-    }
-
     private void bootstrapAtoms() {
         Molecule bootstrap = makeMolecule(Color.DKGRAY);
         for (Atom a : bootstrap) {
-            dipAccess.getNimbase().add(a);
+            gameService.getDipAccess().getNimbase().add(a);
         }
     }
 
-    @Override
-    public void onAdded(Molecule thing) {
-        setUiColorsFromMolecule(thing);
+    protected void registerListeners() {
+        gameService.getDipAccess()
+                .getChannelListeners()
+                .registerListener(COLOUR_CHANNEL, moleculeScrudListener);
     }
 
-    @Override
-    public void onUpdated(Molecule thing) {
-        setUiColorsFromMolecule(thing);
+    protected void unregisterListeners() {
+        gameService.getDipAccess()
+                .getChannelListeners()
+                .unregisterListener(COLOUR_CHANNEL, moleculeScrudListener);
     }
 
-    @Override
-    public void onRemoved(Molecule thing) {
-
+    private void setViewContainerColor(View view, int colorId) {
+        view.getBackground().setColorFilter(colorId, PorterDuff.Mode.SRC_ATOP);
     }
 
-    @Override
-    public void onSent(Molecule thing) {
-
+    private Molecule makeMolecule(int colorId) {
+        long sequenceNumber = gameService.getDipAccess().getNimbase().nextSequenceNumber();
+        return new Molecule(COLOUR_CHANNEL,
+                new Atom(LEFT_COLOUR, sequenceNumber, colorId),
+                new Atom(RIGHT_COLOUR, sequenceNumber, colorId));
     }
 
     private void setUiColorsFromMolecule(final Molecule molecule) {
@@ -150,25 +128,49 @@ public class ColorButtonFragment extends Fragment implements ScrudListener<Molec
                 Atom rightAtom = molecule.findById(RIGHT_COLOUR);
 
                 if (null != leftAtom) {
-                    setLeftContainerColor(leftAtom.getIntData());
+                    setViewContainerColor(leftContainer, leftAtom.getIntData());
                 }
 
                 if (null != rightAtom) {
-                    setRightContainerColor(rightAtom.getIntData());
+                    setViewContainerColor(rightContainer, leftAtom.getIntData());
                 }
                 Log.i(ColorButtonFragment.class.getName(), "update");
             }
         };
 
         getActivity().runOnUiThread(updateUi);
-
     }
 
-    @Override
-    public void onClick(View v) {
-        Log.i(ColorButtonFragment.class.getName(), "click");
-        setRightContainerColor(Color.DKGRAY);
-        setLeftContainerColor(Color.DKGRAY);
-        dipAccess.proposeUpdate(makeMolecule(colorId));
-    }
+    private ScrudListener<Molecule> moleculeScrudListener = new ScrudListener<Molecule>() {
+        @Override
+        public void onAdded(Molecule thing) {
+            setUiColorsFromMolecule(thing);
+        }
+
+        @Override
+        public void onUpdated(Molecule thing) {
+            setUiColorsFromMolecule(thing);
+        }
+
+        @Override
+        public void onRemoved(Molecule thing) {
+
+        }
+
+        @Override
+        public void onSent(Molecule thing) {
+
+        }
+    };
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.i(ColorButtonFragment.class.getName(), "click");
+            setViewContainerColor(rightContainer, Color.DKGRAY);
+            setViewContainerColor(leftContainer, Color.DKGRAY);
+            gameService.getDipAccess().proposeUpdate(makeMolecule(colorId));
+        }
+    };
+
 }

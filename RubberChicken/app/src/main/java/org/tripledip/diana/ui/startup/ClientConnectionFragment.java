@@ -15,7 +15,7 @@ import android.widget.NumberPicker;
 
 import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.service.SocketListener;
-import org.tripledip.diana.ui.demo.DemoActivity;
+import org.tripledip.diana.ui.demo.ColorButtonActivity;
 import org.tripledip.rubberchicken.R;
 
 import java.net.InetSocketAddress;
@@ -141,7 +141,7 @@ public class ClientConnectionFragment extends Fragment {
 
     private void launchGame() {
         Log.i(ClientConnectionFragment.class.getName(), "launching game");
-        startActivity(new Intent(getActivity(), DemoActivity.class));
+        startActivity(new Intent(getActivity(), ColorButtonActivity.class));
     }
 
     private class GoButtonListener implements View.OnClickListener {

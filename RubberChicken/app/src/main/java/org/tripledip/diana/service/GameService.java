@@ -273,10 +273,12 @@ public class GameService extends Service {
                 if (null != socket) {
                     sockets.add(socket);
                     dipAccess = new DipClient(new Nimbase(), new SocketProtocConnector(socket));
+                    dipAccess.start();
                 }
                 socketListener.onSocketConnected(socket);
             }
         });
+
         socketConnectorTask.execute(socketAddress);
     }
 

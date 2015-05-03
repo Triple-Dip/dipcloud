@@ -40,7 +40,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name="org.tripledip.diana.ui.demo.DemoActivity"
+            android:name="org.tripledip.diana.ui.demo.ColorButtonActivity"
             android:label="@string/title_activity_demo"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
