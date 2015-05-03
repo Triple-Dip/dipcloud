@@ -29,6 +29,13 @@ public class ScrudNotifier<T> {
         listeners.get(subject).add(listener);
     }
 
+    public void unregisterListener(String subject, ScrudListener<T> listener) {
+        if (null == subject || null == listener || !listeners.containsKey(subject)) {
+            return;
+        }
+        listeners.get(subject).remove(listener);
+    }
+
     public void notifyAdded (String subject, T thing) {
         if (null == subject || null == thing || !listeners.containsKey(subject)) {
             return;

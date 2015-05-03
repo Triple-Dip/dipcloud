@@ -98,6 +98,12 @@ public class GameService extends Service {
         return intent;
     }
 
+    public static Intent makeStopIntent(Context context) {
+        Intent intent = new Intent(context, GameService.class);
+        intent.putExtra(POISON_PILL_KEY, true);
+        return intent;
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // let the system restart the service as needed
@@ -146,6 +152,10 @@ public class GameService extends Service {
         super.onDestroy();
     }
 
+    public void setHomeActivity(Class<? extends Activity> homeActivity) {
+        putUpForegroundNotification(homeActivity);
+    }
+
     private void putUpForegroundNotification(Class<? extends Activity> homeActivity) {
         Log.i(GameService.class.getName(), "starting foreground with home activity: " + homeActivity.getName());
 
@@ -157,12 +167,10 @@ public class GameService extends Service {
                 homeIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent shutdownIntent = new Intent(this, GameService.class);
-        shutdownIntent.putExtra(POISON_PILL_KEY, true);
         PendingIntent shutdownPendingIntent = PendingIntent.getService(
                 this,
                 0,
-                shutdownIntent,
+                makeStopIntent(this),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         // the notification itself

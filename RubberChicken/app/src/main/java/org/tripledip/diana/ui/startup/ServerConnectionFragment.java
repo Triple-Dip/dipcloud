@@ -19,6 +19,7 @@ import android.widget.TextView;
 import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.service.SocketListener;
 import org.tripledip.diana.ui.demo.DemoActivity;
+import org.tripledip.diana.ui.game.GameFragment;
 import org.tripledip.rubberchicken.R;
 
 import java.net.Socket;
@@ -38,7 +39,7 @@ import java.net.Socket;
  * The activity that attaches this fragment needs to pass in a GameService that this fragment can
  * work with.
  */
-public class ServerConnectionFragment extends Fragment {
+public class ServerConnectionFragment extends GameFragment {
 
     public static final int DEFAULT_PORT = 55555;
 

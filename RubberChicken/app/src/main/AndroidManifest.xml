@@ -28,13 +28,13 @@
         </activity>
 
         <activity
-            android:name="org.tripledip.diana.ui.startup.ServerConnectActivity"
+            android:name="org.tripledip.diana.ui.startup.ServerConnectionActivity"
             android:label="@string/title_activity_server_connect"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name="org.tripledip.diana.ui.startup.ClientConnectActivity"
+            android:name="org.tripledip.diana.ui.startup.ClientConnectionActivity"
             android:label="@string/title_activity_client_connect"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateAlwaysHidden" />
