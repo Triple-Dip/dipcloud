@@ -5,8 +5,11 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
+        android:entries="@array/dummy_array">
+    </ListView>
 
-        </ListView>
 
 </FrameLayout>

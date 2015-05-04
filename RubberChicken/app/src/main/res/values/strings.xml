@@ -24,4 +24,14 @@
     <string name="notification_return">Return to game.</string>
     <string name="notification_stop">Quit</string>
 
+    <!-- dummy array for testing -->
+    <string-array
+        name="dummy_array">
+        <item>butts</item>
+        <item>more butts</item>
+        <item>a lot more butts</item>
+        <item>too much butts</item>
+        <item>butts overload</item>
+        <item>enough butts!</item>
+    </string-array>
 </resources>

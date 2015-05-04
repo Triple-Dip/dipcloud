@@ -9,13 +9,13 @@
         android:layout_width="0px"
         android:layout_weight=".25"
         android:layout_height="fill_parent"
-        android:id="@+id/left_container"/>
+        android:id="@+id/crew_challenges_container"/>
 
     <FrameLayout
         android:layout_width="0px"
         android:layout_weight=".50"
         android:layout_height="fill_parent"
-        android:id="@+id/middle_container" />
+        android:id="@+id/crew_minigame_container" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -28,13 +28,13 @@
             android:layout_width="fill_parent"
             android:layout_height="0px"
             android:layout_weight=".50"
-            android:id="@+id/top_right_container" />
+            android:id="@+id/crew_ship_status_container" />
 
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="0px"
             android:layout_weight=".50"
-            android:id="@+id/bottom_right_layout" />
+            android:id="@+id/crew_comlink_container" />
     </LinearLayout>
 
 </LinearLayout>
