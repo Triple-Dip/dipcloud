@@ -29,6 +29,16 @@ public class GameEventNotifier<T> {
         listeners.get(subject).add(listener);
     }
 
+    public void unRegisterListener(String subject, GameEventListener<T> listener){
+        if (null == subject || null == listener) {
+            return;
+        }
+
+        if (listeners.containsKey(subject)) {
+            listeners.get(subject).remove(listener);
+        }
+
+    }
     public void notifyEventOccurred (String subject, T thing) {
         if (null == subject || null == thing || !listeners.containsKey(subject)) {
             return;
@@ -36,7 +46,7 @@ public class GameEventNotifier<T> {
 
         Set<GameEventListener<T>> keyListeners = listeners.get(subject);
         for (GameEventListener listener : keyListeners) {
-            listener.onEventOccurred(thing);
+            listener.onEventOccurred(subject, thing);
         }
         return;
     }

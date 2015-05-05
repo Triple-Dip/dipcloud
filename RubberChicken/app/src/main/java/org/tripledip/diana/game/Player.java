@@ -16,18 +16,13 @@ package org.tripledip.diana.game;
 public class Player {
 
     private final String name;
-    private final String ip;
 
-    public Player(String name, String ip){
+    public Player(String name){
         this.name = name;
-        this.ip = ip;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getIp() {
-        return ip;
-    }
 }

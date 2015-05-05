@@ -7,6 +7,6 @@ import org.tripledip.dipcloud.local.model.Atom;
  */
 public interface GameEventListener<T> {
 
-    public void onEventOccurred(T thing);
+    public void onEventOccurred(String event, T thing);
 
 }
