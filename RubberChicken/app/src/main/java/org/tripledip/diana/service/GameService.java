@@ -1,6 +1,5 @@
 package org.tripledip.diana.service;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -44,8 +43,8 @@ import java.util.Map;
  * or server.  It will provide methods for managing the lifecycle of these things.
  * <p/>
  * The service will also keep track of an explicit application state, like "logging in" or
- * "playing".  An Activity can be associated with each state.  The service can launch the Activity
- * associated with a given state or the current state.
+ * "playing".  Game Activities should check the current state of play when they start or resume
+ * themselves.
  * <p/>
  * <p/>
  * The service will run on the UI thread by default.  For accepting and connecting sockets, it will
@@ -54,11 +53,10 @@ import java.util.Map;
 public class GameService extends Service {
 
     public enum StateOfPlay {OPENING, CONNECTING, PLAYING}
-    private Map<StateOfPlay, Class<? extends Activity>> stateActivities = new HashMap<>();
+    private Map<StateOfPlay, Intent> stateIntents = new HashMap<>();
 
     public static final int NOTIFICATION_ID = 42;
     public static final int POISON_PILL_REQUEST = 43;
-    public static final int RESUME_STATE_OF_PLAY_REQUEST = 44;
     public static final String REQUEST_KEY = "specialCommand";
 
     private final IBinder binder = new GameServiceBinder();
@@ -113,30 +111,19 @@ public class GameService extends Service {
         return intent;
     }
 
-    public static Intent makeResumeIntent(Context context) {
-        Intent intent = new Intent(context, GameService.class);
-        intent.putExtra(REQUEST_KEY, RESUME_STATE_OF_PLAY_REQUEST);
-        return intent;
-    }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (null != intent && intent.hasExtra(REQUEST_KEY)) {
-            int requestCode = intent.getIntExtra(REQUEST_KEY, RESUME_STATE_OF_PLAY_REQUEST);
+            int requestCode = intent.getIntExtra(REQUEST_KEY, POISON_PILL_REQUEST);
             switch (requestCode) {
                 case POISON_PILL_REQUEST:
                     // call from notification: kill this service with poison
                     stopSelf();
                     return START_NOT_STICKY;
-                case RESUME_STATE_OF_PLAY_REQUEST:
-                    // call from notification: resume the "greatest" activity used so far
-                    launchLastActivity();
-                    return super.onStartCommand(intent, flags, startId);
             }
         }
 
         // start normally for the first time
-        putUpForegroundNotification();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -167,41 +154,23 @@ public class GameService extends Service {
         super.onDestroy();
     }
 
-    public void setStateActivity(StateOfPlay stateOfPlay, Class<? extends Activity> activity) {
-        stateActivities.put(stateOfPlay, activity);
+    public void setStateIntent(StateOfPlay stateOfPlay, Intent intent) {
+        stateIntents.put(stateOfPlay, intent);
+        setUpForegroundNotification();
     }
 
-    public void clearStateActivity(StateOfPlay stateOfPlay) {
-        stateActivities.remove(stateOfPlay);
-    }
-
-    public void launchLastActivity() {
-        Log.i(GameService.class.getName(), "resuming last activity");
-
-        Class<? extends Activity> activity = null;
-        for (StateOfPlay stateOfPlay : StateOfPlay.values()) {
-            if (stateActivities.containsKey(stateOfPlay)) {
-                activity = stateActivities.get(stateOfPlay);
+    public StateOfPlay getCurrentStateOfPlay() {
+        StateOfPlay stateOfPlay = StateOfPlay.OPENING;
+        for (StateOfPlay sop : StateOfPlay.values()) {
+            if (stateIntents.containsKey(sop)) {
+                stateOfPlay = sop;
             }
         }
-
-        if (null == activity) {
-            return;
-        }
-
-        Intent intent = new Intent(this, activity);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        return stateOfPlay;
     }
 
-    private void putUpForegroundNotification() {
+    private void setUpForegroundNotification() {
         Log.i(GameService.class.getName(), "starting foreground");
-
-        PendingIntent resumeIntent = PendingIntent.getService(
-                this,
-                RESUME_STATE_OF_PLAY_REQUEST,
-                makeResumeIntent(this),
-                PendingIntent.FLAG_UPDATE_CURRENT);
 
         PendingIntent shutdownIntent = PendingIntent.getService(
                 this,
@@ -214,7 +183,6 @@ public class GameService extends Service {
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(getString(R.string.notification_title))
                 .setContentText(getString(R.string.notification_return))
-                .setContentIntent(resumeIntent)
                 .addAction(android.R.drawable.ic_delete,
                         getString(R.string.notification_stop),
                         shutdownIntent);

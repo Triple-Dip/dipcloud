@@ -74,7 +74,7 @@ public abstract class GameActivity extends Activity {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             gameService = ((GameService.GameServiceBinder) service).getService();
-            gameService.setStateActivity(getStateOfPlay(), GameActivity.this.getClass());
+            gameService.setStateIntent(getStateOfPlay(), getIntent());
             findOrAttachFragments();
             registerListeners();
         }
