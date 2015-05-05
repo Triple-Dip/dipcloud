@@ -12,19 +12,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.tripledip.diana.game.GameEventNotifier;
-import org.tripledip.diana.game.crew.CrewChallengeHelper;
-import org.tripledip.diana.game.crew.CrewGameCore;
+import org.tripledip.diana.game.crew.ChallengeHelper;
 import org.tripledip.diana.game.smashables.Challenge;
 import org.tripledip.diana.ui.game.GameFragment;
 import org.tripledip.rubberchicken.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChallengesGameFragment extends GameFragment<Challenge> implements AdapterView.OnItemClickListener{
+public class ChallengesGameFragment extends GameFragment<Challenge> implements AdapterView.OnItemClickListener {
 
 
-    CrewChallengeHelper challengeHelper;
+    private ChallengeHelper challengeHelper;
+
+    private ArrayAdapter<Challenge> challengeArrayAdapter;
+    private ListView listView;
 
     public ChallengesGameFragment() {
         // Required empty public constructor
@@ -35,13 +38,13 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        challengeHelper = (CrewChallengeHelper)
-                gameCore.getHelpers().get(CrewChallengeHelper.class.getName());
+        challengeHelper = gameCore.getChallengeHelper();
 
         View view = inflater.inflate(R.layout.fragment_challenges, container, false);
 
-        ListView listView = (ListView) view.findViewById(R.id.challengesListView);
-        listView.setAdapter(new ChallengesAdapter(getActivity(), challengeHelper.getChallenges()));
+        listView = (ListView) view.findViewById(R.id.challengesListView);
+        challengeArrayAdapter = new ChallengesAdapter(getActivity(), challengeHelper.getChallenges());
+        listView.setAdapter(challengeArrayAdapter);
         listView.setOnItemClickListener(this);
 
         return view;
@@ -51,15 +54,12 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
     @Override
     public void registerGameEventListeners() {
 
-        challengeHelper = (CrewChallengeHelper)
-                gameCore.getHelpers().get(CrewChallengeHelper.class.getName());
+        GameEventNotifier notifier = gameCore.getChallengeHelper().getGameEventNotifier();
 
-        GameEventNotifier notifier = challengeHelper.getGameEventNotifier();
-
-        notifier.registerListener(CrewChallengeHelper.EVENT_ADD_CHALLENGE, this);
-        notifier.registerListener(CrewChallengeHelper.EVENT_FINISH_CHALLENGE, this);
-        notifier.registerListener(CrewChallengeHelper.EVENT_REMOVE_CHALLENGE, this);
-        notifier.registerListener(CrewChallengeHelper.EVENT_START_CHALLENGE, this);
+        notifier.registerListener(ChallengeHelper.EVENT_ADD_CHALLENGE, this);
+        notifier.registerListener(ChallengeHelper.EVENT_FINISH_CHALLENGE, this);
+        notifier.registerListener(ChallengeHelper.EVENT_REMOVE_CHALLENGE, this);
+        notifier.registerListener(ChallengeHelper.EVENT_START_CHALLENGE, this);
 
     }
 
@@ -68,20 +68,29 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
 
         GameEventNotifier notifier = challengeHelper.getGameEventNotifier();
 
-        notifier.unRegisterListener(CrewChallengeHelper.EVENT_ADD_CHALLENGE, this);
-        notifier.unRegisterListener(CrewChallengeHelper.EVENT_FINISH_CHALLENGE, this);
-        notifier.unRegisterListener(CrewChallengeHelper.EVENT_REMOVE_CHALLENGE, this);
-        notifier.unRegisterListener(CrewChallengeHelper.EVENT_START_CHALLENGE, this);
+        notifier.unRegisterListener(ChallengeHelper.EVENT_ADD_CHALLENGE, this);
+        notifier.unRegisterListener(ChallengeHelper.EVENT_FINISH_CHALLENGE, this);
+        notifier.unRegisterListener(ChallengeHelper.EVENT_REMOVE_CHALLENGE, this);
+        notifier.unRegisterListener(ChallengeHelper.EVENT_START_CHALLENGE, this);
     }
 
     @Override
-    public void onEventOccurred(String subject, Challenge thing) {
+    public void onEventOccurred(String event, Challenge challenge) {
+        switch (event){
 
+            case ChallengeHelper.EVENT_ADD_CHALLENGE:
+                challengeArrayAdapter.add(challenge);
+                break;
+            case ChallengeHelper.EVENT_REMOVE_CHALLENGE:
+                challengeArrayAdapter.remove(challenge);
+                break;
+
+        }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        challengeHelper.removeChallenge(challengeHelper.getChallenges().get(position));
+        challengeHelper.requestOwnership(challengeHelper.getChallenges().remove(position));
     }
 
     public class ChallengesAdapter extends ArrayAdapter<Challenge> {
@@ -96,13 +105,16 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            View view = View.inflate(getContext(), R.layout.listview_element_challenge, parent);
+            if (null == convertView) {
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.listview_element_challenge, parent, false);
+            }
 
-            TextView challengeName = (TextView) view.findViewById(R.id.challengeName);
+            TextView challengeName = (TextView) convertView.findViewById(R.id.challengeName);
 
             challengeName.setText(challenges.get(position).getName());
 
-            return view;
+            return convertView;
         }
     }
+
 }

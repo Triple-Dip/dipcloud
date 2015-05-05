@@ -16,6 +16,15 @@ public class ComlinkMessage extends Smashable{
     private int color;
 
 
+    public ComlinkMessage(){
+        //derp
+    }
+
+    public ComlinkMessage(String message, int color){
+        this.message = message;
+        this.color = color;
+    }
+
     public String getMessage() {
         return message;
     }
