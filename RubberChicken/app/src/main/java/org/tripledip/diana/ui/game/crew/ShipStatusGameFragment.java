@@ -16,6 +16,8 @@ import org.tripledip.rubberchicken.R;
 
 public class ShipStatusGameFragment extends GameFragment<Ship> {
 
+    public static final String CREW_SHIPSTATUS_FRAG_TAG = "shipStatusFrag";
+
     TextView shipHpValue;
     TextView shipShieldValue;
     TextView shipEnergyValue;

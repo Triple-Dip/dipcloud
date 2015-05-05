@@ -56,7 +56,7 @@ public class ComlinkController {
     public class ShipGameEventListener implements GameEventListener<Ship> {
 
         @Override
-        public void onEventOccurred(String event, Ship thing) {
+        public void onEventOccurred(String event, Ship ship) {
 
             switch (event){
 
@@ -74,17 +74,17 @@ public class ComlinkController {
     public class ChallengeGameEventListener implements GameEventListener<Challenge>{
 
         @Override
-        public void onEventOccurred(String event, Challenge thing) {
+        public void onEventOccurred(String event, Challenge challenge) {
 
             switch (event){
                 case ChallengeHelper.EVENT_START_CHALLENGE:
-                    dipAccess.proposeSend(new ComlinkMessage(thing.getOwner()+" has started "+thing.getName()+"!", COMLINK_BLUE));
+                    dipAccess.proposeSend(new ComlinkMessage(challenge.getOwner()+" has started "+challenge.getName()+"!", COMLINK_BLUE));
                     break;
                 case ChallengeHelper.EVENT_FINISH_CHALLENGE:
-                    dipAccess.proposeSend(new ComlinkMessage(thing.getOwner()+" has "+thing.getResult()+" "+thing.getName()+"!", COMLINK_BLUE));
+                    dipAccess.proposeSend(new ComlinkMessage(challenge.getOwner()+" has "+challenge.getResult()+" "+challenge.getName()+"!", COMLINK_BLUE));
                     break;
                 case ChallengeHelper.EVENT_REMOVE_CHALLENGE:
-                    dipAccess.proposeSend(new ComlinkMessage(thing.getOwner()+" has removed "+thing.getName()+"!", COMLINK_BLUE));
+                    dipAccess.proposeSend(new ComlinkMessage(challenge.getOwner()+" has removed "+challenge.getName()+"!", COMLINK_BLUE));
                     break;
 
             }

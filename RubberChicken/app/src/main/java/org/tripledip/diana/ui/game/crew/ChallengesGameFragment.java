@@ -23,10 +23,12 @@ import java.util.List;
 
 public class ChallengesGameFragment extends GameFragment<Challenge> implements AdapterView.OnItemClickListener {
 
+    public static final String CREW_CHALLENGES_FRAG_TAG = "challengeFrag";
 
     private ChallengeHelper challengeHelper;
 
     private ArrayAdapter<Challenge> challengeArrayAdapter;
+
     private ListView listView;
 
     public ChallengesGameFragment() {
@@ -43,7 +45,7 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         View view = inflater.inflate(R.layout.fragment_challenges, container, false);
 
         listView = (ListView) view.findViewById(R.id.challengesListView);
-        challengeArrayAdapter = new ChallengesAdapter(getActivity(), challengeHelper.getChallenges());
+        challengeArrayAdapter = new ChallengesAdapter(getActivity(), new ArrayList<Challenge>());
         listView.setAdapter(challengeArrayAdapter);
         listView.setOnItemClickListener(this);
 
@@ -90,7 +92,7 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        challengeHelper.requestOwnership(challengeHelper.getChallenges().remove(position));
+        challengeHelper.requestOwnership(challengeHelper.getChallenges().get(position));
     }
 
     public class ChallengesAdapter extends ArrayAdapter<Challenge> {

@@ -4,6 +4,7 @@ import org.tripledip.diana.game.AbstractHelper;
 import org.tripledip.diana.game.Player;
 import org.tripledip.diana.game.smashables.Challenge;
 import org.tripledip.dipcloud.local.contract.DipAccess;
+import org.tripledip.dipcloud.local.contract.ScrudListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
     public ChallengeHelper(DipAccess dipAccess, Player player) {
         super(dipAccess, new Challenge());
         this.player = player;
+
     }
 
     // set owner to the player's name and propose

@@ -2,15 +2,14 @@ package org.tripledip.diana.ui.game.crew;
 
 import android.os.Bundle;
 
+import org.tripledip.diana.game.captain.ComlinkController;
+import org.tripledip.diana.game.captain.encounter.EncounterController;
 import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.ui.game.GameActivity;
+import org.tripledip.diana.ui.game.captain.EncounterGameFragment;
 import org.tripledip.rubberchicken.R;
 
 public class CrewActivity extends GameActivity {
-
-    public static final String CREW_CHALLENGES_FRAG_TAG = "challengeFrag";
-    public static final String CREW_SHIPSTATUS_FRAG_TAG = "shipStatusFrag";
-    public static final String CREW_COMLINK_FRAG_TAG = "comlinkFrag";
 
     ChallengesGameFragment challengesGameFragment;
     ShipStatusGameFragment shipStatusGameFragment;
@@ -30,11 +29,11 @@ public class CrewActivity extends GameActivity {
     protected void findOrAttachFragments() {
 
         challengesGameFragment = (ChallengesGameFragment)
-                getFragmentManager().findFragmentByTag(CREW_CHALLENGES_FRAG_TAG);
+                getFragmentManager().findFragmentByTag(ChallengesGameFragment.CREW_CHALLENGES_FRAG_TAG);
         shipStatusGameFragment = (ShipStatusGameFragment)
-                getFragmentManager().findFragmentByTag(CREW_SHIPSTATUS_FRAG_TAG);
+                getFragmentManager().findFragmentByTag(ShipStatusGameFragment.CREW_SHIPSTATUS_FRAG_TAG);
         comlinkGameFragment = (ComlinkGameFragment)
-                getFragmentManager().findFragmentByTag(CREW_COMLINK_FRAG_TAG);
+                getFragmentManager().findFragmentByTag(ComlinkGameFragment.CREW_COMLINK_FRAG_TAG);
 
         if (null != challengesGameFragment &&
                 null != shipStatusGameFragment &&
@@ -51,11 +50,12 @@ public class CrewActivity extends GameActivity {
         comlinkGameFragment = new ComlinkGameFragment();
         comlinkGameFragment.setGameCore(gameService.getGameCore());
 
+
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.crew_challenges_container, challengesGameFragment, CREW_CHALLENGES_FRAG_TAG)
-                .add(R.id.crew_ship_status_container, shipStatusGameFragment, CREW_SHIPSTATUS_FRAG_TAG)
-                .add(R.id.crew_comlink_container, comlinkGameFragment, CREW_COMLINK_FRAG_TAG)
+                .add(R.id.crew_challenges_container, challengesGameFragment, ChallengesGameFragment.CREW_CHALLENGES_FRAG_TAG)
+                .add(R.id.crew_ship_status_container, shipStatusGameFragment, ShipStatusGameFragment.CREW_SHIPSTATUS_FRAG_TAG)
+                .add(R.id.crew_comlink_container, comlinkGameFragment, ComlinkGameFragment.CREW_COMLINK_FRAG_TAG)
                 .commit();
 
     }

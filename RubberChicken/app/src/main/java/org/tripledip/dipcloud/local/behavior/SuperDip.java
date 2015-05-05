@@ -185,7 +185,10 @@ public class SuperDip implements DipAccess {
         if (null == smashable) {
             return null;
         }
+
         smashable = smashable.newInstance();
+
+        smashable.setInstanceId(molecule.getInstanceId());
 
         SmashableBuilder smashableBuilder =
                 new SmashableBuilder(nimbase.nextSequenceNumber(), molecule);

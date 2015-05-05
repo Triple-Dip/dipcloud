@@ -22,6 +22,8 @@ import java.util.List;
 
 public class ComlinkGameFragment extends GameFragment<ComlinkMessage> {
 
+    public static final String CREW_COMLINK_FRAG_TAG = "comlinkFrag";
+
     ArrayAdapter<ComlinkMessage> comlinkMessageArrayAdapter;
     ListView listView;
 

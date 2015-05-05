@@ -20,6 +20,7 @@ import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.service.SocketListener;
 import org.tripledip.diana.ui.demo.ColorButtonActivity;
 import org.tripledip.diana.ui.game.GameFragment;
+import org.tripledip.diana.ui.game.captain.CaptainActivity;
 import org.tripledip.diana.ui.game.crew.CrewActivity;
 import org.tripledip.rubberchicken.R;
 
@@ -131,7 +132,7 @@ public class ServerConnectionFragment extends Fragment {
 
     private void launchGame() {
         Log.i(ServerConnectionFragment.class.getName(), "launching game");
-        startActivity(new Intent(getActivity(), CrewActivity.class));
+        startActivity(new Intent(getActivity(), CaptainActivity.class));
     }
 
     private class GoButtonListener implements View.OnClickListener {
