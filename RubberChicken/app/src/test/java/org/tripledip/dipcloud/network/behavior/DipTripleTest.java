@@ -289,6 +289,7 @@ public class DipTripleTest {
         makeSureAllNimbasesEqual();
 
         // make sure the async updater threads will be cleaned up
+        Thread.sleep(SLEEP_MILLIS);
         assertFalse(serverUpdaterThread.isAlive());
         assertFalse(clientAUpdaterThread.isAlive());
         assertFalse(clientBUpdaterThread.isAlive());

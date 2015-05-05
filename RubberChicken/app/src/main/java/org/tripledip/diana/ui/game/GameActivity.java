@@ -11,19 +11,20 @@ import org.tripledip.diana.service.GameService;
 
 /**
  * Created by Ben on 4/27/15.
- *
+ * <p/>
  * Factor out behavior common to Activities in the Game.  Especially, dealing with the Activity
  * lifecycle.
- *  - bind and unbind the game service
- *  - register and unregister game / dip listeners
- *  - attach and detach fragments
- *
+ * - bind and unbind the game service
+ * - register and unregister game / dip listeners
+ * - attach and detach fragments
  */
 public abstract class GameActivity extends Activity {
 
     protected GameService gameService;
 
     protected abstract int getLayoutId();
+
+    protected abstract GameService.StateOfPlay getStateOfPlay();
 
     protected abstract void findOrAttachFragments();
 
@@ -54,7 +55,7 @@ public abstract class GameActivity extends Activity {
     }
 
     protected void startGameService() {
-        startService(GameService.makeStartIntent(this, this.getClass()));
+        startService(GameService.makeStartIntent(this));
     }
 
     protected void stopGameService() {
@@ -76,7 +77,7 @@ public abstract class GameActivity extends Activity {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             gameService = ((GameService.GameServiceBinder) service).getService();
-            gameService.setHomeActivity(GameActivity.this.getClass());
+            gameService.setStateIntent(getStateOfPlay(), getIntent());
             makeGameCore();
             findOrAttachFragments();
             registerListeners();

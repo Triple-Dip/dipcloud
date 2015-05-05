@@ -1,6 +1,5 @@
 package org.tripledip.diana.service;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -25,7 +24,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Ben on 4/27/15.
@@ -43,15 +44,22 @@ import java.util.List;
  * The service will hold important state like open sockets, a "game core" object, and a dip client
  * or server.  It will provide methods for managing the lifecycle of these things.
  * <p/>
+ * The service will also keep track of an explicit application state, like "logging in" or
+ * "playing".  Game Activities should check the current state of play when they start or resume
+ * themselves.
+ * <p/>
+ * <p/>
  * The service will run on the UI thread by default.  For accepting and connecting sockets, it will
  * spawn AsyncTasks.  It will also spawn inbox and outbox threads through the dip.
  */
 public class GameService extends Service {
 
-    public static final int NOTIFICATION_ID = 42;
+    public enum StateOfPlay {OPENING, CONNECTING, PLAYING}
+    private Map<StateOfPlay, Intent> stateIntents = new HashMap<>();
 
-    public static final String HOME_ACTIVITY_KEY = "homeActivity";
-    public static final String POISON_PILL_KEY = "poisonPill";
+    public static final int NOTIFICATION_ID = 42;
+    public static final int POISON_PILL_REQUEST = 43;
+    public static final String REQUEST_KEY = "specialCommand";
 
     private final IBinder binder = new GameServiceBinder();
 
@@ -94,36 +102,30 @@ public class GameService extends Service {
         return dipAccess;
     }
 
-    public static Intent makeStartIntent(Context context, Class<? extends Activity> homeActivity) {
+    public static Intent makeStartIntent(Context context) {
         Intent intent = new Intent(context, GameService.class);
-        intent.putExtra(HOME_ACTIVITY_KEY, homeActivity);
         return intent;
     }
 
     public static Intent makeStopIntent(Context context) {
         Intent intent = new Intent(context, GameService.class);
-        intent.putExtra(POISON_PILL_KEY, true);
+        intent.putExtra(REQUEST_KEY, POISON_PILL_REQUEST);
         return intent;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // let the system restart the service as needed
-        if (null == intent) {
-            return super.onStartCommand(intent, flags, startId);
+        if (null != intent && intent.hasExtra(REQUEST_KEY)) {
+            int requestCode = intent.getIntExtra(REQUEST_KEY, POISON_PILL_REQUEST);
+            switch (requestCode) {
+                case POISON_PILL_REQUEST:
+                    // call from notification: kill this service with poison
+                    stopSelf();
+                    return START_NOT_STICKY;
+            }
         }
 
-        // special call from notification to kill the service with poison
-        if (intent.hasExtra(POISON_PILL_KEY)) {
-            stopSelf();
-            return START_NOT_STICKY;
-        }
-
-        // normal call to start service from our Activity and return to it from the notification
-        if (intent.hasExtra(HOME_ACTIVITY_KEY)) {
-            putUpForegroundNotification(
-                    (Class<? extends Activity>) intent.getExtras().getSerializable(HOME_ACTIVITY_KEY));
-        }
+        // start normally for the first time
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -155,24 +157,27 @@ public class GameService extends Service {
         super.onDestroy();
     }
 
-    public void setHomeActivity(Class<? extends Activity> homeActivity) {
-        putUpForegroundNotification(homeActivity);
+    public void setStateIntent(StateOfPlay stateOfPlay, Intent intent) {
+        stateIntents.put(stateOfPlay, intent);
+        setUpForegroundNotification();
     }
 
-    private void putUpForegroundNotification(Class<? extends Activity> homeActivity) {
-        Log.i(GameService.class.getName(), "starting foreground with home activity: " + homeActivity.getName());
+    public StateOfPlay getCurrentStateOfPlay() {
+        StateOfPlay stateOfPlay = StateOfPlay.OPENING;
+        for (StateOfPlay sop : StateOfPlay.values()) {
+            if (stateIntents.containsKey(sop)) {
+                stateOfPlay = sop;
+            }
+        }
+        return stateOfPlay;
+    }
 
-        // Activity to launch from the service foreground notification
-        Intent homeIntent = new Intent(this, homeActivity);
-        PendingIntent homePendingIntent = PendingIntent.getActivity(
-                this,
-                0,
-                homeIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+    private void setUpForegroundNotification() {
+        Log.i(GameService.class.getName(), "starting foreground");
 
-        PendingIntent shutdownPendingIntent = PendingIntent.getService(
+        PendingIntent shutdownIntent = PendingIntent.getService(
                 this,
-                0,
+                POISON_PILL_REQUEST,
                 makeStopIntent(this),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -181,10 +186,9 @@ public class GameService extends Service {
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(getString(R.string.notification_title))
                 .setContentText(getString(R.string.notification_return))
-                .setContentIntent(homePendingIntent)
                 .addAction(android.R.drawable.ic_delete,
                         getString(R.string.notification_stop),
-                        shutdownPendingIntent);
+                        shutdownIntent);
 
         startForeground(NOTIFICATION_ID, builder.build());
     }
