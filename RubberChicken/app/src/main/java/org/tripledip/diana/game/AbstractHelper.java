@@ -10,6 +10,7 @@ import org.tripledip.dipcloud.local.contract.Smashable;
 
 public abstract class AbstractHelper<T extends Smashable> implements ScrudListener<T> {
 
+
     protected final GameEventNotifier<T> gameEventNotifier = new GameEventNotifier<>();
     protected final DipAccess dipAccess;
     protected final Player player;

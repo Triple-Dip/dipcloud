@@ -8,7 +8,7 @@ import org.tripledip.dipcloud.local.contract.DipAccess;
 /**
  * Created by Wolfe on 4/26/2015.
  */
-public class CrewShipHelper extends AbstractHelper<Ship> {
+public class ShipHelper extends AbstractHelper<Ship> {
 
     public static final String EVENT_DAMAGE_HP = "damageHpEvent";
     public static final String EVENT_REPAIR_HP = "repairHpEvent";
@@ -19,7 +19,7 @@ public class CrewShipHelper extends AbstractHelper<Ship> {
 
     private Ship theShip;
 
-    public CrewShipHelper(DipAccess dipAccess, Player player){
+    public ShipHelper(DipAccess dipAccess, Player player){
         super(dipAccess, player, new Ship());
     }
 

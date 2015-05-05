@@ -101,4 +101,11 @@ public class CrewChallengeHelper extends AbstractHelper<Challenge>{
         addChallenge(challenge);
     }
 
+    public List<Challenge> getChallenges() {
+        return challenges;
+    }
+
+    public Challenge getCurrentChallenge() {
+        return currentChallenge;
+    }
 }

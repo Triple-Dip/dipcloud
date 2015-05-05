@@ -24,13 +24,29 @@ import org.tripledip.dipcloud.local.contract.DipAccess;
  */
 public class CrewGameCore extends AbstractGameCore{
 
-    private final CrewShipHelper shipHelper;
+    private final ShipHelper shipHelper;
     private final CrewChallengeHelper challengeHelper;
+    private final ComlinkHelper comlinkHelper;
 
     public CrewGameCore(DipAccess dipAccess, Player player){
         super(dipAccess, player);
-        shipHelper = new CrewShipHelper(dipAccess, player);
+
+        shipHelper = new ShipHelper(dipAccess, player);
+        helpers.put(ShipHelper.class.getName(), shipHelper);
+
         challengeHelper = new CrewChallengeHelper(dipAccess, player);
+        helpers.put(CrewChallengeHelper.class.getName(), challengeHelper);
+
+        comlinkHelper = new ComlinkHelper(dipAccess, player);
+        helpers.put(ComlinkHelper.class.getName(), comlinkHelper);
+
     }
 
+    public ShipHelper getShipHelper() {
+        return shipHelper;
+    }
+
+    public CrewChallengeHelper getChallengeHelper() {
+        return challengeHelper;
+    }
 }

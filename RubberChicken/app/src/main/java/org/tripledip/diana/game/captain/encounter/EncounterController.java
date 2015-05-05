@@ -63,6 +63,7 @@ public class EncounterController implements ScrudListener<Challenge> {
             // able to send out a ComlinkMessage saying 'XYZ player passed/failed XYZ challenge!'
             // so cool!
             gameCore.getDipAccess().proposeRemove(challenge);
+
         }
 
     }
