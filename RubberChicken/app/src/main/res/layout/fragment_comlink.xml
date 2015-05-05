@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll"
-        android:entries="@array/dummy_array">
+        android:id="@+id/comlinkListView">
     </ListView>
 
 
