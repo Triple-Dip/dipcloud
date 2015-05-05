@@ -9,6 +9,8 @@
     <string name="title_activity_crew">Crew Activity</string>
 
     <!-- Startup UI text -->
+    <string name="text_your_name">Your name</string>
+    <string name="text_name_required">Your name is required.</string>
     <string name="text_captain">Captain</string>
     <string name="text_crew">Crew</string>
     <string name="text_connect_to_server">Connect</string>

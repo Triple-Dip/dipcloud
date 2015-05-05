@@ -27,13 +27,23 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/diana_image"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:src="@drawable/max_klinger_diana"
         android:adjustViewBounds="true"
         android:alpha=".5"
         android:cropToPadding="false"
-        android:scaleType="fitXY" />
+        android:scaleType="fitCenter"
+        android:layout_below="@+id/player_name_text"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/player_name_text"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/text_your_name" />
 </RelativeLayout>
