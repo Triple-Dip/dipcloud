@@ -60,6 +60,7 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         notifier.registerListener(CrewChallengeHelper.EVENT_FINISH_CHALLENGE, this);
         notifier.registerListener(CrewChallengeHelper.EVENT_REMOVE_CHALLENGE, this);
         notifier.registerListener(CrewChallengeHelper.EVENT_START_CHALLENGE, this);
+
     }
 
     @Override

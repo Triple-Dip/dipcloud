@@ -10,15 +10,15 @@ import org.tripledip.dipcloud.local.model.Molecule;
  */
 public class Ship extends Smashable {
 
-    public static final String HP = "shipHp";
+    public static final String HP = "hp";
     public static final int MAX_HP = 10;
     public static final int MIN_HP = 0;
 
-    public static final String SHIELD = "shipShield";
+    public static final String SHIELD = "shield";
     public static final int MAX_SHIELD = 100;
     public static final int MIN_SHIELD = 0;
 
-    public static final String ENERGY = "shipEnergy";
+    public static final String ENERGY = "energy";
     public static final int MAX_ENERGY = 20;
     public static final int MIN_ENERGY = 0;
 
@@ -59,11 +59,17 @@ public class Ship extends Smashable {
     @Override
     public void smashMe(SmashableBuilder smashableBuilder) {
 
+        smashableBuilder.addIntData(HP, shipHp);
+        smashableBuilder.addIntData(SHIELD, shipShield);
+        smashableBuilder.addIntData(ENERGY, shipEnergy);
+
     }
 
     @Override
     public void unsmashMe(SmashableBuilder smashableBuilder) {
-
+        shipHp = smashableBuilder.getIntData(HP);
+        shipShield = smashableBuilder.getIntData(SHIELD);
+        shipEnergy = smashableBuilder.getIntData(ENERGY);
     }
 
     @Override
