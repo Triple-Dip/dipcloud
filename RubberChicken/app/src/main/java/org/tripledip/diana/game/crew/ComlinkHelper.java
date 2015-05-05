@@ -12,8 +12,8 @@ public class ComlinkHelper extends AbstractHelper<ComlinkMessage>{
 
     public static final String EVENT_COMLINK_MESSAGE_ARRIVED = "comlinkMessageArrivedEvent";
 
-    public ComlinkHelper(DipAccess dipAccess, Player player) {
-        super(dipAccess, player, new ComlinkMessage());
+    public ComlinkHelper(DipAccess dipAccess) {
+        super(dipAccess, new ComlinkMessage());
     }
 
     public void sendComlinkMessage (ComlinkMessage comlinkMessage){

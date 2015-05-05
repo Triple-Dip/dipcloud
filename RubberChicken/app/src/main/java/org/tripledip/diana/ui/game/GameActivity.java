@@ -6,7 +6,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 
-import org.tripledip.diana.game.AbstractGameCore;
 import org.tripledip.diana.service.GameService;
 
 /**

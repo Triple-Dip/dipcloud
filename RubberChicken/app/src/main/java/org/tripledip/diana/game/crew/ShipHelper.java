@@ -19,8 +19,8 @@ public class ShipHelper extends AbstractHelper<Ship> {
 
     private Ship theShip;
 
-    public ShipHelper(DipAccess dipAccess, Player player){
-        super(dipAccess, player, new Ship());
+    public ShipHelper(DipAccess dipAccess){
+        super(dipAccess, new Ship());
     }
 
     /******************************************
@@ -89,4 +89,7 @@ public class ShipHelper extends AbstractHelper<Ship> {
         theShip = newShip;
     }
 
+    public Ship getTheShip() {
+        return theShip;
+    }
 }

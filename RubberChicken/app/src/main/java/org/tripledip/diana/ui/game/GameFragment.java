@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.tripledip.diana.game.AbstractGameCore;
+import org.tripledip.diana.game.GameCore;
 import org.tripledip.diana.game.GameEventListener;
 import org.tripledip.rubberchicken.R;
 
@@ -16,7 +16,7 @@ import org.tripledip.rubberchicken.R;
 
 public abstract class GameFragment<T> extends Fragment implements GameEventListener<T>{
 
-    protected AbstractGameCore gameCore;
+    protected GameCore gameCore;
 
     public abstract void registerGameEventListeners();
 
@@ -39,7 +39,7 @@ public abstract class GameFragment<T> extends Fragment implements GameEventListe
 
     }
 
-    public void setGameCore(AbstractGameCore gameCore) {
+    public void setGameCore(GameCore gameCore) {
         this.gameCore = gameCore;
     }
 

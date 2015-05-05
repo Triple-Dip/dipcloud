@@ -9,10 +9,8 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import org.tripledip.diana.game.AbstractGameCore;
 import org.tripledip.diana.game.Player;
-import org.tripledip.diana.game.captain.CaptainGameCore;
-import org.tripledip.diana.game.crew.CrewGameCore;
+import org.tripledip.diana.game.GameCore;
 import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.network.behavior.DipClient;
@@ -69,18 +67,18 @@ public class GameService extends Service {
 
     private DipAccess dipAccess;
 
-    private AbstractGameCore gameCore;
+    private GameCore gameCore;
 
     private Player player;
 
     public GameService() {
     }
 
-    public AbstractGameCore getGameCore() {
+    public GameCore getGameCore() {
         return gameCore;
     }
 
-    public void setGameCore(AbstractGameCore gameCore) {
+    public void setGameCore(GameCore gameCore) {
         this.gameCore = gameCore;
     }
 
@@ -301,12 +299,9 @@ public class GameService extends Service {
         return null != socketConnectorTask;
     }
 
-    public void makeCrewGameCore(){
-        gameCore = new CrewGameCore(dipAccess, player);
+    public void makeGameCore(){
+        gameCore = new GameCore(dipAccess, player);
     }
 
-    public void makeCaptainGameCore(){
-        gameCore = new CaptainGameCore(dipAccess, player);
-    }
 
 }

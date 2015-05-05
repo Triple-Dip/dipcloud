@@ -1,6 +1,6 @@
 package org.tripledip.diana.game.captain.encounter;
 
-import org.tripledip.diana.game.captain.CaptainGameCore;
+import org.tripledip.diana.game.GameCore;
 import org.tripledip.diana.game.smashables.Challenge;
 import org.tripledip.dipcloud.local.contract.ScrudListener;
 
@@ -17,12 +17,12 @@ import java.util.List;
  */
 public class EncounterController implements ScrudListener<Challenge> {
 
-    private final CaptainGameCore gameCore;
+    private final GameCore gameCore;
 
     // TODO: could eventually be a list of ongoing encounters... ?
     private AbstractEncounter currentEncounter;
 
-    public EncounterController(CaptainGameCore gameCore){
+    public EncounterController(GameCore gameCore){
         this.gameCore = gameCore;
     }
 
