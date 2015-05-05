@@ -23,4 +23,6 @@ message Molecule {
     optional MoleculeAction action = 2;
 
     repeated Atom atoms = 3;
+
+    optional string instanceId = 4;
 }

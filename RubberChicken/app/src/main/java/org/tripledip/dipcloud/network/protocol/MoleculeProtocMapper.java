@@ -47,6 +47,11 @@ public class MoleculeProtocMapper {
         builder.setChannel(molecule.getChannel());
         builder.setAction(MoleculeProtos.Molecule.MoleculeAction.valueOf(molecule.getAction().getCode()));
 
+        final String instanceId = molecule.getInstanceId();
+        if (null != instanceId) {
+            builder.setInstanceId(instanceId);
+        }
+
         for (Atom atom : molecule) {
             builder.addAtoms(toProto(atom));
         }
@@ -63,7 +68,13 @@ public class MoleculeProtocMapper {
 
         Molecule.Action action = MOLECULE_ACTIONS[proto.getAction().getNumber() - 1];
 
-        return new Molecule(proto.getChannel(), action, atoms);
+        Molecule molecule = new Molecule(proto.getChannel(), action, atoms);
+
+        if (proto.hasInstanceId()) {
+            molecule.setInstanceId(proto.getInstanceId());
+        }
+
+        return molecule;
     }
 
 }

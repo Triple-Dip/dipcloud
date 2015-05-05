@@ -925,6 +925,20 @@ public final class MoleculeProtos {
      */
     org.tripledip.dipcloud.network.protocol.MoleculeProtos.AtomOrBuilder getAtomsOrBuilder(
         int index);
+
+    /**
+     * <code>optional string instanceId = 4;</code>
+     */
+    boolean hasInstanceId();
+    /**
+     * <code>optional string instanceId = 4;</code>
+     */
+    java.lang.String getInstanceId();
+    /**
+     * <code>optional string instanceId = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getInstanceIdBytes();
   }
   /**
    * Protobuf type {@code org.tripledip.dipcloud.network.protocol.Molecule}
@@ -1001,6 +1015,12 @@ public final class MoleculeProtos {
                 mutable_bitField0_ |= 0x00000004;
               }
               atoms_.add(input.readMessage(org.tripledip.dipcloud.network.protocol.MoleculeProtos.Atom.PARSER, extensionRegistry));
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              instanceId_ = bs;
               break;
             }
           }
@@ -1238,10 +1258,53 @@ public final class MoleculeProtos {
       return atoms_.get(index);
     }
 
+    public static final int INSTANCEID_FIELD_NUMBER = 4;
+    private java.lang.Object instanceId_;
+    /**
+     * <code>optional string instanceId = 4;</code>
+     */
+    public boolean hasInstanceId() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string instanceId = 4;</code>
+     */
+    public java.lang.String getInstanceId() {
+      java.lang.Object ref = instanceId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          instanceId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string instanceId = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getInstanceIdBytes() {
+      java.lang.Object ref = instanceId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        instanceId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       channel_ = "";
       action_ = org.tripledip.dipcloud.network.protocol.MoleculeProtos.Molecule.MoleculeAction.ADD;
       atoms_ = java.util.Collections.emptyList();
+      instanceId_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1265,6 +1328,9 @@ public final class MoleculeProtos {
       for (int i = 0; i < atoms_.size(); i++) {
         output.writeMessage(3, atoms_.get(i));
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(4, getInstanceIdBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1285,6 +1351,10 @@ public final class MoleculeProtos {
       for (int i = 0; i < atoms_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, atoms_.get(i));
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getInstanceIdBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1414,6 +1484,8 @@ public final class MoleculeProtos {
         } else {
           atomsBuilder_.clear();
         }
+        instanceId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -1459,6 +1531,10 @@ public final class MoleculeProtos {
         } else {
           result.atoms_ = atomsBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.instanceId_ = instanceId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1508,6 +1584,11 @@ public final class MoleculeProtos {
               atomsBuilder_.addAllMessages(other.atoms_);
             }
           }
+        }
+        if (other.hasInstanceId()) {
+          bitField0_ |= 0x00000008;
+          instanceId_ = other.instanceId_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1887,6 +1968,82 @@ public final class MoleculeProtos {
         return atomsBuilder_;
       }
 
+      private java.lang.Object instanceId_ = "";
+      /**
+       * <code>optional string instanceId = 4;</code>
+       */
+      public boolean hasInstanceId() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string instanceId = 4;</code>
+       */
+      public java.lang.String getInstanceId() {
+        java.lang.Object ref = instanceId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            instanceId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string instanceId = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getInstanceIdBytes() {
+        java.lang.Object ref = instanceId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          instanceId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string instanceId = 4;</code>
+       */
+      public Builder setInstanceId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        instanceId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string instanceId = 4;</code>
+       */
+      public Builder clearInstanceId() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        instanceId_ = getDefaultInstance().getInstanceId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string instanceId = 4;</code>
+       */
+      public Builder setInstanceIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        instanceId_ = value;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:org.tripledip.dipcloud.network.protocol.Molecule)
     }
 
@@ -1920,15 +2077,15 @@ public final class MoleculeProtos {
       "\n\016molecule.proto\022\'org.tripledip.dipcloud" +
       ".network.protocol\"c\n\004Atom\022\n\n\002id\030\001 \001(\t\022\026\n" +
       "\016sequenceNumber\030\002 \001(\003\022\022\n\nstringData\030\003 \001(" +
-      "\t\022\017\n\007intData\030\004 \001(\005\022\022\n\ndoubleData\030\005 \001(\001\"\350" +
+      "\t\022\017\n\007intData\030\004 \001(\005\022\022\n\ndoubleData\030\005 \001(\001\"\374" +
       "\001\n\010Molecule\022\017\n\007channel\030\001 \001(\t\022P\n\006action\030\002" +
       " \001(\0162@.org.tripledip.dipcloud.network.pr" +
       "otocol.Molecule.MoleculeAction\022<\n\005atoms\030" +
       "\003 \003(\0132-.org.tripledip.dipcloud.network.p" +
-      "rotocol.Atom\";\n\016MoleculeAction\022\007\n\003ADD\020\001\022" +
-      "\n\n\006UPDATE\020\002\022\n\n\006REMOVE\020\003\022\010\n\004SEND\020\004B9\n\'org",
-      ".tripledip.dipcloud.network.protocolB\016Mo" +
-      "leculeProtos"
+      "rotocol.Atom\022\022\n\ninstanceId\030\004 \001(\t\";\n\016Mole" +
+      "culeAction\022\007\n\003ADD\020\001\022\n\n\006UPDATE\020\002\022\n\n\006REMOV",
+      "E\020\003\022\010\n\004SEND\020\004B9\n\'org.tripledip.dipcloud." +
+      "network.protocolB\016MoleculeProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1953,7 +2110,7 @@ public final class MoleculeProtos {
     internal_static_org_tripledip_dipcloud_network_protocol_Molecule_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_org_tripledip_dipcloud_network_protocol_Molecule_descriptor,
-        new java.lang.String[] { "Channel", "Action", "Atoms", });
+        new java.lang.String[] { "Channel", "Action", "Atoms", "InstanceId", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
