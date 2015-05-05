@@ -1,5 +1,6 @@
 package org.tripledip.diana.ui.startup;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
@@ -19,6 +20,7 @@ import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.service.SocketListener;
 import org.tripledip.diana.ui.demo.ColorButtonActivity;
 import org.tripledip.diana.ui.game.GameFragment;
+import org.tripledip.diana.ui.game.crew.CrewActivity;
 import org.tripledip.rubberchicken.R;
 
 import java.net.Socket;
@@ -38,7 +40,7 @@ import java.net.Socket;
  * The activity that attaches this fragment needs to pass in a GameService that this fragment can
  * work with.
  */
-public class ServerConnectionFragment extends GameFragment {
+public class ServerConnectionFragment extends Fragment {
 
     public static final int DEFAULT_PORT = 55555;
 
@@ -129,7 +131,7 @@ public class ServerConnectionFragment extends GameFragment {
 
     private void launchGame() {
         Log.i(ServerConnectionFragment.class.getName(), "launching game");
-        startActivity(new Intent(getActivity(), ColorButtonActivity.class));
+        startActivity(new Intent(getActivity(), CrewActivity.class));
     }
 
     private class GoButtonListener implements View.OnClickListener {

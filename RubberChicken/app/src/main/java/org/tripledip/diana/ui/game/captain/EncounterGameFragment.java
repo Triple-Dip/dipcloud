@@ -18,6 +18,16 @@ import org.tripledip.rubberchicken.R;
 public class EncounterGameFragment extends GameFragment<Challenge> {
 
 
+    @Override
+    public void registerGameEventListeners() {
+
+    }
+
+    @Override
+    public void unRegisterGameEventListeners() {
+
+    }
+
     public EncounterGameFragment() {
         // Required empty public constructor
     }

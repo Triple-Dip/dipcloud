@@ -2,32 +2,91 @@ package org.tripledip.diana.ui.game.crew;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import org.tripledip.diana.game.GameEventNotifier;
+import org.tripledip.diana.game.crew.ShipHelper;
 import org.tripledip.diana.game.smashables.Ship;
 import org.tripledip.diana.ui.game.GameFragment;
 import org.tripledip.rubberchicken.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class ShipStatusGameFragment extends GameFragment<Ship> {
+
+    TextView shipHpValue;
+    TextView shipShieldValue;
+    TextView shipEnergyValue;
+
 
 
     public ShipStatusGameFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_ship_status, container, false);
+
+        shipHpValue = (TextView) view.findViewById(R.id.shipHpValue);
+        shipShieldValue = (TextView) view.findViewById(R.id.shipShieldValue);
+        shipEnergyValue = (TextView) view.findViewById(R.id.shipEnergyValue);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ship_status, container, false);
+        return view;
     }
 
+    @Override
+    public void onEventOccurred(String subject, Ship ship) {
+
+    }
+
+    private void drawShip(final Ship ship) {
+
+        final Runnable updateUi = new Runnable() {
+            @Override
+            public void run() {
+                shipHpValue.setText(ship.getShipHp());
+                shipShieldValue.setText(ship.getShipShield());
+                shipEnergyValue.setText(ship.getShipEnergy());
+            }
+        };
+
+        getActivity().runOnUiThread(updateUi);
+    }
+
+    @Override
+    public void registerGameEventListeners() {
+        ShipHelper shipHelper = (ShipHelper)
+                gameCore.getHelpers().get(ShipHelper.class.getName());
+
+        GameEventNotifier notifier = shipHelper.getGameEventNotifier();
+
+        notifier.registerListener(ShipHelper.EVENT_DAMAGE_HP, this);
+        notifier.registerListener(ShipHelper.EVENT_DAMAGE_SHIELD, this);
+        notifier.registerListener(ShipHelper.EVENT_DEPLETE_ENERGY, this);
+        notifier.registerListener(ShipHelper.EVENT_RECHARGE_ENERGY, this);
+        notifier.registerListener(ShipHelper.EVENT_REPAIR_HP, this);
+        notifier.registerListener(ShipHelper.EVENT_REPAIR_SHIELD, this);
+    }
+
+    @Override
+    public void unRegisterGameEventListeners() {
+        ShipHelper shipHelper = (ShipHelper)
+                gameCore.getHelpers().get(ShipHelper.class.getName());
+
+        GameEventNotifier notifier = shipHelper.getGameEventNotifier();
+
+        notifier.unRegisterListener(ShipHelper.EVENT_DAMAGE_HP, this);
+        notifier.unRegisterListener(ShipHelper.EVENT_DAMAGE_SHIELD, this);
+        notifier.unRegisterListener(ShipHelper.EVENT_DEPLETE_ENERGY, this);
+        notifier.unRegisterListener(ShipHelper.EVENT_RECHARGE_ENERGY, this);
+        notifier.unRegisterListener(ShipHelper.EVENT_REPAIR_HP, this);
+        notifier.unRegisterListener(ShipHelper.EVENT_REPAIR_SHIELD, this);
+    }
 
 }

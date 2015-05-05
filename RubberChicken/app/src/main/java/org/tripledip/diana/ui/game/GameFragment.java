@@ -8,15 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.tripledip.diana.game.AbstractGameCore;
 import org.tripledip.diana.game.GameEventListener;
 import org.tripledip.rubberchicken.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 
-public class GameFragment<T> extends Fragment implements GameEventListener<T>{
 
+public abstract class GameFragment<T> extends Fragment implements GameEventListener<T>{
+
+    protected AbstractGameCore gameCore;
+
+    public abstract void registerGameEventListeners();
+
+    public abstract void unRegisterGameEventListeners();
 
     public GameFragment() {
         // Required empty public constructor
@@ -30,10 +34,15 @@ public class GameFragment<T> extends Fragment implements GameEventListener<T>{
         return textView;
     }
 
-
     @Override
-    public void onEventOccurred(T thing) {
+    public void onEventOccurred(String subject, T thing) {
 
     }
+
+    public void setGameCore(AbstractGameCore gameCore) {
+        this.gameCore = gameCore;
+    }
+
+
 
 }
