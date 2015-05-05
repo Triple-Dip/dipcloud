@@ -36,6 +36,11 @@ public class ClientConnectionActivity extends GameActivity {
     }
 
     @Override
+    protected void makeGameCore() {
+
+    }
+
+    @Override
     protected void registerListeners() {
 
     }

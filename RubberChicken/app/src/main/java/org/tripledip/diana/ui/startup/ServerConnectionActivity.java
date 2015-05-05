@@ -40,6 +40,12 @@ public class ServerConnectionActivity extends GameActivity {
     }
 
     @Override
+    protected void makeGameCore() {
+
+    }
+
+
+    @Override
     protected void registerListeners() {
 
     }

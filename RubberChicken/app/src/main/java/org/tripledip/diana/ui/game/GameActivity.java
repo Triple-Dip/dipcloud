@@ -6,6 +6,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import org.tripledip.diana.game.AbstractGameCore;
 import org.tripledip.diana.service.GameService;
 
 /**
@@ -25,6 +26,8 @@ public abstract class GameActivity extends Activity {
     protected abstract int getLayoutId();
 
     protected abstract void findOrAttachFragments();
+
+    protected abstract void makeGameCore();
 
     protected abstract void registerListeners();
 
@@ -74,6 +77,7 @@ public abstract class GameActivity extends Activity {
         public void onServiceConnected(ComponentName className, IBinder service) {
             gameService = ((GameService.GameServiceBinder) service).getService();
             gameService.setHomeActivity(GameActivity.this.getClass());
+            makeGameCore();
             findOrAttachFragments();
             registerListeners();
         }

@@ -12,6 +12,8 @@ import android.util.Log;
 
 import org.tripledip.diana.game.AbstractGameCore;
 import org.tripledip.diana.game.Player;
+import org.tripledip.diana.game.captain.CaptainGameCore;
+import org.tripledip.diana.game.crew.CrewGameCore;
 import org.tripledip.dipcloud.local.behavior.Nimbase;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 import org.tripledip.dipcloud.network.behavior.DipClient;
@@ -129,6 +131,7 @@ public class GameService extends Service {
         Intent intent = new Intent(context, GameService.class);
         return intent;
     }
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -293,4 +296,13 @@ public class GameService extends Service {
     public boolean isConnecting() {
         return null != socketConnectorTask;
     }
+
+    public void makeCrewGameCore(){
+        gameCore = new CrewGameCore(dipAccess, player);
+    }
+
+    public void makeCaptainGameCore(){
+        gameCore = new CaptainGameCore(dipAccess, player);
+    }
+
 }

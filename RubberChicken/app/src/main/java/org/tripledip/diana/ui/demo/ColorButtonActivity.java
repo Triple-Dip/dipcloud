@@ -37,6 +37,12 @@ public class ColorButtonActivity extends GameActivity {
     }
 
     @Override
+    protected void makeGameCore() {
+
+    }
+
+
+    @Override
     protected void registerListeners() {
         colorButtonFragment.registerListeners();
     }
