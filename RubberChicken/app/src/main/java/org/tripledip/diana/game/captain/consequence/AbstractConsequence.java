@@ -1,6 +1,6 @@
 package org.tripledip.diana.game.captain.consequence;
 
-import org.tripledip.diana.game.captain.CaptainGameCore;
+import org.tripledip.diana.game.GameCore;
 
 /**
  * Created by Wolfe on 4/28/2015.
@@ -10,7 +10,7 @@ import org.tripledip.diana.game.captain.CaptainGameCore;
  */
 public abstract class AbstractConsequence {
 
-    public abstract void doStuff(CaptainGameCore gameCore);
+    public abstract void doStuff(GameCore gameCore);
 
 
 }

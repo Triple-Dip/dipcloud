@@ -13,10 +13,8 @@ public abstract class AbstractHelper<T extends Smashable> implements ScrudListen
 
     protected final GameEventNotifier<T> gameEventNotifier = new GameEventNotifier<>();
     protected final DipAccess dipAccess;
-    protected final Player player;
 
-    public AbstractHelper (DipAccess dipAccess, Player player, T smashable){
-        this.player = player;
+    public AbstractHelper (DipAccess dipAccess, T smashable){
         this.dipAccess = dipAccess;
         dipAccess.registerSmashable(smashable);
     }

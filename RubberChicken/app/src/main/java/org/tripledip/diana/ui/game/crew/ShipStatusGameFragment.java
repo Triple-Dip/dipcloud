@@ -61,10 +61,8 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
 
     @Override
     public void registerGameEventListeners() {
-        ShipHelper shipHelper = (ShipHelper)
-                gameCore.getHelpers().get(ShipHelper.class.getName());
 
-        GameEventNotifier notifier = shipHelper.getGameEventNotifier();
+        GameEventNotifier notifier = gameCore.getShipHelper().getGameEventNotifier();
 
         notifier.registerListener(ShipHelper.EVENT_DAMAGE_HP, this);
         notifier.registerListener(ShipHelper.EVENT_DAMAGE_SHIELD, this);
@@ -76,10 +74,8 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
 
     @Override
     public void unRegisterGameEventListeners() {
-        ShipHelper shipHelper = (ShipHelper)
-                gameCore.getHelpers().get(ShipHelper.class.getName());
 
-        GameEventNotifier notifier = shipHelper.getGameEventNotifier();
+        GameEventNotifier notifier = gameCore.getShipHelper().getGameEventNotifier();
 
         notifier.unRegisterListener(ShipHelper.EVENT_DAMAGE_HP, this);
         notifier.unRegisterListener(ShipHelper.EVENT_DAMAGE_SHIELD, this);

@@ -1,6 +1,6 @@
 package org.tripledip.diana.game.captain.consequence;
 
-import org.tripledip.diana.game.captain.CaptainGameCore;
+import org.tripledip.diana.game.GameCore;
 import org.tripledip.diana.game.smashables.Ship;
 
 /**
@@ -13,7 +13,7 @@ public class ConsequenceRegistry {
     public static class DamageShipConsequence extends AbstractConsequence {
 
         @Override
-        public void doStuff(CaptainGameCore gameCore) {
+        public void doStuff(GameCore gameCore) {
 
             Ship ship = gameCore.getShipHelper().getTheShip();
             ship.setShipHp(ship.getShipHp() - 5);
@@ -26,7 +26,7 @@ public class ConsequenceRegistry {
     public static class RepairShipConsequence extends AbstractConsequence {
 
         @Override
-        public void doStuff(CaptainGameCore gameCore) {
+        public void doStuff(GameCore gameCore) {
 
             Ship ship = gameCore.getShipHelper().getTheShip();
             ship.setShipHp(ship.getShipHp() + 5);
