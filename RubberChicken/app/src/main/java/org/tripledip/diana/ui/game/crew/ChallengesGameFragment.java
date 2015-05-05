@@ -51,6 +51,9 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
     @Override
     public void registerGameEventListeners() {
 
+        challengeHelper = (CrewChallengeHelper)
+                gameCore.getHelpers().get(CrewChallengeHelper.class.getName());
+
         GameEventNotifier notifier = challengeHelper.getGameEventNotifier();
 
         notifier.registerListener(CrewChallengeHelper.EVENT_ADD_CHALLENGE, this);

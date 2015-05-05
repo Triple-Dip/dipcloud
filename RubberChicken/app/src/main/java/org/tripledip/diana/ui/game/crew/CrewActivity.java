@@ -3,6 +3,7 @@ package org.tripledip.diana.ui.game.crew;
 import android.os.Bundle;
 
 import org.tripledip.diana.game.crew.CrewGameCore;
+import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.ui.game.GameActivity;
 import org.tripledip.rubberchicken.R;
 
@@ -19,6 +20,11 @@ public class CrewActivity extends GameActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_crew;
+    }
+
+    @Override
+    protected GameService.StateOfPlay getStateOfPlay() {
+        return GameService.StateOfPlay.PLAYING;
     }
 
     @Override

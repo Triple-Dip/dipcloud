@@ -47,6 +47,11 @@ public class OpeningActivity extends GameActivity {
     }
 
     @Override
+    protected void makeGameCore() {
+
+    }
+
+    @Override
     protected void registerListeners() {
 
     }
