@@ -77,6 +77,9 @@ public class ComlinkController {
         public void onEventOccurred(String event, Challenge challenge) {
 
             switch (event){
+                case ChallengeHelper.EVENT_ADD_CHALLENGE:
+                    dipAccess.proposeSend(new ComlinkMessage(challenge.getOwner()+" has added "+challenge.getName()+"!", COMLINK_BLUE));
+                    break;
                 case ChallengeHelper.EVENT_START_CHALLENGE:
                     dipAccess.proposeSend(new ComlinkMessage(challenge.getOwner()+" has started "+challenge.getName()+"!", COMLINK_BLUE));
                     break;

@@ -112,6 +112,8 @@ public class ComlinkGameFragment extends GameFragment<ComlinkMessage> {
             @Override
             public void run() {
                 comlinkMessageArrayAdapter.add(comlinkMessage);
+                comlinkMessageArrayAdapter.notifyDataSetChanged();
+                listView.invalidate();
             }
         };
 

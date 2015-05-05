@@ -18,10 +18,10 @@ public class GameCore {
     private final ShipHelper shipHelper;
     private final ChallengeHelper challengeHelper;
     private final ComlinkHelper comlinkHelper;
-    private final EncounterController encounterController;
-    private final ComlinkController comlinkController;
     private final Player player;
     private final DipAccess dipAccess;
+    private EncounterController encounterController;
+    private ComlinkController comlinkController;
 
     public GameCore(DipAccess dipAccess, Player player){
 
@@ -30,8 +30,15 @@ public class GameCore {
         shipHelper = new ShipHelper(dipAccess);
         challengeHelper = new ChallengeHelper(dipAccess, player);
         comlinkHelper = new ComlinkHelper(dipAccess);
-        encounterController = new EncounterController(this);
-        comlinkController = new ComlinkController(this);
+
+    }
+
+    public void setToCaptainMode(boolean mode){
+
+        if(mode){
+            encounterController = new EncounterController(this);
+            comlinkController = new ComlinkController(this);
+        }
 
     }
 

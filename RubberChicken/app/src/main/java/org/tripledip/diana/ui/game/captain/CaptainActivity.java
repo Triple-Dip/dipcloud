@@ -60,6 +60,7 @@ public class CaptainActivity extends GameActivity {
     @Override
     protected void makeGameCore() {
         gameService.makeGameCore();
+        gameService.getGameCore().setToCaptainMode(true);
     }
 
     @Override
