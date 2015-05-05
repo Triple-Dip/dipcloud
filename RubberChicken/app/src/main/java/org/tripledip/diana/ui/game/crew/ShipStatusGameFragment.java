@@ -47,6 +47,7 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
 
     }
 
+
     private void drawShip(final Ship ship) {
 
         final Runnable updateUi = new Runnable() {

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import org.tripledip.diana.game.GameEventNotifier;
 import org.tripledip.diana.game.crew.ComlinkHelper;
+import org.tripledip.diana.game.smashables.Challenge;
 import org.tripledip.diana.game.smashables.ComlinkMessage;
 import org.tripledip.diana.ui.game.GameFragment;
 import org.tripledip.rubberchicken.R;
@@ -99,9 +100,21 @@ public class ComlinkGameFragment extends GameFragment<ComlinkMessage> {
         switch (event) {
 
             case ComlinkHelper.EVENT_COMLINK_MESSAGE_ARRIVED:
-                comlinkMessageArrayAdapter.add(comlinkMessage);
+                addComlinkToListView(comlinkMessage);
                 break;
         }
 
+    }
+
+    private void addComlinkToListView(final ComlinkMessage comlinkMessage) {
+
+        final Runnable updateUi = new Runnable() {
+            @Override
+            public void run() {
+                comlinkMessageArrayAdapter.add(comlinkMessage);
+            }
+        };
+
+        getActivity().runOnUiThread(updateUi);
     }
 }

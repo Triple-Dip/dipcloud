@@ -14,6 +14,7 @@ import android.widget.TextView;
 import org.tripledip.diana.game.GameEventNotifier;
 import org.tripledip.diana.game.crew.ChallengeHelper;
 import org.tripledip.diana.game.smashables.Challenge;
+import org.tripledip.diana.game.smashables.Ship;
 import org.tripledip.diana.ui.game.GameFragment;
 import org.tripledip.rubberchicken.R;
 
@@ -81,10 +82,10 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         switch (event){
 
             case ChallengeHelper.EVENT_ADD_CHALLENGE:
-                challengeArrayAdapter.add(challenge);
+                addChallengeToListView(challenge);
                 break;
             case ChallengeHelper.EVENT_REMOVE_CHALLENGE:
-                challengeArrayAdapter.remove(challenge);
+                removeChallengeToListView(challenge);
                 break;
 
         }
@@ -118,5 +119,30 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
             return convertView;
         }
     }
+
+    private void addChallengeToListView(final Challenge challenge) {
+
+        final Runnable updateUi = new Runnable() {
+            @Override
+            public void run() {
+                challengeArrayAdapter.add(challenge);
+            }
+        };
+
+        getActivity().runOnUiThread(updateUi);
+    }
+
+    private void removeChallengeToListView(final Challenge challenge) {
+
+        final Runnable updateUi = new Runnable() {
+            @Override
+            public void run() {
+                challengeArrayAdapter.remove(challenge);
+            }
+        };
+
+        getActivity().runOnUiThread(updateUi);
+    }
+
 
 }
