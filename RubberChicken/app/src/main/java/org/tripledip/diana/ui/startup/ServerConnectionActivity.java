@@ -1,5 +1,8 @@
 package org.tripledip.diana.ui.startup;
 
+import android.net.NetworkInfo;
+
+import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.ui.game.GameActivity;
 import org.tripledip.rubberchicken.R;
 
@@ -20,6 +23,11 @@ public class ServerConnectionActivity extends GameActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_connect_server;
+    }
+
+    @Override
+    protected GameService.StateOfPlay getStateOfPlay() {
+        return GameService.StateOfPlay.CONNECTING;
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.tripledip.diana.ui.demo;
 
 import android.graphics.Color;
 
+import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.ui.game.GameActivity;
 import org.tripledip.rubberchicken.R;
 
@@ -17,6 +18,11 @@ public class ColorButtonActivity extends GameActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_game;
+    }
+
+    @Override
+    protected GameService.StateOfPlay getStateOfPlay() {
+        return GameService.StateOfPlay.PLAYING;
     }
 
     @Override
