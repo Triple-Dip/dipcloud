@@ -1,13 +1,64 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="org.tripledip.diana.ui.game.crew.ShipStatusGameFragment">
-
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ship Status"
-        android:id="@+id/textView"
-        android:layout_gravity="center" />
-</FrameLayout>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/text_ship_status_title"
+        android:id="@+id/shipStatusTitle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_ship_hp_label"
+        android:id="@+id/shipHpLabel"
+        android:layout_below="@+id/shipStatusTitle"
+        android:layout_alignStart="@+id/shipStatusTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:id="@+id/shipHpValue"
+        android:layout_below="@+id/shipStatusTitle"
+        android:layout_alignEnd="@+id/shipStatusTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_ship_shield_label"
+        android:id="@+id/shipShieldLabel"
+        android:layout_below="@+id/shipHpLabel"
+        android:layout_alignStart="@+id/shipHpLabel" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20"
+        android:id="@+id/shipShieldValue"
+        android:layout_below="@+id/shipHpLabel"
+        android:layout_alignEnd="@+id/shipHpValue" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_ship_energy_label"
+        android:id="@+id/shipEnergyLabel"
+        android:layout_below="@+id/shipShieldLabel"
+        android:layout_alignStart="@+id/shipShieldLabel" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="50"
+        android:id="@+id/shipEnergyValue"
+        android:layout_below="@+id/shipShieldLabel"
+        android:layout_alignEnd="@+id/shipShieldValue" />
+
+</RelativeLayout>

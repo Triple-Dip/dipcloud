@@ -24,6 +24,12 @@
     <string name="notification_return">Return to game.</string>
     <string name="notification_stop">Quit</string>
 
+    <!-- Ship Status Fragment-->
+    <string name="text_ship_status_title">Ship Status</string>
+    <string name="text_ship_hp_label">Health:</string>
+    <string name="text_ship_shield_label">Shield:</string>
+    <string name="text_ship_energy_label">Energy:</string>
+
     <!-- dummy array for testing -->
     <string-array
         name="dummy_array">
