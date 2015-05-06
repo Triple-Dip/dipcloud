@@ -183,7 +183,7 @@ public class GameService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(getString(R.string.notification_title))
-                .setContentText(getString(R.string.notification_return))
+                .setContentText(getString(R.string.notification_running))
                 .addAction(android.R.drawable.ic_delete,
                         getString(R.string.notification_stop),
                         shutdownIntent);

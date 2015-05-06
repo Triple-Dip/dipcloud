@@ -23,7 +23,7 @@
 
     <!-- Notification text -->
     <string name="notification_title">Diana</string>
-    <string name="notification_return">Return to game.</string>
+    <string name="notification_running">Game is running.</string>
     <string name="notification_stop">Quit</string>
 
     <!-- Ship Status Fragment-->
