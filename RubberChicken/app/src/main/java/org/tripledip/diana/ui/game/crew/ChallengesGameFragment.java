@@ -65,6 +65,12 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        updateListView();
+    }
+
+    @Override
     public void registerGameEventListeners() {
 
         GameEventNotifier notifier = gameCore.getChallengeHelper().getGameEventNotifier();
@@ -73,7 +79,6 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         notifier.registerListener(ChallengeHelper.EVENT_FINISH_CHALLENGE, this);
         notifier.registerListener(ChallengeHelper.EVENT_REMOVE_CHALLENGE, this);
         notifier.registerListener(ChallengeHelper.EVENT_START_CHALLENGE, this);
-
     }
 
     @Override

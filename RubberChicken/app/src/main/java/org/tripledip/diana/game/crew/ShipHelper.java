@@ -84,6 +84,10 @@ public class ShipHelper extends AbstractHelper<Ship> {
 
     private void computeShipAndNotify(Ship newShip) {
 
+        if (null == theShip) {
+            return;
+        }
+
         if (newShip.getShipHp() < theShip.getShipHp()) {
             damageShipHp(newShip);
         }
