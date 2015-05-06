@@ -11,12 +11,29 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fail"
-        android:id="@+id/failButton" />
+        android:text="Red Button"
+        android:background="@drawable/red_rounded"
+        android:id="@+id/redButton" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Succeed"
-        android:id="@+id/succeedButton" />
+        android:text="Blue Button"
+        android:background="@drawable/blue_rounded"
+        android:id="@+id/blueButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Green Button"
+        android:background="@drawable/green_rounded"
+        android:id="@+id/greenButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Yellow Button"
+        android:background="@drawable/yellow_rounded"
+        android:id="@+id/yellowButton" />
+
 </LinearLayout>

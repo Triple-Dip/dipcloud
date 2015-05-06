@@ -8,45 +8,46 @@ import org.tripledip.diana.game.smashables.Challenge;
  */
 public class DumbestEncounter extends AbstractEncounter{
 
-    private final String firstDumbestChallengeName = "Dumb Challenge 1";
-    private final String secondDumbestChallengeName = "Dumb Challenge 2";
-    private final String thirdDumbestChallengeName = "Dumb Challenge 3";
-    private final String forthDumbestChallengeName = "Dumb Challenge 4";
-    private final String fifthDumbestChallengeName = "Dumb Challenge 5";
-    private final String sixthDumbestChallengeName = "Dumb Challenge 6";
+    private final String fireInEngineRoom = "Fire in Engine Room!";
+    private final String gravityHasFailed = "Artificial Gravity has Failed!";
+    private final String shieldsHaveFailed = "Shields have Failed!";
+    private final String airlockIsJammed = "Airlock is Jammed!";
+    private final String reactorIsCritical = "Reactor is Critical!";
+    private final String parasiteIsSpreading = "Parasite is Spreading!";
+    private final String radarIsDown = "Radar is Down!";
+    private final String enemyShipIncoming = "Enemy Ship Incoming!";
 
     public DumbestEncounter() {
         super("DumbestEncounter");
 
 
-        challenges.add(new Challenge(firstDumbestChallengeName, NAME, Challenge.TYPE_DUMB));
-        challenges.add(new Challenge(secondDumbestChallengeName, NAME, Challenge.TYPE_DUMB));
-        challenges.add(new Challenge(thirdDumbestChallengeName, NAME, Challenge.TYPE_DUMB));
-        challenges.add(new Challenge(forthDumbestChallengeName, NAME, Challenge.TYPE_DUMB));
-        challenges.add(new Challenge(fifthDumbestChallengeName, NAME, Challenge.TYPE_DUMB));
-        challenges.add(new Challenge(sixthDumbestChallengeName, NAME, Challenge.TYPE_DUMB));
+        challenges.add(new Challenge(fireInEngineRoom, NAME, Challenge.TYPE_BUTTON));
+        challenges.add(new Challenge(gravityHasFailed, NAME, Challenge.TYPE_LONG_PRESS));
+        challenges.add(new Challenge(shieldsHaveFailed, NAME, Challenge.TYPE_LONG_PRESS));
+        challenges.add(new Challenge(airlockIsJammed, NAME, Challenge.TYPE_BUTTON));
+        challenges.add(new Challenge(reactorIsCritical, NAME, Challenge.TYPE_NUMBER_GUESS));
+        challenges.add(new Challenge(parasiteIsSpreading, NAME, Challenge.TYPE_BUTTON));
+        challenges.add(new Challenge(radarIsDown, NAME, Challenge.TYPE_LONG_PRESS));
+        challenges.add(new Challenge(enemyShipIncoming, NAME, Challenge.TYPE_NUMBER_GUESS));
 
-        // this whole mapping seems really gross and should probably change.
-        // but I wanted to try it anyway!
-        ConsequenceRegistry.DamageShipConsequence  damageShipConsequence =
-                new ConsequenceRegistry.DamageShipConsequence();
 
-        ConsequenceRegistry.RepairShipConsequence  repairShipConsequence =
-                new ConsequenceRegistry.RepairShipConsequence();
+        failureConsequences.put(fireInEngineRoom, new ConsequenceRegistry.DamageShipConsequence());
+        failureConsequences.put(gravityHasFailed, new ConsequenceRegistry.DepleteShipEnergyConsequence());
+        failureConsequences.put(shieldsHaveFailed, new ConsequenceRegistry.TurnOffShipShieldConsequence());
+        failureConsequences.put(airlockIsJammed, new ConsequenceRegistry.DepleteShipEnergyConsequence());
+        failureConsequences.put(reactorIsCritical, new ConsequenceRegistry.DepleteShipEnergyConsequence());
+        failureConsequences.put(parasiteIsSpreading, new ConsequenceRegistry.DamageShipConsequence());
+        failureConsequences.put(radarIsDown, new ConsequenceRegistry.DamageShipConsequence());
+        failureConsequences.put(enemyShipIncoming, new ConsequenceRegistry.HeavyDamageShipConsequence());
 
-        failureConsequences.put(firstDumbestChallengeName, damageShipConsequence);
-        failureConsequences.put(secondDumbestChallengeName, damageShipConsequence);
-        failureConsequences.put(thirdDumbestChallengeName, damageShipConsequence);
-        failureConsequences.put(forthDumbestChallengeName, damageShipConsequence);
-        failureConsequences.put(fifthDumbestChallengeName, damageShipConsequence);
-        failureConsequences.put(sixthDumbestChallengeName, damageShipConsequence);
-
-        successConsequences.put(firstDumbestChallengeName, repairShipConsequence);
-        successConsequences.put(secondDumbestChallengeName, repairShipConsequence);
-        successConsequences.put(thirdDumbestChallengeName, repairShipConsequence);
-        successConsequences.put(forthDumbestChallengeName, repairShipConsequence);
-        successConsequences.put(fifthDumbestChallengeName, repairShipConsequence);
-        successConsequences.put(sixthDumbestChallengeName, repairShipConsequence);
+        successConsequences.put(fireInEngineRoom, new ConsequenceRegistry.RepairShipConsequence());
+        successConsequences.put(gravityHasFailed, new ConsequenceRegistry.RechargeShipEnergyConsequence());
+        successConsequences.put(shieldsHaveFailed, new ConsequenceRegistry.RepairShipShieldConsequence());
+        successConsequences.put(airlockIsJammed, new ConsequenceRegistry.RepairShipShieldConsequence());
+        successConsequences.put(reactorIsCritical, new ConsequenceRegistry.RepairShipConsequence());
+        successConsequences.put(parasiteIsSpreading, new ConsequenceRegistry.RepairShipConsequence());
+        successConsequences.put(radarIsDown, new ConsequenceRegistry.RepairShipShieldConsequence());
+        successConsequences.put(enemyShipIncoming, new ConsequenceRegistry.RepairShipShieldConsequence());
 
     }
 

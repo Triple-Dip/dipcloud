@@ -11,44 +11,38 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Flergin"
-        android:background="@drawable/purple1_rounded_corners"
-        android:id="@+id/purple1" />
+        android:text="ONE"
+        android:background="@drawable/gray_rectangle"
+        android:id="@+id/one" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Blargo"
-        android:background="@drawable/purple2_rounded_corners"
-        android:id="@+id/purple2" />
+        android:text="TWO"
+        android:background="@drawable/gray_rectangle"
+        android:id="@+id/two" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bublipz"
-        android:background="@drawable/purple1_rounded_corners"
-        android:id="@+id/purple3" />
+        android:text="THREE"
+        android:background="@drawable/gray_rectangle"
+        android:id="@+id/three" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gafkin"
-        android:background="@drawable/purple2_rounded_corners"
-        android:id="@+id/purple4" />
+        android:text="FOUR"
+        android:background="@drawable/gray_rectangle"
+        android:id="@+id/four" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Xoyxli"
-        android:background="@drawable/purple1_rounded_corners"
-        android:id="@+id/purple5" />
+        android:text="FIVE"
+        android:background="@drawable/gray_rectangle"
+        android:id="@+id/five" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Saeroo"
-        android:background="@drawable/purple2_rounded_corners"
-        android:id="@+id/purple6" />
 
 
 </LinearLayout>

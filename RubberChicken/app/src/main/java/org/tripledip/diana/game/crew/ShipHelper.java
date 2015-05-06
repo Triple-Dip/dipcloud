@@ -26,9 +26,9 @@ public class ShipHelper extends AbstractHelper<Ship> {
     @Override
     public void bootstrapSmashables() {
         Ship ship = new Ship();
-        ship.setShipEnergy(40);
-        ship.setShipHp(1000);
-        ship.setShipShield(10);
+        ship.setShipEnergy(Ship.MAX_ENERGY);
+        ship.setShipHp(Ship.MAX_HP);
+        ship.setShipShield(Ship.MAX_SHIELD);
         dipAccess.proposeAdd(ship);
     }
 

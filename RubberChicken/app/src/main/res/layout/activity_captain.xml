@@ -8,6 +8,12 @@
 
     <FrameLayout
         android:layout_width="0px"
+        android:layout_weight=".25"
+        android:layout_height="fill_parent"
+        android:id="@+id/captain_challenge_container" />
+
+    <FrameLayout
+        android:layout_width="0px"
         android:layout_weight=".50"
         android:layout_height="fill_parent"
         android:id="@+id/captain_encounter_container" />

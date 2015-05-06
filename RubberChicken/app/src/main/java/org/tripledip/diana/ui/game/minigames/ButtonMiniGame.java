@@ -18,8 +18,10 @@ import org.tripledip.rubberchicken.R;
 public class ButtonMiniGame extends MiniGameFragment implements View.OnClickListener {
 
 
-    private Button failButton;
-    private Button succeedButton;
+    private Button redButton;
+    private Button blueButton;
+    private Button greenButton;
+    private Button yellowButton;
 
     public ButtonMiniGame() {
         // Required empty public constructor
@@ -31,10 +33,14 @@ public class ButtonMiniGame extends MiniGameFragment implements View.OnClickList
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_button_mini_game, container, false);
 
-        failButton = (Button) view.findViewById(R.id.failButton);
-        failButton.setOnClickListener(this);
-        succeedButton = (Button) view.findViewById(R.id.succeedButton);
-        succeedButton.setOnClickListener(this);
+        redButton = (Button) view.findViewById(R.id.redButton);
+        redButton.setOnClickListener(this);
+        blueButton = (Button) view.findViewById(R.id.blueButton);
+        blueButton.setOnClickListener(this);
+        greenButton = (Button) view.findViewById(R.id.greenButton);
+        greenButton.setOnClickListener(this);
+        yellowButton = (Button) view.findViewById(R.id.yellowButton);
+        yellowButton.setOnClickListener(this);
 
         return view;
     }
@@ -43,11 +49,11 @@ public class ButtonMiniGame extends MiniGameFragment implements View.OnClickList
     @Override
     public void onClick(View v) {
 
-        if(v.getId() == failButton.getId()){
+        if(v.getId() == redButton.getId()){
 
             challengeHelper.reportResult(Challenge.RESULT_FAILED);
 
-        } else if (v.getId() == succeedButton.getId()) {
+        } else if (v.getId() == greenButton.getId()) {
 
             challengeHelper.reportResult(Challenge.RESULT_SUCCESS);
 

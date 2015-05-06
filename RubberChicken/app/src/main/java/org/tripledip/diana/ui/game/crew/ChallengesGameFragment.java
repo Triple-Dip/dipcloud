@@ -28,6 +28,8 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
 
     private MiniGameFragment currentMiniGame;
 
+    private boolean isCaptainsMode;
+
     private ChallengeHelper challengeHelper;
 
     private ArrayAdapter<Challenge> challengeArrayAdapter;
@@ -45,12 +47,18 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
 
         challengeHelper = gameCore.getChallengeHelper();
 
+        isCaptainsMode = gameCore.isCaptainMode();
+
         View view = inflater.inflate(R.layout.fragment_challenges, container, false);
 
         listView = (ListView) view.findViewById(R.id.challengesListView);
         challengeArrayAdapter = new ChallengesAdapter(getActivity(), challengeHelper.getChallenges());
         listView.setAdapter(challengeArrayAdapter);
         listView.setOnItemClickListener(this);
+
+        if(isCaptainsMode){
+            listView.setEnabled(false);
+        }
 
         return view;
 
