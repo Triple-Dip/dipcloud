@@ -43,6 +43,7 @@ public class ComlinkGameFragment extends GameFragment<ComlinkMessage> {
         listView = (ListView) view.findViewById(R.id.comlinkListView);
         comlinkMessageArrayAdapter = new ComlinkArrayAdapter(getActivity(), new ArrayList<ComlinkMessage>());
         listView.setAdapter(comlinkMessageArrayAdapter);
+        listView.setEnabled(false);
 
         return view;
     }
