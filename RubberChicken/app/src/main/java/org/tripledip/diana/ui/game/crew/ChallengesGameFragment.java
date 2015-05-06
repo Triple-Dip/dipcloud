@@ -95,7 +95,6 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
                     lockChallengeListView(false);
                 break;
             case ChallengeHelper.EVENT_START_CHALLENGE:
-                // gross will fix
                 if(challenge.getOwner().equals(gameCore.getPlayer().getName()))
                     attachMiniGame(challenge);
                     lockChallengeListView(true);
