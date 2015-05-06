@@ -125,12 +125,11 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
             @Override
             public void run() {
                 challengeArrayAdapter.add(challenge);
-                challengeArrayAdapter.notifyDataSetChanged();
-                listView.invalidate();
             }
         };
-
         getActivity().runOnUiThread(updateUi);
+
+
     }
 
     private void removeChallengeToListView(final Challenge challenge) {
@@ -139,12 +138,10 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
             @Override
             public void run() {
                 challengeArrayAdapter.remove(challenge);
-                challengeArrayAdapter.notifyDataSetChanged();
-                listView.invalidate();
             }
         };
-
         getActivity().runOnUiThread(updateUi);
+
     }
 
 

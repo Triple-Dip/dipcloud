@@ -40,7 +40,7 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
         String result = challenge.getResult();
 
         // someone definitely owns it now and it's finished
-        if( null != owner && null == result ){
+        if( null != owner && (null == result || result.equals(""))){
 
             // it's me!!
             if(owner.equals(player.getName())){
@@ -50,8 +50,6 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
                 removeChallenge(challenge);
             }
 
-            gameEventNotifier.notifyEventOccurred(EVENT_START_CHALLENGE, challenge);
-
         }
 
     }
@@ -59,6 +57,7 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
     // start challenge is a game event... !
     private void startChallenge(Challenge challenge){
         currentChallenge = challenge;
+        gameEventNotifier.notifyEventOccurred(EVENT_START_CHALLENGE, challenge);
         //TODO: wire up the fragment minigame and start playin'
 
     }
