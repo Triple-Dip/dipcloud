@@ -13,42 +13,48 @@
         android:layout_height="wrap_content"
         android:text="Flergin"
         android:background="@drawable/purple1_rounded_corners"
-        android:id="@+id/purple1" />
+        android:id="@+id/purple1"
+        android:padding="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Blargo"
         android:background="@drawable/purple2_rounded_corners"
-        android:id="@+id/purple2" />
+        android:id="@+id/purple2"
+        android:padding="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bublipz"
         android:background="@drawable/purple1_rounded_corners"
-        android:id="@+id/purple3" />
+        android:id="@+id/purple3"
+        android:padding="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gafkin"
         android:background="@drawable/purple2_rounded_corners"
-        android:id="@+id/purple4" />
+        android:id="@+id/purple4"
+        android:padding="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Xoyxli"
         android:background="@drawable/purple1_rounded_corners"
-        android:id="@+id/purple5" />
+        android:id="@+id/purple5"
+        android:padding="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Saeroo"
         android:background="@drawable/purple2_rounded_corners"
-        android:id="@+id/purple6" />
+        android:id="@+id/purple6"
+        android:padding="10dp" />
 
 
 </LinearLayout>

@@ -13,27 +13,31 @@
         android:layout_height="wrap_content"
         android:text="Red Button"
         android:background="@drawable/red_rounded"
-        android:id="@+id/redButton" />
+        android:id="@+id/redButton"
+        android:padding="20dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Blue Button"
         android:background="@drawable/blue_rounded"
-        android:id="@+id/blueButton" />
+        android:id="@+id/blueButton"
+        android:padding="20dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Green Button"
         android:background="@drawable/green_rounded"
-        android:id="@+id/greenButton" />
+        android:id="@+id/greenButton"
+        android:padding="20dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Yellow Button"
         android:background="@drawable/yellow_rounded"
-        android:id="@+id/yellowButton" />
+        android:id="@+id/yellowButton"
+        android:padding="20dp" />
 
 </LinearLayout>

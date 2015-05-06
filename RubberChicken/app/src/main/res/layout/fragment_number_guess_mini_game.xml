@@ -13,35 +13,40 @@
         android:layout_height="wrap_content"
         android:text="ONE"
         android:background="@drawable/gray_rectangle"
-        android:id="@+id/one" />
+        android:id="@+id/one"
+        android:padding="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TWO"
         android:background="@drawable/gray_rectangle"
-        android:id="@+id/two" />
+        android:id="@+id/two"
+        android:padding="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="THREE"
         android:background="@drawable/gray_rectangle"
-        android:id="@+id/three" />
+        android:id="@+id/three"
+        android:padding="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="FOUR"
         android:background="@drawable/gray_rectangle"
-        android:id="@+id/four" />
+        android:id="@+id/four"
+        android:padding="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="FIVE"
         android:background="@drawable/gray_rectangle"
-        android:id="@+id/five" />
+        android:id="@+id/five"
+        android:padding="10dp" />
 
 
 
