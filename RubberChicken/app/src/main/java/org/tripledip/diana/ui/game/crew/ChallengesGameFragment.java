@@ -163,7 +163,7 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         final Runnable updateUi = new Runnable() {
             @Override
             public void run() {
-                listView.setClickable(!locked);
+                listView.setEnabled(!locked);
             }
         };
 
