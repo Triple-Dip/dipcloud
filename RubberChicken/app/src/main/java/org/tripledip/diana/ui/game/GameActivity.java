@@ -77,7 +77,10 @@ public abstract class GameActivity extends Activity {
         public void onServiceConnected(ComponentName className, IBinder service) {
             gameService = ((GameService.GameServiceBinder) service).getService();
             gameService.setStateIntent(getStateOfPlay(), getIntent());
-            makeGameCore();
+
+            if (null == gameService.getGameCore()) {
+                makeGameCore();
+            }
             findOrAttachFragments();
             registerListeners();
         }

@@ -50,7 +50,7 @@ public class EncounterController implements ScrudListener<Challenge> {
     public void onUpdated(Challenge challenge) {
 
         String result = challenge.getResult();
-        if(null != result){
+        if(null != result && null != currentEncounter){
 
             if(result.equals(Challenge.RESULT_SUCCESS)){
                 currentEncounter.successConsequences.get(challenge.getName()).doStuff(gameCore);
@@ -59,10 +59,7 @@ public class EncounterController implements ScrudListener<Challenge> {
             if(result.equals(Challenge.RESULT_FAILED)){
                 currentEncounter.failureConsequences.get(challenge.getName()).doStuff(gameCore);
             }
-
-            //gameCore.getDipAccess().proposeRemove(challenge);
         }
-
     }
 
     @Override

@@ -11,11 +11,11 @@ import org.tripledip.dipcloud.local.model.Molecule;
 public class Ship extends Smashable {
 
     public static final String HP = "hp";
-    public static final int MAX_HP = 30;
+    public static final int MAX_HP = 25;
     public static final int MIN_HP = 0;
 
     public static final String SHIELD = "shield";
-    public static final int MAX_SHIELD = 20;
+    public static final int MAX_SHIELD = 3;
     public static final int MIN_SHIELD = 0;
 
     public static final String ENERGY = "energy";
