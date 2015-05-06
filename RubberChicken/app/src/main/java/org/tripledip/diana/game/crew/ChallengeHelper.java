@@ -46,6 +46,7 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
             if (owner.equals(player.getName())){
                 currentChallenge = challenge;
             } else {
+                challenges.remove(challenge);
                 gameEventNotifier.notifyEventOccurred(EVENT_REMOVE_CHALLENGE, challenge);
             }
         }
