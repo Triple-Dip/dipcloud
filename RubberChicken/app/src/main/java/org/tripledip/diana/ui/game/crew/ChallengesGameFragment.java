@@ -14,7 +14,6 @@ import android.widget.TextView;
 import org.tripledip.diana.game.GameEventNotifier;
 import org.tripledip.diana.game.crew.ChallengeHelper;
 import org.tripledip.diana.game.smashables.Challenge;
-import org.tripledip.diana.game.smashables.Ship;
 import org.tripledip.diana.ui.game.GameFragment;
 import org.tripledip.rubberchicken.R;
 
