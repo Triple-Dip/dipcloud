@@ -18,8 +18,8 @@ import org.tripledip.rubberchicken.R;
 public class ButtonMiniGame extends MiniGameFragment implements View.OnClickListener {
 
 
-    Button failButton;
-    Button succeedButton;
+    private Button failButton;
+    private Button succeedButton;
 
     public ButtonMiniGame() {
         // Required empty public constructor
