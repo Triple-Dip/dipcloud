@@ -98,14 +98,16 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
                 updateListView();
                 break;
             case ChallengeHelper.EVENT_FINISH_CHALLENGE:
-                if(challenge.getOwner().equals(gameCore.getPlayer().getName()))
+                if(challenge.getOwner().equals(gameCore.getPlayer().getName())) {
                     detachMiniGame();
                     lockChallengeListView(false);
+                }
                 break;
             case ChallengeHelper.EVENT_START_CHALLENGE:
-                if(challenge.getOwner().equals(gameCore.getPlayer().getName()))
+                if(challenge.getOwner().equals(gameCore.getPlayer().getName())) {
                     attachMiniGame(challenge);
                     lockChallengeListView(true);
+                }
                 break;
 
         }

@@ -80,10 +80,10 @@ public class ComlinkGameFragment extends GameFragment<ComlinkMessage> {
         public View getView(int position, View convertView, ViewGroup parent) {
 
             if (null == convertView) {
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.listview_element_challenge, parent, false);
+                convertView = getActivity().getLayoutInflater().inflate(R.layout.listview_element_comlink, parent, false);
             }
 
-            TextView challengeName = (TextView) convertView.findViewById(R.id.challengeName);
+            TextView challengeName = (TextView) convertView.findViewById(R.id.comlinkMessage);
 
             ComlinkMessage message = comlinkMessages.get(position);
 
@@ -91,6 +91,7 @@ public class ComlinkGameFragment extends GameFragment<ComlinkMessage> {
             challengeName.setTextColor(message.getColor());
 
             return convertView;
+
         }
     }
 
