@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:background="@drawable/background_space">
+    android:orientation="horizontal">
 
 
     <FrameLayout
@@ -21,15 +20,14 @@
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="0px"
-            android:layout_weight=".50"
+            android:layout_height="250px"
             android:id="@+id/captain_ship_status_container" />
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="0px"
-            android:layout_weight=".50"
+            android:layout_height="300px"
             android:id="@+id/captain_comlink_container" />
+
     </LinearLayout>
 
 </LinearLayout>
