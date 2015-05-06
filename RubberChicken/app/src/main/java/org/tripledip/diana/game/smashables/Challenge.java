@@ -8,7 +8,8 @@ import org.tripledip.dipcloud.local.contract.SmashableBuilder;
  */
 public class Challenge extends Smashable{
 
-    public static final String TYPE_DUMBEST = "dumbestChallenge";
+    public static final String TYPE_DUMB= "dumb";
+    public static final String TYPE_STUPID = "stupid";
 
     public static final String RESULT_SUCCESS = "passed";
     public static final String RESULT_FAILED = "failed";

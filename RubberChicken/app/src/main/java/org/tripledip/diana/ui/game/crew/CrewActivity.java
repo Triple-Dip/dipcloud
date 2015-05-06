@@ -7,6 +7,7 @@ import org.tripledip.diana.game.captain.encounter.EncounterController;
 import org.tripledip.diana.service.GameService;
 import org.tripledip.diana.ui.game.GameActivity;
 import org.tripledip.diana.ui.game.captain.EncounterGameFragment;
+import org.tripledip.diana.ui.game.minigames.MiniGameFragment;
 import org.tripledip.rubberchicken.R;
 
 public class CrewActivity extends GameActivity {
@@ -84,5 +85,7 @@ public class CrewActivity extends GameActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crew);
     }
+
+
 
 }

@@ -22,8 +22,6 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
     TextView shipShieldValue;
     TextView shipEnergyValue;
 
-
-
     public ShipStatusGameFragment() {
         // Required empty public constructor
     }
@@ -51,12 +49,14 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
     private void drawShip(final Ship ship) {
 
         final Runnable updateUi = new Runnable() {
+
             @Override
             public void run() {
                 shipHpValue.setText(ship.getShipHp());
                 shipShieldValue.setText(ship.getShipShield());
                 shipEnergyValue.setText(ship.getShipEnergy());
             }
+
         };
 
         getActivity().runOnUiThread(updateUi);

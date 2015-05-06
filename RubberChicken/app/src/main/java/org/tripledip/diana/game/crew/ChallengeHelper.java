@@ -51,7 +51,6 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
                 removeChallenge(challenge);
             }
             gameEventNotifier.notifyEventOccurred(EVENT_START_CHALLENGE, challenge);
-
         }
 
     }
@@ -59,8 +58,6 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
     // start challenge is a game event... !
     private void startChallenge(Challenge challenge){
         currentChallenge = challenge;
-        //TODO: wire up the fragment minigame and start playin'
-
     }
 
     // challenge is finished!
@@ -111,6 +108,11 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
 
     public Challenge getCurrentChallenge() {
         return currentChallenge;
+    }
+
+    public void reportResult(String result){
+        currentChallenge.setResult(result);
+        dipAccess.proposeUpdate(currentChallenge);
     }
 }
 

@@ -4,6 +4,7 @@ import org.tripledip.diana.game.captain.ComlinkController;
 import org.tripledip.diana.game.captain.encounter.EncounterController;
 import org.tripledip.diana.game.crew.ChallengeHelper;
 import org.tripledip.diana.game.crew.ComlinkHelper;
+import org.tripledip.diana.game.crew.MiniGameController;
 import org.tripledip.diana.game.crew.ShipHelper;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 
@@ -20,6 +21,7 @@ public class GameCore {
     private final ComlinkHelper comlinkHelper;
     private final Player player;
     private final DipAccess dipAccess;
+    private final MiniGameController miniGameController;
     private EncounterController encounterController;
     private ComlinkController comlinkController;
 
@@ -30,6 +32,7 @@ public class GameCore {
         shipHelper = new ShipHelper(dipAccess);
         challengeHelper = new ChallengeHelper(dipAccess, player);
         comlinkHelper = new ComlinkHelper(dipAccess);
+        miniGameController = new MiniGameController();
 
     }
 
@@ -60,6 +63,10 @@ public class GameCore {
 
     public ComlinkController getComlinkController() {
         return comlinkController;
+    }
+
+    public MiniGameController getMiniGameController() {
+        return miniGameController;
     }
 
     public Player getPlayer() {

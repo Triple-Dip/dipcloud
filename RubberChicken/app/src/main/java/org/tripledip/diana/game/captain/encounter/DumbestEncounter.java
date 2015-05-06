@@ -15,8 +15,8 @@ public class DumbestEncounter extends AbstractEncounter{
         super("DumbestEncounter");
 
 
-        challenges.add(new Challenge(firstDumbestChallengeName, NAME, Challenge.TYPE_DUMBEST));
-        challenges.add(new Challenge(secondDumbestChallengeName, NAME, Challenge.TYPE_DUMBEST));
+        challenges.add(new Challenge(firstDumbestChallengeName, NAME, Challenge.TYPE_DUMB));
+        challenges.add(new Challenge(secondDumbestChallengeName, NAME, Challenge.TYPE_STUPID));
 
         // this whole mapping seems really gross and should probably change.
         // but I wanted to try it anyway!

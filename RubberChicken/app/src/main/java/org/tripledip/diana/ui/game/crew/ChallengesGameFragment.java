@@ -15,6 +15,7 @@ import org.tripledip.diana.game.GameEventNotifier;
 import org.tripledip.diana.game.crew.ChallengeHelper;
 import org.tripledip.diana.game.smashables.Challenge;
 import org.tripledip.diana.ui.game.GameFragment;
+import org.tripledip.diana.ui.game.minigames.MiniGameFragment;
 import org.tripledip.rubberchicken.R;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import java.util.List;
 public class ChallengesGameFragment extends GameFragment<Challenge> implements AdapterView.OnItemClickListener {
 
     public static final String CREW_CHALLENGES_FRAG_TAG = "challengeFrag";
+
+    private MiniGameFragment currentMiniGame;
 
     private ChallengeHelper challengeHelper;
 
@@ -84,7 +87,18 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
                 addChallengeToListView(challenge);
                 break;
             case ChallengeHelper.EVENT_REMOVE_CHALLENGE:
-                removeChallengeToListView(challenge);
+                removeChallengeRemoveListView(challenge);
+                break;
+            case ChallengeHelper.EVENT_FINISH_CHALLENGE:
+                if(challenge.getOwner().equals(gameCore.getPlayer().getName()))
+                    detachMiniGame();
+                    lockChallengeListView(false);
+                break;
+            case ChallengeHelper.EVENT_START_CHALLENGE:
+                // gross will fix
+                if(challenge.getOwner().equals(gameCore.getPlayer().getName()))
+                    attachMiniGame(challenge);
+                    lockChallengeListView(true);
                 break;
 
         }
@@ -132,7 +146,7 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
 
     }
 
-    private void removeChallengeToListView(final Challenge challenge) {
+    private void removeChallengeRemoveListView(final Challenge challenge) {
 
         final Runnable updateUi = new Runnable() {
             @Override
@@ -144,5 +158,39 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
 
     }
 
+    private void lockChallengeListView(final boolean locked) {
+
+        final Runnable updateUi = new Runnable() {
+            @Override
+            public void run() {
+                listView.setClickable(!locked);
+            }
+        };
+
+        getActivity().runOnUiThread(updateUi);
+
+    }
+
+    private void attachMiniGame(Challenge challenge){
+
+        currentMiniGame =
+                gameCore.getMiniGameController().getMiniGameFromChallenge(challenge.getType());
+
+        currentMiniGame.setChallengeHelper(challengeHelper);
+
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.crew_minigame_container, currentMiniGame)
+                .commit();
+
+    }
+
+    private void detachMiniGame(){
+        getFragmentManager()
+                .beginTransaction()
+                .remove(currentMiniGame)
+                .commit();
+
+    }
 
 }
