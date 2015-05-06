@@ -18,19 +18,16 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
 
     public static final String CREW_SHIPSTATUS_FRAG_TAG = "shipStatusFrag";
 
-    TextView shipHpValue;
-    TextView shipShieldValue;
-    TextView shipEnergyValue;
-
-
+    private TextView shipHpValue;
+    private TextView shipShieldValue;
+    private TextView shipEnergyValue;
 
     public ShipStatusGameFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_ship_status, container, false);
 
@@ -44,9 +41,8 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
 
     @Override
     public void onEventOccurred(String subject, Ship ship) {
-
+        drawShip(ship);
     }
-
 
     private void drawShip(final Ship ship) {
 
@@ -67,6 +63,7 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
 
         GameEventNotifier notifier = gameCore.getShipHelper().getGameEventNotifier();
 
+        notifier.registerListener(ShipHelper.EVENT_REFRESH_SHIP, this);
         notifier.registerListener(ShipHelper.EVENT_DAMAGE_HP, this);
         notifier.registerListener(ShipHelper.EVENT_DAMAGE_SHIELD, this);
         notifier.registerListener(ShipHelper.EVENT_DEPLETE_ENERGY, this);
@@ -80,6 +77,7 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
 
         GameEventNotifier notifier = gameCore.getShipHelper().getGameEventNotifier();
 
+        notifier.unRegisterListener(ShipHelper.EVENT_REFRESH_SHIP, this);
         notifier.unRegisterListener(ShipHelper.EVENT_DAMAGE_HP, this);
         notifier.unRegisterListener(ShipHelper.EVENT_DAMAGE_SHIELD, this);
         notifier.unRegisterListener(ShipHelper.EVENT_DEPLETE_ENERGY, this);

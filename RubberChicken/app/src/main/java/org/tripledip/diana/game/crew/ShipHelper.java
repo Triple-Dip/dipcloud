@@ -1,7 +1,6 @@
 package org.tripledip.diana.game.crew;
 
 import org.tripledip.diana.game.AbstractHelper;
-import org.tripledip.diana.game.Player;
 import org.tripledip.diana.game.smashables.Ship;
 import org.tripledip.dipcloud.local.contract.DipAccess;
 
@@ -10,6 +9,7 @@ import org.tripledip.dipcloud.local.contract.DipAccess;
  */
 public class ShipHelper extends AbstractHelper<Ship> {
 
+    public static final String EVENT_REFRESH_SHIP = "refreshShip";
     public static final String EVENT_DAMAGE_HP = "damageHpEvent";
     public static final String EVENT_REPAIR_HP = "repairHpEvent";
     public static final String EVENT_DAMAGE_SHIELD = "damageShieldEvent";
@@ -24,8 +24,12 @@ public class ShipHelper extends AbstractHelper<Ship> {
     }
 
     /******************************************
-                    Ship Events
+     Ship Events
      *****************************************/
+
+    private void refreshShip (Ship ship){
+        gameEventNotifier.notifyEventOccurred(EVENT_REFRESH_SHIP, ship);
+    }
 
     private void damageShipHp (Ship ship){
         gameEventNotifier.notifyEventOccurred(EVENT_DAMAGE_HP, ship);
@@ -52,11 +56,12 @@ public class ShipHelper extends AbstractHelper<Ship> {
     }
 
     /******************************************
-                 Incoming Dip Stuff
+     Incoming Dip Stuff
      *****************************************/
     @Override
     public void onAdded(Ship ship) {
         theShip = ship;
+        refreshShip(ship);
     }
     @Override
     public void onUpdated(Ship ship) {

@@ -10,7 +10,7 @@ import org.tripledip.dipcloud.local.contract.DipAccess;
 /**
  * Created by Wolfe on 4/11/2015.
  *
- * TODO: explain this class
+ * TODO: explain this class better
  *
  */
 public class GameCore {
