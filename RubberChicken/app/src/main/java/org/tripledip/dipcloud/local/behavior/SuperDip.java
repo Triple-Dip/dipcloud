@@ -179,7 +179,7 @@ public class SuperDip implements DipAccess {
         send(smashWithBuilder(smashable));
     }
 
-    private Smashable unsmashWithBuilder(Molecule molecule) {
+    protected Smashable unsmashWithBuilder(Molecule molecule) {
 
         Smashable smashable = smashableTemplates.get(molecule.getChannel());
         if (null == smashable) {
@@ -199,7 +199,7 @@ public class SuperDip implements DipAccess {
 
     }
 
-    private Molecule smashWithBuilder(Smashable smashable) {
+    protected Molecule smashWithBuilder(Smashable smashable) {
 
         Molecule molecule = new Molecule(smashable.getChannel());
 

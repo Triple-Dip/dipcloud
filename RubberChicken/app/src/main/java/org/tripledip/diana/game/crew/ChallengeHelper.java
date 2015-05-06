@@ -50,6 +50,7 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
                 // or not :(
                 removeChallenge(challenge);
             }
+            gameEventNotifier.notifyEventOccurred(EVENT_START_CHALLENGE, challenge);
 
         }
 
@@ -58,7 +59,6 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
     // start challenge is a game event... !
     private void startChallenge(Challenge challenge){
         currentChallenge = challenge;
-        gameEventNotifier.notifyEventOccurred(EVENT_START_CHALLENGE, challenge);
         //TODO: wire up the fragment minigame and start playin'
 
     }

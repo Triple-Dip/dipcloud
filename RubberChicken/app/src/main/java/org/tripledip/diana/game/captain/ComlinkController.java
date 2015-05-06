@@ -60,9 +60,9 @@ public class ComlinkController {
 
             switch (event){
 
-                case ShipHelper.EVENT_DAMAGE_HP: dipAccess.proposeSend(new ComlinkMessage("Ship has been damaged!",COMLINK_RED));
+                case ShipHelper.EVENT_DAMAGE_HP: dipAccess.proposeSend(new ComlinkMessage("Ship has been damaged!", COMLINK_RED));
                     break;
-                case ShipHelper.EVENT_REPAIR_HP: dipAccess.proposeSend(new ComlinkMessage("Ship has been repaired!",COMLINK_GREEN));
+                case ShipHelper.EVENT_REPAIR_HP: dipAccess.proposeSend(new ComlinkMessage("Ship has been repaired!", COMLINK_GREEN));
                     break;
 
             }
@@ -77,17 +77,11 @@ public class ComlinkController {
         public void onEventOccurred(String event, Challenge challenge) {
 
             switch (event){
-                case ChallengeHelper.EVENT_ADD_CHALLENGE:
-                    dipAccess.proposeSend(new ComlinkMessage(challenge.getOwner()+" has added "+challenge.getName()+"!", COMLINK_BLUE));
-                    break;
                 case ChallengeHelper.EVENT_START_CHALLENGE:
                     dipAccess.proposeSend(new ComlinkMessage(challenge.getOwner()+" has started "+challenge.getName()+"!", COMLINK_BLUE));
                     break;
                 case ChallengeHelper.EVENT_FINISH_CHALLENGE:
                     dipAccess.proposeSend(new ComlinkMessage(challenge.getOwner()+" has "+challenge.getResult()+" "+challenge.getName()+"!", COMLINK_BLUE));
-                    break;
-                case ChallengeHelper.EVENT_REMOVE_CHALLENGE:
-                    dipAccess.proposeSend(new ComlinkMessage(challenge.getOwner()+" has removed "+challenge.getName()+"!", COMLINK_BLUE));
                     break;
 
             }
