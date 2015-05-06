@@ -9,9 +9,8 @@ import org.tripledip.dipcloud.local.contract.DipAccess;
 
 /**
  * Created by Wolfe on 4/11/2015.
- *
+ * <p/>
  * TODO: explain this class better
- *
  */
 public class GameCore {
 
@@ -22,8 +21,9 @@ public class GameCore {
     private final DipAccess dipAccess;
     private EncounterController encounterController;
     private ComlinkController comlinkController;
+    private boolean captainMode = false;
 
-    public GameCore(DipAccess dipAccess, Player player){
+    public GameCore(DipAccess dipAccess, Player player) {
 
         this.dipAccess = dipAccess;
         this.player = player;
@@ -33,13 +33,14 @@ public class GameCore {
 
     }
 
-    public void setToCaptainMode(boolean mode){
+    public void setToCaptainMode() {
+        captainMode = true;
+        encounterController = new EncounterController(this);
+        comlinkController = new ComlinkController(this);
+    }
 
-        if(mode){
-            encounterController = new EncounterController(this);
-            comlinkController = new ComlinkController(this);
-        }
-
+    public boolean isCaptainMode() {
+        return captainMode;
     }
 
     public ShipHelper getShipHelper() {

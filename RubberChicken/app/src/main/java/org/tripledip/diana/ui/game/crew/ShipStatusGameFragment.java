@@ -49,9 +49,9 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
         final Runnable updateUi = new Runnable() {
             @Override
             public void run() {
-                shipHpValue.setText(ship.getShipHp());
-                shipShieldValue.setText(ship.getShipShield());
-                shipEnergyValue.setText(ship.getShipEnergy());
+                shipHpValue.setText(Integer.toString(ship.getShipHp()));
+                shipShieldValue.setText(Integer.toString(ship.getShipShield()));
+                shipEnergyValue.setText(Integer.toString(ship.getShipEnergy()));
             }
         };
 
@@ -86,4 +86,13 @@ public class ShipStatusGameFragment extends GameFragment<Ship> {
         notifier.unRegisterListener(ShipHelper.EVENT_REPAIR_SHIELD, this);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // make sure the ship atoms are bootstrapped after the ui is ready to show them
+        if (gameCore.isCaptainMode()) {
+            gameCore.getShipHelper().bootstrapSmashables();
+        }
+    }
 }

@@ -19,75 +19,89 @@ public class ShipHelper extends AbstractHelper<Ship> {
 
     private Ship theShip;
 
-    public ShipHelper(DipAccess dipAccess){
+    public ShipHelper(DipAccess dipAccess) {
         super(dipAccess, new Ship());
     }
 
-    /******************************************
-     Ship Events
-     *****************************************/
+    @Override
+    public void bootstrapSmashables() {
+        Ship ship = new Ship();
+        ship.setShipEnergy(40);
+        ship.setShipHp(1000);
+        ship.setShipShield(10);
+        dipAccess.proposeAdd(ship);
+    }
 
-    private void refreshShip (Ship ship){
+    /**
+     * ***************************************
+     * Ship Events
+     * ***************************************
+     */
+
+    private void refreshShip(Ship ship) {
         gameEventNotifier.notifyEventOccurred(EVENT_REFRESH_SHIP, ship);
     }
 
-    private void damageShipHp (Ship ship){
+    private void damageShipHp(Ship ship) {
         gameEventNotifier.notifyEventOccurred(EVENT_DAMAGE_HP, ship);
     }
 
-    private void damageShipShield (Ship ship){
+    private void damageShipShield(Ship ship) {
         gameEventNotifier.notifyEventOccurred(EVENT_DAMAGE_SHIELD, ship);
     }
 
-    private void repairShipHp(Ship ship){
+    private void repairShipHp(Ship ship) {
         gameEventNotifier.notifyEventOccurred(EVENT_REPAIR_HP, ship);
     }
 
-    private void repairShipShield(Ship ship){
+    private void repairShipShield(Ship ship) {
         gameEventNotifier.notifyEventOccurred(EVENT_REPAIR_SHIELD, ship);
     }
 
-    private void rechargeShipEnergy(Ship ship){
+    private void rechargeShipEnergy(Ship ship) {
         gameEventNotifier.notifyEventOccurred(EVENT_RECHARGE_ENERGY, ship);
     }
 
-    private void depleteShipEnergy(Ship ship){
+    private void depleteShipEnergy(Ship ship) {
         gameEventNotifier.notifyEventOccurred(EVENT_DEPLETE_ENERGY, ship);
     }
 
-    /******************************************
-     Incoming Dip Stuff
-     *****************************************/
+    /**
+     * ***************************************
+     * Incoming Dip Stuff
+     * ***************************************
+     */
     @Override
     public void onAdded(Ship ship) {
         theShip = ship;
         refreshShip(ship);
     }
+
     @Override
     public void onUpdated(Ship ship) {
         computeShipAndNotify(ship);
     }
 
-    private void computeShipAndNotify(Ship newShip){
+    private void computeShipAndNotify(Ship newShip) {
 
-        if(newShip.getShipHp() < theShip.getShipHp()){
+        if (newShip.getShipHp() < theShip.getShipHp()) {
             damageShipHp(newShip);
         }
-        if(newShip.getShipHp() > theShip.getShipHp()){
+        if (newShip.getShipHp() > theShip.getShipHp()) {
             repairShipHp(newShip);
         }
 
-        if(newShip.getShipShield() < theShip.getShipShield()){
+        if (newShip.getShipShield() < theShip.getShipShield()) {
             damageShipShield(newShip);
         }
-        if(newShip.getShipShield() > theShip.getShipShield()){
+        if (newShip.getShipShield() > theShip.getShipShield()) {
             repairShipShield(newShip);
         }
 
-        if(newShip.getShipEnergy() < theShip.getShipEnergy()){
+        if (newShip.getShipEnergy() < theShip.getShipEnergy()) {
             depleteShipEnergy(newShip);
         }
-        if(newShip.getShipShield() > theShip.getShipShield()){
+        if (newShip.getShipShield() > theShip.getShipShield()) {
             rechargeShipEnergy(newShip);
         }
 
