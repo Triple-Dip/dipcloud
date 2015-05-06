@@ -13,7 +13,7 @@ public class ConsequenceRegistry {
         @Override
         public void doStuff(GameCore gameCore) {
 
-            Ship ship = gameCore.getShipHelper().getTheShip();
+            Ship ship = copyShip(gameCore.getShipHelper().getTheShip());
             ship.setShipHp(ship.getShipHp() - 5);
             gameCore.getDipAccess().proposeUpdate(ship);
 
@@ -26,7 +26,7 @@ public class ConsequenceRegistry {
         @Override
         public void doStuff(GameCore gameCore) {
 
-            Ship ship = gameCore.getShipHelper().getTheShip();
+            Ship ship = copyShip(gameCore.getShipHelper().getTheShip());
             ship.setShipHp(ship.getShipHp() + 5);
             gameCore.getDipAccess().proposeUpdate(ship);
 
@@ -34,5 +34,15 @@ public class ConsequenceRegistry {
 
     }
 
+    private static Ship copyShip(Ship ship){
+
+        Ship newShip = new Ship();
+        newShip.setInstanceId(ship.getInstanceId());
+        newShip.setShipEnergy(ship.getShipEnergy());
+        newShip.setShipHp(ship.getShipHp());
+        newShip.setShipShield(ship.getShipShield());
+
+        return newShip;
+    }
 
 }

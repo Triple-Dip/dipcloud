@@ -48,7 +48,7 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         View view = inflater.inflate(R.layout.fragment_challenges, container, false);
 
         listView = (ListView) view.findViewById(R.id.challengesListView);
-        challengeArrayAdapter = new ChallengesAdapter(getActivity(), new ArrayList<Challenge>());
+        challengeArrayAdapter = new ChallengesAdapter(getActivity(), challengeHelper.getChallenges());
         listView.setAdapter(challengeArrayAdapter);
         listView.setOnItemClickListener(this);
 
@@ -137,7 +137,6 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         final Runnable updateUi = new Runnable() {
             @Override
             public void run() {
-                challengeArrayAdapter.add(challenge);
                 challengeArrayAdapter.notifyDataSetChanged();
 
             }
@@ -152,7 +151,6 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         final Runnable updateUi = new Runnable() {
             @Override
             public void run() {
-                challengeArrayAdapter.remove(challenge);
                 challengeArrayAdapter.notifyDataSetChanged();
             }
         };
