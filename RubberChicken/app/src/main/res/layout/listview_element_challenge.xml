@@ -8,5 +8,6 @@
         android:layout_height="wrap_content"
         android:text="Butts"
         android:id="@+id/challengeName"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="left"
+        android:textAlignment="gravity" />
 </LinearLayout>

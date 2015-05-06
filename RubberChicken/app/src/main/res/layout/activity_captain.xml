@@ -26,7 +26,8 @@
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="300px"
-            android:id="@+id/captain_comlink_container" />
+            android:id="@+id/captain_comlink_container"
+            android:layout_gravity="left" />
 
     </LinearLayout>
 

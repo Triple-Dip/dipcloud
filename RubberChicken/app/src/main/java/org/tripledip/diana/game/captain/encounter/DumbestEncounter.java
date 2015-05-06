@@ -8,8 +8,8 @@ import org.tripledip.diana.game.smashables.Challenge;
  */
 public class DumbestEncounter extends AbstractEncounter{
 
-    private final String firstDumbestChallengeName = "dumbestChallenge";
-    private final String secondDumbestChallengeName = "secondDumbestChallenge";
+    private final String firstDumbestChallengeName = "dumbChallenge";
+    private final String secondDumbestChallengeName = "dumberChallenge";
 
     public DumbestEncounter() {
         super("DumbestEncounter");
