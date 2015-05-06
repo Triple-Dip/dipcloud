@@ -8,8 +8,6 @@ import org.tripledip.diana.game.smashables.Ship;
  */
 public class ConsequenceRegistry {
 
-
-
     public static class DamageShipConsequence extends AbstractConsequence {
 
         @Override

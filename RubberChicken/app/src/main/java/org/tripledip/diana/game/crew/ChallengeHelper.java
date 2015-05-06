@@ -41,45 +41,38 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
         String result = challenge.getResult();
 
         // someone definitely owns it now and it's finished
-        if( null != owner && (null == result || result.equals(""))){
-
-            // it's me!!
-            if(owner.equals(player.getName())){
-                startChallenge(challenge);
-            } else {
-                // or not :(
-                removeChallenge(challenge);
-            }
+        if( null != owner && !owner.equals("") && null == result || result.equals("")){
             gameEventNotifier.notifyEventOccurred(EVENT_START_CHALLENGE, challenge);
+            if (owner.equals(player.getName())){
+                currentChallenge = challenge;
+            }
+        }
+
+        if( null != result && !result.equals("")){
+            gameEventNotifier.notifyEventOccurred(EVENT_FINISH_CHALLENGE, challenge);
+            if (owner.equals(player.getName())){
+                currentChallenge = null;
+                gameEventNotifier.notifyEventOccurred(EVENT_REMOVE_CHALLENGE, challenge);
+            }
         }
 
     }
 
-    // start challenge is a game event... !
-    private void startChallenge(Challenge challenge){
-        currentChallenge = challenge;
-    }
-
-    // challenge is finished!
-    private void finishChallenge(Challenge challenge){
-
-        dipAccess.proposeUpdate(challenge);
-        currentChallenge = null;
-        removeChallenge(challenge);
-        gameEventNotifier.notifyEventOccurred(EVENT_FINISH_CHALLENGE, challenge);
-
-    }
 
     // challenges get added from an encounter
     public void addChallenge(Challenge challenge){
+
         challenges.add(challenge);
         gameEventNotifier.notifyEventOccurred(EVENT_ADD_CHALLENGE, challenge);
+
     }
 
     // challenges get removed from the encounter due to completion
-    public void removeChallenge(Challenge challenge){
+    public void removeChallenge(Challenge challenge) {
+
         challenges.remove(challenge);
         gameEventNotifier.notifyEventOccurred(EVENT_REMOVE_CHALLENGE, challenge);
+
     }
 
     @Override

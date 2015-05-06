@@ -24,6 +24,7 @@ public class EncounterController implements ScrudListener<Challenge> {
 
     public EncounterController(GameCore gameCore){
         this.gameCore = gameCore;
+        gameCore.getDipAccess().getSmashableListeners().registerListener(new Challenge().getChannel(), (ScrudListener) this);
     }
 
     // called when the captain clicks the encounter in the ListView of encounters
@@ -59,11 +60,7 @@ public class EncounterController implements ScrudListener<Challenge> {
                 currentEncounter.failureConsequences.get(challenge.getName()).doStuff(gameCore);
             }
 
-            // since we are the one removing it and the owner isn't null at this point, we should be
-            // able to send out a ComlinkMessage saying 'XYZ player passed/failed XYZ challenge!'
-            // so cool!
-            gameCore.getDipAccess().proposeRemove(challenge);
-
+            //gameCore.getDipAccess().proposeRemove(challenge);
         }
 
     }
