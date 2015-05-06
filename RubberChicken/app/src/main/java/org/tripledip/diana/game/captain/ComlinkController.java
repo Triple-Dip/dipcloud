@@ -19,6 +19,8 @@ public class ComlinkController {
 
     public static final int COMLINK_RED = Color.RED;
     public static final int COMLINK_BLUE = Color.BLUE;
+    public static final int COMLINK_CYAN = Color.CYAN;
+    public static final int COMLINK_MAGENTA = Color.MAGENTA;
     public static final int COMLINK_GREEN = Color.GREEN;
 
     private final GameCore gameCore;
@@ -60,9 +62,17 @@ public class ComlinkController {
 
             switch (event){
 
-                case ShipHelper.EVENT_DAMAGE_HP: dipAccess.proposeSend(new ComlinkMessage("Ship has been damaged!", COMLINK_RED));
+                case ShipHelper.EVENT_DAMAGE_HP: dipAccess.proposeSend(new ComlinkMessage("Ship hull has been damaged!", COMLINK_RED));
                     break;
-                case ShipHelper.EVENT_REPAIR_HP: dipAccess.proposeSend(new ComlinkMessage("Ship has been repaired!", COMLINK_GREEN));
+                case ShipHelper.EVENT_REPAIR_HP: dipAccess.proposeSend(new ComlinkMessage("Ship hull has been repaired!", COMLINK_GREEN));
+                    break;
+                case ShipHelper.EVENT_DAMAGE_SHIELD: dipAccess.proposeSend(new ComlinkMessage("Ship shield has been damaged!", COMLINK_CYAN));
+                    break;
+                case ShipHelper.EVENT_REPAIR_SHIELD: dipAccess.proposeSend(new ComlinkMessage("Ship shield has been repaired!", COMLINK_CYAN));
+                    break;
+                case ShipHelper.EVENT_DEPLETE_ENERGY: dipAccess.proposeSend(new ComlinkMessage("Ship energy has been drained!", COMLINK_MAGENTA));
+                    break;
+                case ShipHelper.EVENT_RECHARGE_ENERGY: dipAccess.proposeSend(new ComlinkMessage("Ship energy has been recharged!", COMLINK_MAGENTA));
                     break;
 
             }

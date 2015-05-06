@@ -15,7 +15,7 @@ public class ConsequenceRegistry {
 
             Ship ship = copyShip(gameCore.getShipHelper().getTheShip());
 
-            int damage = 4;
+            int damage = 9;
             int leftOver = ship.getShipShield() - damage;
 
 
@@ -46,7 +46,7 @@ public class ConsequenceRegistry {
 
             Ship ship = copyShip(gameCore.getShipHelper().getTheShip());
 
-            int damage = 8;
+            int damage = 15;
             int leftOver = ship.getShipShield() - damage;
 
 
@@ -139,7 +139,7 @@ public class ConsequenceRegistry {
 
             Ship ship = copyShip(gameCore.getShipHelper().getTheShip());
 
-            if((ship.getShipEnergy() - 3) < Ship.MIN_ENERGY){
+            if((ship.getShipEnergy() - 8) < Ship.MIN_ENERGY){
                 ship.setShipEnergy(Ship.MIN_ENERGY);
             } else {
                 ship.setShipEnergy(ship.getShipEnergy() - 3);
