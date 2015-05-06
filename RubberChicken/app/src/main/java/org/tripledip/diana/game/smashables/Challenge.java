@@ -112,4 +112,26 @@ public class Challenge extends Smashable{
         return new Challenge();
     }
 
+    //TODO: put this in smashable
+    @Override
+    public boolean equals(Object obj){
+
+        if (obj == this)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (obj instanceof Challenge)
+        {
+            Challenge other = (Challenge)obj;
+            return other.getInstanceId().equals(getInstanceId());
+
+        } else {
+            return false;
+        }
+
+    }
 }
