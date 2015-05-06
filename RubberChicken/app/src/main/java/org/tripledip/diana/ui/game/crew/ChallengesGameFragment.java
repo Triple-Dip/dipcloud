@@ -84,10 +84,10 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         switch (event){
 
             case ChallengeHelper.EVENT_ADD_CHALLENGE:
-                addChallengeToListView(challenge);
+                updateListView();
                 break;
             case ChallengeHelper.EVENT_REMOVE_CHALLENGE:
-                removeChallengeFromListView(challenge);
+                updateListView();
                 break;
             case ChallengeHelper.EVENT_FINISH_CHALLENGE:
                 if(challenge.getOwner().equals(gameCore.getPlayer().getName()))
@@ -132,21 +132,7 @@ public class ChallengesGameFragment extends GameFragment<Challenge> implements A
         }
     }
 
-    private void addChallengeToListView(final Challenge challenge) {
-
-        final Runnable updateUi = new Runnable() {
-            @Override
-            public void run() {
-                challengeArrayAdapter.notifyDataSetChanged();
-
-            }
-        };
-        getActivity().runOnUiThread(updateUi);
-
-
-    }
-
-    private void removeChallengeFromListView(final Challenge challenge) {
+    private void updateListView() {
 
         final Runnable updateUi = new Runnable() {
             @Override
