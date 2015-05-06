@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:text="Butts"
         android:id="@+id/comlinkMessage"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
 </LinearLayout>

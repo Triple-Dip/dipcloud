@@ -25,13 +25,14 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
     public ChallengeHelper(DipAccess dipAccess, Player player) {
         super(dipAccess, new Challenge());
         this.player = player;
-
     }
 
     // set owner to the player's name and propose
     public void requestOwnership(Challenge challenge){
+
         challenge.setOwner(player.getName());
         dipAccess.proposeUpdate(challenge);
+
     }
 
     // if the incoming challenge is the player's name, start it
@@ -112,3 +113,4 @@ public class ChallengeHelper extends AbstractHelper<Challenge>{
         return currentChallenge;
     }
 }
+
